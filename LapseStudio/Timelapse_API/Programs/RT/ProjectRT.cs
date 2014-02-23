@@ -162,7 +162,7 @@ namespace Timelapse_API
             FileHandle.CreateDirectory(ProjectManager.ImageSavePath);
 
             ProcessStartInfo RTStartInfo = new ProcessStartInfo();
-            RTStartInfo = new ProcessStartInfo(RTPath);    //TODO: check if rawtherapee starts on all platforms
+            RTStartInfo = new ProcessStartInfo(RTPath);
 
             RTStartInfo.UseShellExecute = false;
             RTStartInfo.CreateNoWindow = true;
@@ -217,7 +217,7 @@ namespace Timelapse_API
                     //Start RT
                     RT.StartInfo.Arguments = command;
                     RT.Start();
-                    RT.WaitForExit();
+                    RT.WaitForExit();   //TODO: newer versions of RT wait for a response when finished->handle that
 
                     //when finished, set back the command:
                     command = basecmd;

@@ -17,6 +17,7 @@ namespace Timelapse_UI
 			this.DialogType = DialogType;
 			this.Title = Title;
 			this.InitialDirectory = Environment.GetFolderPath(Environment.SpecialFolder.UserProfile);
+            this.filters = new List<FileTypeFilter>();
 			return GetDialog();
 		}
 

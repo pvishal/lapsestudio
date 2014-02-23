@@ -69,6 +69,7 @@
     <Compile Include="Programs\RT\PP3Versions\308.cs" />
     <Compile Include="Programs\RT\PP3Versions\309.cs" />
     <Compile Include="Programs\RT\PP3Versions\310.cs" />
+    <Compile Include="Programs\RT\PP3Versions\316.cs" />
     <Compile Include="Programs\RT\PP3Versions\318.cs" />
     <Compile Include="ProjectManager.cs" />
     <Compile Include="General\Project.cs" />
@@ -91,8 +92,5 @@
   <Target Name="AfterBuild">
   </Target>
   -->
-  <ItemGroup>
-    <None Include="PP3_Info.txt" />
-  </ItemGroup>
   <ItemGroup />
 </Project>

@@ -6,7 +6,6 @@ using Timelapse_API;
 namespace LapseStudioWinFormsUI
 {
     //TODO: messagebox not shown when no keyframes where added
-    //TODO: table needs checkboxes for keyframes
     //TODO: graph doesn't work fully
 
     public partial class MainForm : Form
@@ -193,19 +192,12 @@ namespace LapseStudioWinFormsUI
         {
             try
             {
+                //TODO: does lapsestudio need keyframes?
                 if (e.RowIndex >= 0 && e.ColumnIndex == (int)TableLocation.Keyframe)
                 {
-                    if ((bool)MainTable.Rows[e.RowIndex].Cells[(int)TableLocation.Keyframe].Value == false)
-                    {
-                        FTHelper.OpenMetaData(e.RowIndex);
-                        MainTable.Rows[e.RowIndex].Cells[(int)TableLocation.Keyframe].Value = true;
-                    }
-                    else
-                    {
-                        //TODO: does lapsestudio need keyframes?
-                        ProjectManager.RemoveKeyframe(e.RowIndex, true);
-                        MainTable.Rows[e.RowIndex].Cells[(int)TableLocation.Keyframe].Value = false;
-                    }
+                    if ((bool)MainTable.Rows[e.RowIndex].Cells[(int)TableLocation.Keyframe].Value == false) FTHelper.OpenMetaData(e.RowIndex);
+                    else ProjectManager.RemoveKeyframe(e.RowIndex, true);
+                    MainUI.UpdateTable();
                 }
             }
             catch (Exception ex) { Error.Report("MainTable cell mouse click", ex); }

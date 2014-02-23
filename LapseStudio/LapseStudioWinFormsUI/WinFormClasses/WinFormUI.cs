@@ -115,7 +115,7 @@ namespace LapseStudioWinFormsUI
         {
             List<Frame> Framelist = ProjectManager.CurrentProject.Frames;
             if (ProjectManager.CurrentProject.Type == ProjectType.LapseStudio) mw.MainTable.Columns[(int)TableLocation.Keyframe].Visible = false;
-            else mw.MainTable.Columns[(int)TableLocation.Keyframe].Visible = false;
+            else mw.MainTable.Columns[(int)TableLocation.Keyframe].Visible = true;
             mw.MainTable.Rows.Clear();
             mw.MainTable.Rows.Add(ProjectManager.CurrentProject.Frames.Count);
 

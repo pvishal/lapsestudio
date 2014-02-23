@@ -41,13 +41,14 @@ namespace LapseStudioWinFormsUI
 
                 fdlg.InitialDirectory = InitialDirectory;
                 fdlg.Title = Title;
-                fdlg.Filter = string.Empty;
+                string tmpFilter = string.Empty;
 
                 foreach (FileTypeFilter filter in FileTypeFilters)
                 {
-                    fdlg.Filter += filter.FilterName + "|";
-                    foreach (string ft in filter.Filter) fdlg.Filter += "*." + ft;
+                    tmpFilter += filter.FilterName + "|";
+                    for (int i = 0; i < filter.Filter.Length; i++) tmpFilter += (i == 0 ? "" : ";") + "*." + filter.Filter[i];
                 }
+                fdlg.Filter = tmpFilter;
                 WindowResponse resp = WinFormHelper.GetResponse(fdlg.ShowDialog());
                 SelectedPath = fdlg.FileName;
                 return resp;

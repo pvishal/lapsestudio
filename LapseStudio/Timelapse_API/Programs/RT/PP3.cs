@@ -98,8 +98,13 @@ namespace Timelapse_API
                     case 310:
                         Write310(Writer);
                         break;
+                    case 315:
+                    case 316:
+                        Write316(Writer);
+                        break;
+                    case 317:
                     case 318:
-                        Write310(Writer);
+                        Write318(Writer);
                         break;
                     default:
                         throw new NotSupportedException("This fileversion is not supported!");
@@ -162,6 +167,8 @@ namespace Timelapse_API
                     break;
                 case 315:
                 case 316:
+                    Read316(lines);
+                    break;
                 case 317:
                 case 318:
                     Read318(lines);

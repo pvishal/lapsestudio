@@ -47,7 +47,7 @@ namespace LapseStudioWinFormsUI
             LSSettings.BitDepth = (ImageBitDepth)BitDepthCoBox.SelectedIndex;
             LSSettings.JpgQuality = (int)JpgQualityTrackBar.Value;
             LSSettings.TiffCompression = (TiffCompressionFormat)TiffCompCoBox.SelectedIndex;
-            if (Path.GetFileName(RTPathTextBox.Text) == "rawtherapee.exe") { LSSettings.RTPath = RTPathTextBox.Text; }
+            LSSettings.RTPath = RTPathTextBox.Text;
             LSSettings.KeepPP3 = KeepPP3ChBox.Checked;
             LSSettings.Save();
         }
@@ -130,7 +130,7 @@ namespace LapseStudioWinFormsUI
                 case "tiff":
                     JpgQualityTrackBar.Enabled = false;
                     TiffCompCoBox.Enabled = true;
-                    BitDepthCoBox.Enabled = (ProgramCoBox.SelectedItem == "RawTherapee") ? false : true;
+                    BitDepthCoBox.Enabled = ((string)ProgramCoBox.SelectedItem == "RawTherapee") ? false : true;
                     break;
             }
         }

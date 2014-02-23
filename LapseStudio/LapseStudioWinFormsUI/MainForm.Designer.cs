@@ -32,7 +32,7 @@
             this.MainStatusStrip = new System.Windows.Forms.StatusStrip();
             this.MainProgressBar = new System.Windows.Forms.ToolStripProgressBar();
             this.StatusLabel = new System.Windows.Forms.ToolStripStatusLabel();
-            this.MainMenuStrip = new System.Windows.Forms.MenuStrip();
+            this.MyMainMenuStrip = new System.Windows.Forms.MenuStrip();
             this.menuToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.newProjectToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.openProjectToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -80,7 +80,7 @@
             this.YToEndButton = new System.Windows.Forms.Button();
             this.MainGraph = new LapseStudioWinFormsUI.Graph();
             this.MainStatusStrip.SuspendLayout();
-            this.MainMenuStrip.SuspendLayout();
+            this.MyMainMenuStrip.SuspendLayout();
             this.MainToolStrip.SuspendLayout();
             this.MainNotebook.SuspendLayout();
             this.FileTab.SuspendLayout();
@@ -129,17 +129,17 @@
             this.StatusLabel.Size = new System.Drawing.Size(79, 17);
             this.StatusLabel.Text = "Everything ok";
             // 
-            // MainMenuStrip
+            // MyMainMenuStrip
             // 
-            this.MainMenuStrip.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.MyMainMenuStrip.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.menuToolStripMenuItem,
             this.settingsToolStripMenuItem,
             this.helpToolStripMenuItem});
-            this.MainMenuStrip.Location = new System.Drawing.Point(0, 0);
-            this.MainMenuStrip.Name = "MainMenuStrip";
-            this.MainMenuStrip.Size = new System.Drawing.Size(774, 24);
-            this.MainMenuStrip.TabIndex = 2;
-            this.MainMenuStrip.Text = "menuStrip1";
+            this.MyMainMenuStrip.Location = new System.Drawing.Point(0, 0);
+            this.MyMainMenuStrip.Name = "MyMainMenuStrip";
+            this.MyMainMenuStrip.Size = new System.Drawing.Size(774, 24);
+            this.MyMainMenuStrip.TabIndex = 2;
+            this.MyMainMenuStrip.Text = "menuStrip1";
             // 
             // menuToolStripMenuItem
             // 
@@ -609,6 +609,7 @@
             // 
             // MainGraph
             // 
+            this.MainGraph.BackColor = System.Drawing.Color.DarkGray;
             this.MainGraph.Dock = System.Windows.Forms.DockStyle.Fill;
             this.MainGraph.Location = new System.Drawing.Point(0, 0);
             this.MainGraph.Name = "MainGraph";
@@ -623,15 +624,15 @@
             this.Controls.Add(this.MainNotebook);
             this.Controls.Add(this.MainToolStrip);
             this.Controls.Add(this.MainStatusStrip);
-            this.Controls.Add(this.MainMenuStrip);
+            this.Controls.Add(this.MyMainMenuStrip);
             this.MinimumSize = new System.Drawing.Size(790, 590);
             this.Name = "MainForm";
             this.Text = "LapseStudio";
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.MainForm_FormClosing);
             this.MainStatusStrip.ResumeLayout(false);
             this.MainStatusStrip.PerformLayout();
-            this.MainMenuStrip.ResumeLayout(false);
-            this.MainMenuStrip.PerformLayout();
+            this.MyMainMenuStrip.ResumeLayout(false);
+            this.MyMainMenuStrip.PerformLayout();
             this.MainToolStrip.ResumeLayout(false);
             this.MainToolStrip.PerformLayout();
             this.MainNotebook.ResumeLayout(false);
@@ -662,7 +663,7 @@
 
         #endregion
 
-        internal System.Windows.Forms.MenuStrip MainMenuStrip;
+        internal System.Windows.Forms.MenuStrip MyMainMenuStrip;
         internal System.Windows.Forms.DataGridView MainTable;
         internal System.Windows.Forms.ToolStripProgressBar MainProgressBar;
         internal System.Windows.Forms.ToolStripStatusLabel StatusLabel;

@@ -36,7 +36,7 @@
             this.label6 = new System.Windows.Forms.Label();
             this.label7 = new System.Windows.Forms.Label();
             this.label8 = new System.Windows.Forms.Label();
-            this.CancelButton = new System.Windows.Forms.Button();
+            this.AbortButton = new System.Windows.Forms.Button();
             this.BrowseButton = new System.Windows.Forms.Button();
             this.AutoThreadChBox = new System.Windows.Forms.CheckBox();
             this.RunRTChBox = new System.Windows.Forms.CheckBox();
@@ -128,16 +128,16 @@
             this.label8.TabIndex = 0;
             this.label8.Text = "Tiff Compression:";
             // 
-            // CancelButton
+            // AbortButton
             // 
-            this.CancelButton.DialogResult = System.Windows.Forms.DialogResult.Cancel;
-            this.CancelButton.Location = new System.Drawing.Point(96, 322);
-            this.CancelButton.Name = "CancelButton";
-            this.CancelButton.Size = new System.Drawing.Size(75, 23);
-            this.CancelButton.TabIndex = 1;
-            this.CancelButton.Text = "Cancel";
-            this.CancelButton.UseVisualStyleBackColor = true;
-            this.CancelButton.Click += new System.EventHandler(this.CancelButton_Click);
+            this.AbortButton.DialogResult = System.Windows.Forms.DialogResult.Cancel;
+            this.AbortButton.Location = new System.Drawing.Point(96, 322);
+            this.AbortButton.Name = "AbortButton";
+            this.AbortButton.Size = new System.Drawing.Size(75, 23);
+            this.AbortButton.TabIndex = 1;
+            this.AbortButton.Text = "Cancel";
+            this.AbortButton.UseVisualStyleBackColor = true;
+            this.AbortButton.Click += new System.EventHandler(this.CancelButton_Click);
             // 
             // BrowseButton
             // 
@@ -311,7 +311,6 @@
             this.AcceptButton = this.OkButton;
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.CancelButton = this.CancelButton;
             this.ClientSize = new System.Drawing.Size(266, 359);
             this.Controls.Add(this.RTPathTextBox);
             this.Controls.Add(this.ThreadUpDo);
@@ -326,7 +325,7 @@
             this.Controls.Add(this.AutoThreadChBox);
             this.Controls.Add(this.BrowseButton);
             this.Controls.Add(this.OkButton);
-            this.Controls.Add(this.CancelButton);
+            this.Controls.Add(this.AbortButton);
             this.Controls.Add(this.label8);
             this.Controls.Add(this.label7);
             this.Controls.Add(this.label6);
@@ -360,7 +359,7 @@
         private System.Windows.Forms.Label label6;
         private System.Windows.Forms.Label label7;
         private System.Windows.Forms.Label label8;
-        private System.Windows.Forms.Button CancelButton;
+        private System.Windows.Forms.Button AbortButton;
         private System.Windows.Forms.Button BrowseButton;
         private System.Windows.Forms.CheckBox AutoThreadChBox;
         private System.Windows.Forms.CheckBox RunRTChBox;
