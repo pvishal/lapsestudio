@@ -121,8 +121,7 @@ namespace Timelapse_API
             output.Values = new Dictionary<string, PP3entry>(this.Values);
             return output;
         }
-
-
+        
 
         private string GetValue(string line)
         {
@@ -161,6 +160,9 @@ namespace Timelapse_API
                 case 310:
                     Read310(lines);
                     break;
+                case 315:
+                case 316:
+                case 317:
                 case 318:
                     Read318(lines);
                     break;
@@ -204,6 +206,5 @@ namespace Timelapse_API
                 this.max = max;
             }
         }
-
     }
 }

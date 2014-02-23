@@ -5,6 +5,7 @@ using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 using ColorManagment;
+using System.Globalization;
 using Gdk;
 
 namespace Timelapse_API
@@ -339,6 +340,7 @@ namespace Timelapse_API
             string[] lines = Exiftool.GetExifMetadata(directory);
 
             MainWorker.ReportProgress(0, new ProgressChangeEventArgs(0, ProgressType.AnalyseMetadata));
+            CultureInfo culture = new CultureInfo("en-US");
 
             if (lines != null)
             {
@@ -347,6 +349,8 @@ namespace Timelapse_API
                 string SVtmp;
                 double TVdenom;
                 double TVnume;
+                double tmpD;
+                int tmpI;
                 int f = -1;
 
                 for (int i = 0; i < lines.Length; i++)
@@ -360,46 +364,55 @@ namespace Timelapse_API
                         if (lines[i].ToLower().StartsWith("aperturevalue"))
                         {
                             AVtmp = lines[i].Substring(lines[i].IndexOf(":") + 2);
-                            if (AVtmp.Contains("$"))
+                            if (double.TryParse(AVtmp, NumberStyles.Any, culture, out tmpD))
                             {
-                                Frames[f].Av = 0;
-                                Frames[f].AVstring = "N/A";
+                                Frames[f].AVstring = AVtmp;
+                                Frames[f].Av = tmpD;
+                                Frames[f].Av = Math.Log(Math.Pow(Frames[f].Av, 2), 2);
                             }
                             else
                             {
-                                Frames[f].AVstring = AVtmp;
-                                Frames[f].Av = Convert.ToDouble(AVtmp.Replace(".", ","));
-                                Frames[f].Av = Math.Log(Math.Pow(Frames[f].Av, 2), 2);
+                                Frames[f].Av = 0;
+                                Frames[f].AVstring = "N/A";
                             }
                         }
                         else if (lines[i].ToLower().StartsWith("shutterspeedvalue"))
                         {
                             TVtmp = lines[i].Substring(lines[i].IndexOf(":") + 2);
-                            if (String.IsNullOrEmpty(TVtmp)) { Frames[f].TVstring = "N/A"; }
-                            else { Frames[f].TVstring = TVtmp; }
+
                             if (TVtmp.Contains(@"/"))
                             {
-                                TVnume = Convert.ToDouble(TVtmp.Substring(0, TVtmp.IndexOf(@"/")));
-                                TVdenom = Convert.ToDouble(TVtmp.Substring(TVtmp.IndexOf(@"/") + 1));
-                                Frames[f].Tv = TVnume / TVdenom;
+                                if (double.TryParse(TVtmp.Substring(0, TVtmp.IndexOf(@"/")), NumberStyles.Any, culture, out TVnume)
+                                    && double.TryParse(TVtmp.Substring(TVtmp.IndexOf(@"/") + 1), NumberStyles.Any, culture, out TVdenom))
+                                {
+                                    Frames[f].Tv = TVnume / TVdenom;
+                                    Frames[f].TVstring = TVtmp;
+                                }
+                                else Frames[f].TVstring = "N/A";
                             }
-                            else
+                            else if (double.TryParse(TVtmp, NumberStyles.Any, culture, out tmpD))
                             {
-                                Frames[f].Tv = Convert.ToDouble(TVtmp.Replace(".", ","));
+                                Frames[f].Tv = tmpD;
+                                Frames[f].TVstring = TVtmp;
                             }
+                            else Frames[f].TVstring = "N/A";
+
                             Frames[f].Tv = Math.Log(1 / Frames[f].Tv, 2);
                         }
                         else if (lines[i].ToLower().StartsWith("iso"))
                         {
                             SVtmp = lines[i].Substring(lines[i].IndexOf(":") + 2);
-                            if (String.IsNullOrEmpty(SVtmp)) { Frames[f].SVstring = "N/A"; }
-                            else { Frames[f].SVstring = SVtmp; }
-                            Frames[f].Sv = Math.Log(Convert.ToInt32(SVtmp), 3.125f);
+                            if (int.TryParse(SVtmp, out tmpI))
+                            {
+                                Frames[f].Sv = Math.Log(tmpI, 3.125f);
+                                Frames[f].SVstring = SVtmp;
+                            }
+                            else Frames[f].SVstring = "N/A";
                         }
                         else if (lines[i].ToLower().StartsWith("wb_rggblevelsasshot"))
                         {
-                            string[] WBtmp = lines[i].Substring(lines[i].IndexOf(":") + 2).Split(' ');
-                            int[] WBvals = new int[4] { Convert.ToInt32(WBtmp[0]), Convert.ToInt32(WBtmp[1]), Convert.ToInt32(WBtmp[2]), Convert.ToInt32(WBtmp[3]) };
+                            //string[] WBtmp = lines[i].Substring(lines[i].IndexOf(":") + 2).Split(' ');
+                            //int[] WBvals = new int[4] { Convert.ToInt32(WBtmp[0]), Convert.ToInt32(WBtmp[1]), Convert.ToInt32(WBtmp[2]), Convert.ToInt32(WBtmp[3]) };
                             //TODO_L: calc the resulting brightness steps and write to Frames[f].WB
                         }
                         else if (lines[i].ToLower().StartsWith("colorspace"))
@@ -409,8 +422,10 @@ namespace Timelapse_API
                         else if (lines[i].ToLower().StartsWith("imagesize"))
                         {
                             string[] tmp = lines[i].Substring(lines[i].IndexOf(":") + 2).Split('x');
-                            Frames[f].Width = Convert.ToInt32(tmp[0]);
-                            Frames[f].Height = Convert.ToInt32(tmp[1]);
+                            if (int.TryParse(tmp[0], out tmpI)) Frames[f].Width = tmpI;
+                            else Frames[f].Width = 1;
+                            if (int.TryParse(tmp[1], out tmpI)) Frames[f].Height = tmpI;
+                            else Frames[f].Height = 1;
                         }
                     }
 
