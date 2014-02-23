@@ -1,0 +1,151 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{C150714A-F94E-418B-9059-08226216FD78}</ProjectGuid>
+    <OutputType>WinExe</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>LapseStudioWinFormsUI</RootNamespace>
+    <AssemblyName>LapseStudioWinFormsUI</AssemblyName>
+    <FileAlignment>512</FileAlignment>
+    <ProductVersion>12.0.0</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <PlatformTarget>x86</PlatformTarget>
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>TRACE;DEBUG</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <PlatformTarget>x86</PlatformTarget>
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="System" />
+    <Reference Include="System.Core" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Windows.Forms" />
+    <Reference Include="System.Xml" />
+    <Reference Include="MessageTranslation">
+      <HintPath>..\Lib\MessageTranslation.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="GUI\Graph.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="GUI\Graph.Designer.cs">
+      <DependentUpon>Graph.cs</DependentUpon>
+    </Compile>
+    <Compile Include="GUI\MyAboutDialog.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="GUI\MyAboutDialog.Designer.cs">
+      <DependentUpon>MyAboutDialog.cs</DependentUpon>
+    </Compile>
+    <Compile Include="GUI\MyHelpDialog.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="GUI\MyHelpDialog.Designer.cs">
+      <DependentUpon>MyHelpDialog.cs</DependentUpon>
+    </Compile>
+    <Compile Include="GUI\MySettingsDialog.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="GUI\MySettingsDialog.Designer.cs">
+      <DependentUpon>MySettingsDialog.cs</DependentUpon>
+    </Compile>
+    <Compile Include="WinFormClasses\WinFormFileDialog.cs" />
+    <Compile Include="WinFormClasses\WinFormHelper.cs" />
+    <Compile Include="WinFormClasses\WinFormMessageBox.cs" />
+    <Compile Include="WinFormClasses\WinFormUI.cs" />
+    <Compile Include="GUI\TrackBarEx.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="GUI\TrackBarEx.Designer.cs">
+      <DependentUpon>TrackBarEx.cs</DependentUpon>
+    </Compile>
+    <Compile Include="MainForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="MainForm.Designer.cs">
+      <DependentUpon>MainForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Program.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <EmbeddedResource Include="GUI\Graph.resx">
+      <DependentUpon>Graph.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="GUI\MyAboutDialog.resx">
+      <DependentUpon>MyAboutDialog.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="GUI\MySettingsDialog.resx">
+      <DependentUpon>MySettingsDialog.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="GUI\TrackBarEx.resx">
+      <DependentUpon>TrackBarEx.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="MainForm.resx">
+      <DependentUpon>MainForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Properties\Resources.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <Compile Include="Properties\Resources.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DependentUpon>Resources.resx</DependentUpon>
+    </Compile>
+    <None Include="locale\de.dic">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      <Gettext-ScanForTranslations>False</Gettext-ScanForTranslations>
+    </None>
+    <None Include="Properties\Settings.settings">
+      <Generator>SettingsSingleFileGenerator</Generator>
+      <LastGenOutput>Settings.Designer.cs</LastGenOutput>
+    </None>
+    <Compile Include="Properties\Settings.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DependentUpon>Settings.settings</DependentUpon>
+      <DesignTimeSharedInput>True</DesignTimeSharedInput>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Timelapse_API\Timelapse_API.csproj">
+      <Project>{520BF17D-2712-4A53-8612-CC2BA57EC1C2}</Project>
+      <Name>Timelapse_API</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\UI\Timelapse_UI.csproj">
+      <Project>{3B68D43B-7477-41FD-948E-3ACD77C5C337}</Project>
+      <Name>Timelapse_UI</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="exiftool.exe">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

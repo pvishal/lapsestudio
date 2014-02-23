@@ -1,0 +1,219 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<stetic-interface>
+  <configuration>
+    <images-root-path>..</images-root-path>
+  </configuration>
+  <import>
+    <widget-library name="glade-sharp, Version=2.12.0.0, Culture=neutral, PublicKeyToken=35e10195dab3c99f" />
+    <widget-library name="../bin/Debug/HelpAppUI.exe" internal="true" />
+  </import>
+  <widget class="Gtk.Window" id="MainWindow" design-size="739 630">
+    <property name="MemberName" />
+    <property name="Title">PP3 Toolbox</property>
+    <property name="WindowPosition">CenterOnParent</property>
+    <signal name="DeleteEvent" handler="OnDeleteEvent" />
+    <child>
+      <widget class="Gtk.VBox" id="vbox1">
+        <property name="MemberName" />
+        <property name="Spacing">6</property>
+        <child>
+          <widget class="Gtk.Fixed" id="fixed1">
+            <property name="MemberName" />
+            <property name="HeightRequest">120</property>
+            <property name="HasWindow">False</property>
+            <child>
+              <widget class="Gtk.Entry" id="PP3PathBox1">
+                <property name="MemberName" />
+                <property name="WidthRequest">360</property>
+                <property name="CanFocus">True</property>
+                <property name="IsEditable">False</property>
+                <property name="InvisibleChar">●</property>
+              </widget>
+              <packing>
+                <property name="X">15</property>
+                <property name="Y">16</property>
+              </packing>
+            </child>
+            <child>
+              <widget class="Gtk.Entry" id="PP3PathBox2">
+                <property name="MemberName" />
+                <property name="WidthRequest">360</property>
+                <property name="CanFocus">True</property>
+                <property name="IsEditable">False</property>
+                <property name="InvisibleChar">●</property>
+              </widget>
+              <packing>
+                <property name="X">15</property>
+                <property name="Y">49</property>
+              </packing>
+            </child>
+            <child>
+              <widget class="Gtk.Button" id="BrowseButton1">
+                <property name="MemberName" />
+                <property name="CanFocus">True</property>
+                <property name="Type">TextOnly</property>
+                <property name="Label" translatable="yes">Browse</property>
+                <property name="UseUnderline">True</property>
+                <signal name="Clicked" handler="OnBrowseButton1Clicked" />
+              </widget>
+              <packing>
+                <property name="X">385</property>
+                <property name="Y">12</property>
+              </packing>
+            </child>
+            <child>
+              <widget class="Gtk.Button" id="BrowseButton2">
+                <property name="MemberName" />
+                <property name="CanFocus">True</property>
+                <property name="Type">TextOnly</property>
+                <property name="Label" translatable="yes">Browse</property>
+                <property name="UseUnderline">True</property>
+                <signal name="Clicked" handler="OnBrowseButton2Clicked" />
+              </widget>
+              <packing>
+                <property name="X">385</property>
+                <property name="Y">45</property>
+              </packing>
+            </child>
+            <child>
+              <widget class="Gtk.Button" id="CompareVersionsButton">
+                <property name="MemberName" />
+                <property name="WidthRequest">115</property>
+                <property name="CanFocus">True</property>
+                <property name="Type">TextOnly</property>
+                <property name="Label" translatable="yes">Compare Versions</property>
+                <property name="UseUnderline">True</property>
+                <signal name="Clicked" handler="OnCompareVersionsButtonClicked" />
+              </widget>
+              <packing>
+                <property name="X">450</property>
+                <property name="Y">12</property>
+              </packing>
+            </child>
+            <child>
+              <widget class="Gtk.Button" id="SingleVersionButton">
+                <property name="MemberName" />
+                <property name="WidthRequest">115</property>
+                <property name="CanFocus">True</property>
+                <property name="Type">TextOnly</property>
+                <property name="Label" translatable="yes">Single Version</property>
+                <property name="UseUnderline">True</property>
+                <signal name="Clicked" handler="OnSingleVersionButtonClicked" />
+              </widget>
+              <packing>
+                <property name="X">450</property>
+                <property name="Y">45</property>
+              </packing>
+            </child>
+            <child>
+              <widget class="Gtk.Button" id="BatchComparisonButton">
+                <property name="MemberName" />
+                <property name="WidthRequest">115</property>
+                <property name="CanFocus">True</property>
+                <property name="Type">TextOnly</property>
+                <property name="Label" translatable="yes">Batch Comparison</property>
+                <property name="UseUnderline">True</property>
+                <signal name="Clicked" handler="OnBatchComparisonButtonClicked" />
+              </widget>
+              <packing>
+                <property name="X">580</property>
+                <property name="Y">12</property>
+              </packing>
+            </child>
+            <child>
+              <widget class="Gtk.Button" id="SaveCodeButton">
+                <property name="MemberName" />
+                <property name="CanFocus">True</property>
+                <property name="Type">TextOnly</property>
+                <property name="Label" translatable="yes">Save Code</property>
+                <property name="UseUnderline">True</property>
+                <signal name="Clicked" handler="OnSaveCodeButtonClicked" />
+              </widget>
+              <packing>
+                <property name="X">15</property>
+                <property name="Y">85</property>
+              </packing>
+            </child>
+            <child>
+              <widget class="Gtk.Button" id="SavePP3DefinitionButton">
+                <property name="MemberName" />
+                <property name="CanFocus">True</property>
+                <property name="Type">TextOnly</property>
+                <property name="Label" translatable="yes">Save PP3 Definition</property>
+                <property name="UseUnderline">True</property>
+                <signal name="Clicked" handler="OnSavePP3DefinitionButtonClicked" />
+              </widget>
+              <packing>
+                <property name="X">100</property>
+                <property name="Y">85</property>
+              </packing>
+            </child>
+            <child>
+              <widget class="Gtk.Button" id="CompareSameButton">
+                <property name="MemberName" />
+                <property name="WidthRequest">115</property>
+                <property name="CanFocus">True</property>
+                <property name="Type">TextOnly</property>
+                <property name="Label" translatable="yes">Compare Same</property>
+                <property name="UseUnderline">True</property>
+                <signal name="Clicked" handler="OnCompareSameButtonClicked" />
+              </widget>
+              <packing>
+                <property name="X">580</property>
+                <property name="Y">45</property>
+              </packing>
+            </child>
+          </widget>
+          <packing>
+            <property name="Position">0</property>
+            <property name="AutoSize">True</property>
+            <property name="Expand">False</property>
+            <property name="Fill">False</property>
+          </packing>
+        </child>
+        <child>
+          <widget class="Gtk.HPaned" id="hpaned1">
+            <property name="MemberName" />
+            <property name="CanFocus">True</property>
+            <property name="Position">366</property>
+            <child>
+              <widget class="Gtk.ScrolledWindow" id="GtkScrolledWindow">
+                <property name="MemberName" />
+                <property name="ShadowType">In</property>
+                <child>
+                  <widget class="Gtk.TreeView" id="TreeView1">
+                    <property name="MemberName" />
+                    <property name="CanFocus">True</property>
+                    <property name="ShowScrollbars">True</property>
+                    <property name="EnableSearch">False</property>
+                  </widget>
+                </child>
+              </widget>
+              <packing>
+                <property name="Resize">False</property>
+              </packing>
+            </child>
+            <child>
+              <widget class="Gtk.ScrolledWindow" id="GtkScrolledWindow1">
+                <property name="MemberName" />
+                <property name="ShadowType">In</property>
+                <child>
+                  <widget class="Gtk.TreeView" id="TreeView2">
+                    <property name="MemberName" />
+                    <property name="CanFocus">True</property>
+                    <property name="ShowScrollbars">True</property>
+                    <property name="EnableSearch">False</property>
+                  </widget>
+                </child>
+              </widget>
+            </child>
+          </widget>
+          <packing>
+            <property name="Position">1</property>
+            <property name="AutoSize">True</property>
+          </packing>
+        </child>
+      </widget>
+    </child>
+  </widget>
+</stetic-interface>
