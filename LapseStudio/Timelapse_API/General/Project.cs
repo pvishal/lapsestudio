@@ -352,8 +352,9 @@ namespace Timelapse_API
                 for (int i = 0; i < lines.Length; i++)
                 {
                     if (MainWorker.CancellationPending) { return; }
+                    
 
-					if(lines[i].StartsWith("======== ")) f = Frames.FindIndex(t => lines[i].ToLower().Contains(Path.GetFileName(t.Filename).ToLower()));
+					if(lines[i].StartsWith("======== ")) f = Frames.FindIndex(t => lines[i].ToLower() == "======== " + t.FilePath.ToLower().Replace(@"\", "/"));
                     else if (f >= 0)
                     {
                         if (lines[i].ToLower().StartsWith("aperturevalue"))
@@ -432,11 +433,13 @@ namespace Timelapse_API
 
         protected virtual void LoadThumbnails(string[] files)
         {
+            string[] thumbs = Directory.GetFiles(ProjectManager.ThumbPath);
+            
             for (int i = 0; i < files.Length; i++)
             {
                 if (MainWorker.CancellationPending) { return; }
 
-                string Tpath = Path.Combine(ProjectManager.ThumbPath, Path.GetFileNameWithoutExtension(files[i]) + "_Thumb.jpg");
+                string Tpath = thumbs.First(t => Path.GetFileNameWithoutExtension(t) == Path.GetFileNameWithoutExtension(files[i]) + "_Thumb");
                 if (!File.Exists(Tpath)) { throw new FileNotFoundException("Thumbimage couldn't be found"); }
                 Frames[i].Thumb = new UniversalImage(new Pixbuf(Tpath));
                 Frames[i].ThumbEdited = new UniversalImage(Frames[i].Thumb.Pixbuf.Copy());
