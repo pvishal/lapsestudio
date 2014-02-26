@@ -1,0 +1,20 @@
+Stuff you need to run and work with LapseStudio:
+
+All OS:
+ -RawTherapee (optional) (get it from: http://rawtherapee.com/downloads)
+ -Adobe CameraRaw compatible software (optional)
+
+WINDOWS:
+ -.Net Framework 4.0 or above
+   -Windows XP SP3, Windows Vista SP1: http://www.microsoft.com/de-at/download/details.aspx?id=17718
+   -Windows Vista SP2 and above: http://www.microsoft.com/de-at/download/details.aspx?id=30653
+   -Windos 7 and above: should be installed already. if not, see: "Windows Vista SP2 and above"
+
+ Mac OSX:
+  -exiftool (get Mac OSX Package from: http://www.sno.phy.queensu.ca/~phil/exiftool/)
+
+LINUX:
+  -exiftool (libimage-exiftool-perl)
+  -Mono framwork with Gtk#
+    -Gentoo: dev-lang/mono and dev-dotnet/gtk-sharp
+	-Ubuntu: mono-runtime and gtk-sharp2

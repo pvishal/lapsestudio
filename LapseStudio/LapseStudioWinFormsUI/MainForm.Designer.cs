@@ -240,6 +240,7 @@
             // 
             // MainToolStrip
             // 
+            this.MainToolStrip.ImageScalingSize = new System.Drawing.Size(32, 32);
             this.MainToolStrip.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.AddFileToolButton,
             this.CalculateToolButton,
@@ -248,9 +249,8 @@
             this.CancelToolButton});
             this.MainToolStrip.Location = new System.Drawing.Point(0, 24);
             this.MainToolStrip.Name = "MainToolStrip";
-            this.MainToolStrip.Size = new System.Drawing.Size(774, 25);
+            this.MainToolStrip.Size = new System.Drawing.Size(774, 39);
             this.MainToolStrip.TabIndex = 3;
-            this.MainToolStrip.Text = "toolStrip1";
             // 
             // AddFileToolButton
             // 
@@ -258,7 +258,7 @@
             this.AddFileToolButton.Image = ((System.Drawing.Image)(resources.GetObject("AddFileToolButton.Image")));
             this.AddFileToolButton.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.AddFileToolButton.Name = "AddFileToolButton";
-            this.AddFileToolButton.Size = new System.Drawing.Size(23, 22);
+            this.AddFileToolButton.Size = new System.Drawing.Size(36, 36);
             this.AddFileToolButton.Text = "Add Files";
             this.AddFileToolButton.Click += new System.EventHandler(this.AddFileToolButton_Click);
             // 
@@ -268,7 +268,7 @@
             this.CalculateToolButton.Image = ((System.Drawing.Image)(resources.GetObject("CalculateToolButton.Image")));
             this.CalculateToolButton.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.CalculateToolButton.Name = "CalculateToolButton";
-            this.CalculateToolButton.Size = new System.Drawing.Size(23, 22);
+            this.CalculateToolButton.Size = new System.Drawing.Size(36, 36);
             this.CalculateToolButton.Text = "Calculate Brightness";
             this.CalculateToolButton.Click += new System.EventHandler(this.CalculateToolButton_Click);
             // 
@@ -278,7 +278,7 @@
             this.MetadataToolButton.Image = ((System.Drawing.Image)(resources.GetObject("MetadataToolButton.Image")));
             this.MetadataToolButton.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.MetadataToolButton.Name = "MetadataToolButton";
-            this.MetadataToolButton.Size = new System.Drawing.Size(23, 22);
+            this.MetadataToolButton.Size = new System.Drawing.Size(36, 36);
             this.MetadataToolButton.Text = "Refresh Metadata";
             this.MetadataToolButton.Click += new System.EventHandler(this.MetadataToolButton_Click);
             // 
@@ -288,7 +288,7 @@
             this.ProcessToolButton.Image = ((System.Drawing.Image)(resources.GetObject("ProcessToolButton.Image")));
             this.ProcessToolButton.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.ProcessToolButton.Name = "ProcessToolButton";
-            this.ProcessToolButton.Size = new System.Drawing.Size(23, 22);
+            this.ProcessToolButton.Size = new System.Drawing.Size(36, 36);
             this.ProcessToolButton.Text = "Process Files";
             this.ProcessToolButton.Click += new System.EventHandler(this.ProcessToolButton_Click);
             // 
@@ -298,7 +298,7 @@
             this.CancelToolButton.Image = ((System.Drawing.Image)(resources.GetObject("CancelToolButton.Image")));
             this.CancelToolButton.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.CancelToolButton.Name = "CancelToolButton";
-            this.CancelToolButton.Size = new System.Drawing.Size(23, 22);
+            this.CancelToolButton.Size = new System.Drawing.Size(36, 36);
             this.CancelToolButton.Text = "Cancel";
             this.CancelToolButton.Click += new System.EventHandler(this.CancelToolButton_Click);
             // 
@@ -308,10 +308,10 @@
             this.MainNotebook.Controls.Add(this.CalculationTab);
             this.MainNotebook.Controls.Add(this.GraphTab);
             this.MainNotebook.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.MainNotebook.Location = new System.Drawing.Point(0, 49);
+            this.MainNotebook.Location = new System.Drawing.Point(0, 63);
             this.MainNotebook.Name = "MainNotebook";
             this.MainNotebook.SelectedIndex = 0;
-            this.MainNotebook.Size = new System.Drawing.Size(774, 481);
+            this.MainNotebook.Size = new System.Drawing.Size(774, 467);
             this.MainNotebook.TabIndex = 4;
             // 
             // FileTab
@@ -320,7 +320,7 @@
             this.FileTab.Location = new System.Drawing.Point(4, 22);
             this.FileTab.Name = "FileTab";
             this.FileTab.Padding = new System.Windows.Forms.Padding(3);
-            this.FileTab.Size = new System.Drawing.Size(766, 455);
+            this.FileTab.Size = new System.Drawing.Size(766, 441);
             this.FileTab.TabIndex = 0;
             this.FileTab.Text = "Files";
             this.FileTab.UseVisualStyleBackColor = true;
@@ -341,7 +341,7 @@
             // 
             this.splitContainer1.Panel2.Controls.Add(this.splitContainer2);
             this.splitContainer1.Panel2MinSize = 160;
-            this.splitContainer1.Size = new System.Drawing.Size(760, 449);
+            this.splitContainer1.Size = new System.Drawing.Size(760, 435);
             this.splitContainer1.SplitterDistance = 596;
             this.splitContainer1.TabIndex = 5;
             // 
@@ -367,7 +367,7 @@
             this.MainTable.RowHeadersVisible = false;
             this.MainTable.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
             this.MainTable.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
-            this.MainTable.Size = new System.Drawing.Size(596, 449);
+            this.MainTable.Size = new System.Drawing.Size(596, 435);
             this.MainTable.TabIndex = 0;
             this.MainTable.CellMouseClick += new System.Windows.Forms.DataGridViewCellMouseEventHandler(this.MainTable_CellMouseClick);
             this.MainTable.CellValueChanged += new System.Windows.Forms.DataGridViewCellEventHandler(this.MainTable_CellValueChanged);
@@ -445,7 +445,7 @@
             // 
             this.splitContainer2.Panel1.Controls.Add(this.ThumbViewList);
             this.splitContainer2.Panel1MinSize = 120;
-            this.splitContainer2.Size = new System.Drawing.Size(160, 449);
+            this.splitContainer2.Size = new System.Drawing.Size(160, 435);
             this.splitContainer2.SplitterDistance = 120;
             this.splitContainer2.TabIndex = 0;
             // 
@@ -705,7 +705,6 @@
         internal System.Windows.Forms.ToolStripButton ProcessToolButton;
         internal System.Windows.Forms.ToolStripButton CancelToolButton;
         internal System.Windows.Forms.TrackBar BrightnessScale;
-        private Graph MainGraph;
         private System.Windows.Forms.DataGridViewTextBoxColumn Number;
         private System.Windows.Forms.DataGridViewCheckBoxColumn Keyframe;
         private System.Windows.Forms.DataGridViewTextBoxColumn Filename;
@@ -713,6 +712,7 @@
         private System.Windows.Forms.DataGridViewTextBoxColumn AV;
         private System.Windows.Forms.DataGridViewTextBoxColumn TV;
         private System.Windows.Forms.DataGridViewTextBoxColumn ISO;
+        private Graph MainGraph;
     }
 }
 

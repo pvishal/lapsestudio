@@ -20,7 +20,7 @@ namespace LapseStudioGtkUI
 			ProjectManager.FramesLoaded += CurrentProject_FramesLoaded;
 			ProjectManager.ProgressChanged += CurrentProject_ProgressChanged;
 			ProjectManager.WorkDone += CurrentProject_WorkDone;
-
+            
 			mw.FileTree.CursorChanged += FileTree_CursorChanged;
 
 			mw.ThumbEventBox.ButtonPressEvent += new ButtonPressEventHandler(fixThumb_ButtonPressEvent);

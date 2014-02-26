@@ -20,6 +20,11 @@ namespace LapseStudioWinFormsUI
 		{
 			mw = win;
 			Init(Platform.Windows);
+            mw.AddFileToolButton.Image = Timelapse_UI.Properties.Resources.Add_32x32;
+            mw.CalculateToolButton.Image = Timelapse_UI.Properties.Resources.Calculate_32x32;
+            mw.MetadataToolButton.Image = Timelapse_UI.Properties.Resources.Reload_32x32;
+            mw.ProcessToolButton.Image = Timelapse_UI.Properties.Resources.Save_32x32;
+            mw.CancelToolButton.Image = Timelapse_UI.Properties.Resources.Cancel_32x32;
 
 			ProjectManager.BrightnessCalculated += CurrentProject_BrightnessCalculated;
 			ProjectManager.FramesLoaded += CurrentProject_FramesLoaded;

@@ -68,5 +68,4 @@ namespace Timelapse_API
             this.Topic = Topic;
         }
     }
-
 }

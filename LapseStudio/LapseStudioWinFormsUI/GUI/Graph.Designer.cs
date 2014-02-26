@@ -36,16 +36,10 @@
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.DarkGray;
             this.Name = "Graph";
-            this.SizeChanged += new System.EventHandler(this.Graph_SizeChanged);
-            this.Paint += new System.Windows.Forms.PaintEventHandler(this.Graph_Paint);
-            this.MouseDown += new System.Windows.Forms.MouseEventHandler(this.Graph_MouseDown);
-            this.MouseMove += new System.Windows.Forms.MouseEventHandler(this.Graph_MouseMove);
-            this.MouseUp += new System.Windows.Forms.MouseEventHandler(this.Graph_MouseUp);
             this.ResumeLayout(false);
 
         }
 
         #endregion
-
     }
 }

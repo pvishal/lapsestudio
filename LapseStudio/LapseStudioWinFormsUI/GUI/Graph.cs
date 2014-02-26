@@ -55,7 +55,7 @@ namespace LapseStudioWinFormsUI
                 }
             }
         }
-        
+
         private void Graph_MouseMove(object sender, MouseEventArgs e)
         {
             BaseGraph.Mouse_Move(e.X, e.Y);
@@ -79,13 +79,13 @@ namespace LapseStudioWinFormsUI
         #endregion
 
         #region Drawing
-        
+
         private void DrawScale(Graphics g)
         {
             //draw Y axe
             g.DrawLine(BasePen, BrightnessGraph.Left, BrightnessGraph.Top, BrightnessGraph.Left, BaseGraph.Height - BrightnessGraph.Bottom);
             g.DrawLine(BasePen, BaseGraph.Width - BrightnessGraph.Right, BrightnessGraph.Top, BaseGraph.Width - BrightnessGraph.Right, BaseGraph.Height - BrightnessGraph.Bottom + lw);
-            
+
             //draw X axe
             g.DrawLine(BasePen, BrightnessGraph.Left, BaseGraph.Height - BrightnessGraph.Bottom, BaseGraph.Width - BrightnessGraph.Right, BaseGraph.Height - BrightnessGraph.Bottom);
             g.DrawLine(BasePen, BrightnessGraph.Left - lw, BrightnessGraph.Top, BaseGraph.Width - BrightnessGraph.Right, BrightnessGraph.Top);
@@ -119,7 +119,7 @@ namespace LapseStudioWinFormsUI
                 }
 
                 pout = BaseGraph.RealToGraph(BrP);
-                
+
                 for (int i = 1; i < pout.Length; i++) g.DrawLine(CurvePen, (float)pout[i - 1].X, (float)pout[i - 1].Y, (float)pout[i].X, (float)pout[i].Y);
             }
 
@@ -128,7 +128,7 @@ namespace LapseStudioWinFormsUI
             if (BaseGraph.Points.Count > 0 && ProjectManager.CurrentProject.IsBrightnessCalculated)
             {
                 #region Drawing Custom Curve
-                
+
                 pout = BaseGraph.RealToGraph(Interpolation.Do(BaseGraph.Points.ToArray(), BrightnessGraph.Smoothness));
 
                 for (int i = 1; i < pout.Length; i++) g.DrawLine(BasePen, (float)pout[i - 1].X, (float)pout[i - 1].Y, (float)pout[i].X, (float)pout[i].Y);
@@ -147,9 +147,7 @@ namespace LapseStudioWinFormsUI
                 #endregion
             }
         }
-        
+
         #endregion
     }
 }
-
-

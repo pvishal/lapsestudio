@@ -160,7 +160,12 @@ namespace Timelapse_UI
 		{
 			bool ask = true;
 			if (LSSettings.UsedProgram == ProjectType.CameraRaw) { ask = false; }
-			else if (LSSettings.UsedProgram == ProjectType.LapseStudio) { ask = true; ((ProjectLS)ProjectManager.CurrentProject).SaveFormat = LSSettings.SaveFormat; }
+			else if (LSSettings.UsedProgram == ProjectType.LapseStudio)
+            {
+                if (!File.Exists(LSSettings.RTPath)) { MsgBox.Show(Message.GetString("RawTherapee can't be found. Abort!")); return; }
+                ask = true;
+                ((ProjectLS)ProjectManager.CurrentProject).SaveFormat = LSSettings.SaveFormat;
+            }
 			else if (LSSettings.UsedProgram == ProjectType.RawTherapee)
 			{
 				ask = ((ProjectRT)ProjectManager.CurrentProject).RunRT;
@@ -243,6 +248,7 @@ namespace Timelapse_UI
         public void SettingsChanged()
         {
             if (LSSettings.UsedProgram != ProjectManager.CurrentProject.Type) { if (Click_NewProject() == WindowResponse.Cancel) { LSSettings.UsedProgram = ProjectManager.CurrentProject.Type; } }
+            else if (LSSettings.UsedProgram == ProjectType.RawTherapee) { ((ProjectRT)ProjectManager.CurrentProject).RTPath = LSSettings.RTPath; }
             ProjectManager.Threadcount = LSSettings.Threadcount;
         }
 

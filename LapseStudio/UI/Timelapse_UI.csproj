@@ -37,6 +37,7 @@
     <Reference Include="MessageTranslation">
       <HintPath>..\Lib\MessageTranslation.dll</HintPath>
     </Reference>
+    <Reference Include="System.Drawing" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Enums.cs" />
@@ -48,6 +49,11 @@
     <Compile Include="FileDialog.cs" />
     <Compile Include="BrightnessGraph.cs" />
     <Compile Include="FileTreeHelper.cs" />
+    <Compile Include="Properties\Resources.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Resources.resx</DependentUpon>
+    </Compile>
     <Compile Include="Settings.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -55,6 +61,32 @@
       <Project>{520BF17D-2712-4A53-8612-CC2BA57EC1C2}</Project>
       <Name>Timelapse_API</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Properties\Resources.resx">
+      <Generator>PublicResXFileCodeGenerator</Generator>
+      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Icons\Save_32x32.png" />
+    <None Include="Icons\Calculate.png" />
+    <Content Include="Icons\Add_32x32.png" />
+    <Content Include="Icons\Calculate_32x32.png" />
+    <Content Include="Icons\Cancel.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Icons\Cancel_32x32.png" />
+    <Content Include="Icons\OpenFile.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Icons\Reload.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Icons\Reload_32x32.png" />
+    <Content Include="Icons\Save.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

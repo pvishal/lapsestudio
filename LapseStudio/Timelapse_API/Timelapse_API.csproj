@@ -34,11 +34,11 @@
     <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="BitMiracle.LibTiff.NET">
-      <HintPath>BitMiracle.LibTiff.NET.dll</HintPath>
-    </Reference>
     <Reference Include="gdk-sharp, Version=2.12.0.0, Culture=neutral, PublicKeyToken=35e10195dab3c99f, processorArchitecture=MSIL" />
     <Reference Include="glib-sharp, Version=2.12.0.0, Culture=neutral, PublicKeyToken=35e10195dab3c99f, processorArchitecture=MSIL" />
+    <Reference Include="Magick.NET-x86">
+      <HintPath>..\Lib\Magick.NET-x86.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Drawing" />
@@ -65,12 +65,13 @@
     <Compile Include="Programs\LS\FrameLS.cs" />
     <Compile Include="Programs\RT\PP3Versions\300.cs" />
     <Compile Include="Programs\RT\PP3Versions\301.cs" />
-    <None Include="Programs\RT\PP3Versions\302_new.cs" />
+    <Compile Include="Programs\RT\PP3Versions\302.cs" />
     <Compile Include="Programs\RT\PP3Versions\308.cs" />
     <Compile Include="Programs\RT\PP3Versions\309.cs" />
     <Compile Include="Programs\RT\PP3Versions\310.cs" />
     <Compile Include="Programs\RT\PP3Versions\316.cs" />
     <Compile Include="Programs\RT\PP3Versions\318.cs" />
+    <Compile Include="Programs\RT\PP3Versions\319.cs" />
     <Compile Include="ProjectManager.cs" />
     <Compile Include="General\Project.cs" />
     <Compile Include="Programs\RT\PP3.cs" />
@@ -82,7 +83,6 @@
     <Compile Include="Programs\ACR\XMP.cs" />
     <Compile Include="Programs\RT\FrameRT.cs" />
     <Compile Include="General\SavingStorage.cs" />
-    <Compile Include="Programs\RT\PP3Versions\302.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

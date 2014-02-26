@@ -32,7 +32,7 @@ namespace LapseStudioWinFormsUI
             BitDepthCoBox.SelectedIndex = (int)LSSettings.BitDepth;
             JpgQualityTrackBar.Value = LSSettings.JpgQuality;
             TiffCompCoBox.SelectedIndex = (int)LSSettings.TiffCompression;
-            if (File.Exists(LSSettings.RTPath)) { RTPathTextBox.Text = LSSettings.RTPath; }
+            RTPathTextBox.Text = LSSettings.RTPath;
             KeepPP3ChBox.Checked = LSSettings.KeepPP3;
         }
 

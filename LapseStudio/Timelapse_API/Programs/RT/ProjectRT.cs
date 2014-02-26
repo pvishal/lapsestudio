@@ -40,17 +40,29 @@ namespace Timelapse_API
         {
             get { return this.Frames.Count(t => ((FrameRT)t).PP3File != null && t.IsKeyframe); }
         }
-
+        /// <summary>
+        /// States of RawTherapee will be started or if only PP3s are generated
+        /// </summary>
 		public bool RunRT;
-
+        /// <summary>
+        /// States if PP3 are kept after processing is done
+        /// </summary>
 		public bool KeepPP3;
-
+        /// <summary>
+        /// Path to RawTherapee
+        /// </summary>
 		public string RTPath;
-
+        /// <summary>
+        /// Image format in which images will be saved
+        /// </summary>
 		public FileFormat SaveFormat;
-
+        /// <summary>
+        /// Tiff compression of image
+        /// </summary>
 		public bool TiffCompression;
-
+        /// <summary>
+        /// Quality of jpg image
+        /// </summary>
 		public int JpgQuality;
 
 
@@ -248,6 +260,5 @@ namespace Timelapse_API
         {
             for (int i = 0; i < files.Length; i++) { Frames.Add(new FrameRT(files[i])); }
         }
-
     }
 }
