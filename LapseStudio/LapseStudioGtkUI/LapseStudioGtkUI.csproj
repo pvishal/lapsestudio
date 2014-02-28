@@ -84,7 +84,6 @@
     <Compile Include="GtkClasses\GtkUI.cs" />
     <Compile Include="GtkClasses\GtkFileDialog.cs" />
     <Compile Include="GtkClasses\GtkHelper.cs" />
-    <Compile Include="GtkClasses\TreeViewHandler.cs" />
   </ItemGroup>
   <ItemGroup />
 </Project>

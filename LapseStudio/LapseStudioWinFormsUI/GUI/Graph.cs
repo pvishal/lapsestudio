@@ -42,7 +42,7 @@ namespace LapseStudioWinFormsUI
         {
             if (BaseGraph != null)
             {
-                using (Graphics g = this.CreateGraphics())
+                using (Graphics g = MainPanel.CreateGraphics())
                 using (Bitmap bmp = new Bitmap(this.Width, this.Height, PixelFormat.Format24bppRgb))
                 using (Graphics gh = Graphics.FromImage(bmp))
                 {

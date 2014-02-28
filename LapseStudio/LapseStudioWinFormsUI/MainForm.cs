@@ -5,15 +5,11 @@ using Timelapse_API;
 
 namespace LapseStudioWinFormsUI
 {
-    //TODO: messagebox not shown when no keyframes where added
-    //TODO: graph doesn't work fully
-
     public partial class MainForm : Form
     {
         WinFormUI MainUI;
         WinFormMessageBox MsgBox;
         WinFormFileDialog FDialog;
-        FileTreeHelper FTHelper;
 
         public MainForm()
         {
@@ -22,7 +18,6 @@ namespace LapseStudioWinFormsUI
                 InitializeComponent();
                 MsgBox = new WinFormMessageBox();
                 FDialog = new WinFormFileDialog();
-                FTHelper = new FileTreeHelper(MsgBox, FDialog);
                 MainUI = new WinFormUI(this, MsgBox, FDialog);
                 MainUI.MainGraph = new BrightnessGraph(MainGraph.Width, MainGraph.Height);
                 MainGraph.Init(MainUI.MainGraph);
@@ -178,11 +173,7 @@ namespace LapseStudioWinFormsUI
             {
                 if (e.RowIndex >= 0 && e.ColumnIndex == (int)TableLocation.Brightness)
                 {
-                    double val;
-                    try { val = Convert.ToDouble(MainTable.Rows[e.RowIndex].Cells[(int)TableLocation.Brightness].Value); }
-                    catch { return; }
-
-                    FTHelper.UpdateBrightness(e.RowIndex, val);
+                    MainUI.UpdateBrightness(e.RowIndex, (string)MainTable.Rows[e.RowIndex].Cells[(int)TableLocation.Brightness].Value);
                 }
             }
             catch (Exception ex) { Error.Report("MainTable cell value changed", ex); }
@@ -192,12 +183,9 @@ namespace LapseStudioWinFormsUI
         {
             try
             {
-                //TODO: does lapsestudio need keyframes?
                 if (e.RowIndex >= 0 && e.ColumnIndex == (int)TableLocation.Keyframe)
                 {
-                    if ((bool)MainTable.Rows[e.RowIndex].Cells[(int)TableLocation.Keyframe].Value == false) FTHelper.OpenMetaData(e.RowIndex);
-                    else ProjectManager.RemoveKeyframe(e.RowIndex, true);
-                    MainUI.UpdateTable();
+                    MainUI.Click_KeyframeToggle(e.RowIndex, (bool)MainTable.Rows[e.RowIndex].Cells[(int)TableLocation.Keyframe].Value);
                 }
             }
             catch (Exception ex) { Error.Report("MainTable cell mouse click", ex); }

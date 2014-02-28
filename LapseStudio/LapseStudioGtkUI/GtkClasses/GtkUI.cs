@@ -1,5 +1,6 @@
 ﻿using System;
 using Gtk;
+using System.Collections;
 using Timelapse_API;
 using Timelapse_UI;
 using MessageTranslation;
@@ -9,7 +10,9 @@ namespace LapseStudioGtkUI
 {
 	public class GtkUI : LapseStudioUI
 	{
-		MainWindow mw;
+        MainWindow mw;
+        int SelectedRow;
+        ListStore TreeViewTable;
 
 		public GtkUI(MainWindow win, MessageBox MsgBox, FileDialog FDialog) : base(MsgBox, FDialog)
 		{
@@ -20,6 +23,8 @@ namespace LapseStudioGtkUI
 			ProjectManager.FramesLoaded += CurrentProject_FramesLoaded;
 			ProjectManager.ProgressChanged += CurrentProject_ProgressChanged;
 			ProjectManager.WorkDone += CurrentProject_WorkDone;
+            this.TitleChanged += GtkUI_TitleChanged;
+            this.InfoTextChanged += GtkUI_InfoTextChanged;
             
 			mw.FileTree.CursorChanged += FileTree_CursorChanged;
 
@@ -120,11 +125,11 @@ namespace LapseStudioGtkUI
 
 		public override void InitOpenedProject()
 		{
-			TreeViewHandler.UpdateTable();
+			UpdateTable();
 			InitMovement();
-			/*mw.FileTree.SetCursor(TreeViewHandler.GetFirstPath(), mw.FileTree.Columns[0], false);
+			mw.FileTree.SetCursor(GetFirstPath(), mw.FileTree.Columns[0], false);
 			mw.FrameSelectScale.SetRange(0, ProjectManager.CurrentProject.Frames.Count - 1);
-			OnFrameSelectScaleValueChanged(null, null);
+			/*OnFrameSelectScaleValueChanged(null, null);
 
 			mw.MainNotebook.CurrentPage = (int)TabLocation.Graph;
 			MainGraph.SetFromLoading(Storage.Points, Storage.SelectedPoint);
@@ -155,12 +160,21 @@ namespace LapseStudioGtkUI
 		public override void InitUI()
 		{
 			mw.refreshMetadataAction.Sensitive = (LSSettings.UsedProgram != ProjectType.CameraRaw) ? false : true;
-			mw.FileTree = TreeViewHandler.Init(mw.FileTree);
+            InitTreeView();
 			mw.MainNotebook.CurrentPage = (int)TabLocation.Graph;
 			mw.MainNotebook.CurrentPage = (int)TabLocation.Filelist;
 			mw.CalcTypeCoBox.Active = (int)LSSettings.BrCalcType;
 		}
 
+        public override void ClearTable()
+        {
+            TreeViewTable.Clear();
+        }
+
+        public override void SetTableRow(int Index, ArrayList Values)
+        {
+            SetTableRow(Values);
+        }
 
 		private void SetOpacity(Gdk.Pixbuf pxf, byte alpha)
 		{
@@ -182,15 +196,136 @@ namespace LapseStudioGtkUI
 
 		#endregion
 
-		#region Eventhandling
+        #region TreeView Methods
+        
+        private void InitTreeView()
+        {
+            foreach (TreeViewColumn col in mw.FileTree.Columns) { mw.FileTree.RemoveColumn(col); }
+            TreeViewTable = new ListStore(typeof(string), typeof(bool), typeof(string), typeof(string), typeof(string), typeof(string), typeof(string));
 
-		[GLib.ConnectBefore]
+            TreeViewColumn NrColumn = new TreeViewColumn();
+            TreeViewColumn FileColumn = new TreeViewColumn();
+            TreeViewColumn BrightnessColumn = new TreeViewColumn();
+            TreeViewColumn AVColumn = new TreeViewColumn();
+            TreeViewColumn TVColumn = new TreeViewColumn();
+            TreeViewColumn ISOColumn = new TreeViewColumn();
+            TreeViewColumn KeyframeColumn = new TreeViewColumn();
+
+            CellRendererText NrCell = new CellRendererText();
+            CellRendererText FileCell = new CellRendererText();
+            CellRendererText BrightnessCell = new CellRendererText();
+            CellRendererText AVCell = new CellRendererText();
+            CellRendererText TVCell = new CellRendererText();
+            CellRendererText ISOCell = new CellRendererText();
+            CellRendererToggle KeyframeCell = new CellRendererToggle();
+
+            NrColumn.Title = Message.GetString("Nr");
+            NrColumn.MinWidth = 35;
+            NrColumn.Resizable = false;
+            NrColumn.PackStart(NrCell, true);
+
+            FileColumn.Title = Message.GetString("Filename");
+            FileColumn.MinWidth = 100;
+            FileColumn.Resizable = true;
+            FileColumn.PackStart(FileCell, true);
+
+            BrightnessColumn.Title = Message.GetString("Brightness");
+            BrightnessColumn.MinWidth = 70;
+            BrightnessColumn.Resizable = true;
+            BrightnessColumn.PackStart(BrightnessCell, true);
+            BrightnessCell.Editable = true;
+            BrightnessCell.Edited += CellEdited;
+
+            AVColumn.Title = Message.GetString("AV");
+            AVColumn.MinWidth = 40;
+            AVColumn.Resizable = true;
+            AVColumn.PackStart(AVCell, true);
+
+            TVColumn.Title = Message.GetString("TV");
+            TVColumn.MinWidth = 40;
+            TVColumn.Resizable = true;
+            TVColumn.PackStart(TVCell, true);
+
+            ISOColumn.Title = Message.GetString("ISO");
+            ISOColumn.MinWidth = 40;
+            ISOColumn.Resizable = true;
+            ISOColumn.PackStart(ISOCell, true);
+
+            KeyframeColumn.Title = Message.GetString("KF");
+            KeyframeColumn.MinWidth = 30;
+            KeyframeColumn.MaxWidth = 40;
+            KeyframeColumn.PackStart(KeyframeCell, true);
+            KeyframeColumn.AddAttribute(KeyframeCell, "active", (int)TableLocation.Keyframe);
+            KeyframeCell.Activatable = true;
+            KeyframeCell.Active = false;
+            KeyframeCell.Toggled += KeyframeCell_Toggled;
+
+            NrColumn.AddAttribute(NrCell, "text", (int)TableLocation.Nr);
+            FileColumn.AddAttribute(FileCell, "text", (int)TableLocation.Filename);
+            BrightnessColumn.AddAttribute(BrightnessCell, "text", (int)TableLocation.Brightness);
+            AVColumn.AddAttribute(AVCell, "text", (int)TableLocation.AV);
+            TVColumn.AddAttribute(TVCell, "text", (int)TableLocation.TV);
+            ISOColumn.AddAttribute(ISOCell, "text", (int)TableLocation.ISO);
+            KeyframeColumn.AddAttribute(KeyframeCell, "toggle", (int)TableLocation.Keyframe);
+
+
+            mw.FileTree.AppendColumn(NrColumn);
+            mw.FileTree.AppendColumn(KeyframeColumn);
+            mw.FileTree.AppendColumn(FileColumn);
+            mw.FileTree.AppendColumn(BrightnessColumn);
+            mw.FileTree.AppendColumn(AVColumn);
+            mw.FileTree.AppendColumn(TVColumn);
+            mw.FileTree.AppendColumn(ISOColumn);
+
+            mw.FileTree.Model = TreeViewTable;
+        }
+
+        private void UpdateRow(TreePath path)
+        {
+            SelectedRow = GetIndex(path);
+        }
+
+        private int GetIndex(TreePath path)
+        {
+            TreeIter iter;
+            TreeViewTable.GetIter(out iter, path);
+            return TreeViewTable.GetPath(iter).Indices[0];
+        }
+
+        private TreePath GetFirstPath()
+        {
+            TreeIter iter;
+            TreeViewTable.GetIterFirst(out iter);
+            return TreeViewTable.GetPath(iter);
+        }
+
+        private bool GetToggleState(TreePath path, TableLocation Column)
+        {
+            try
+            {
+                TreeIter iter;
+                TreeViewTable.GetIter(out iter, path);
+                return (bool)TreeViewTable.GetValue(iter, (int)Column);
+            }
+            catch { return false; }
+        }
+        
+        private void SetTableRow(ArrayList Values)
+        {
+            TreeViewTable.AppendValues(Values[0], Values[1], Values[2], Values[3], Values[4], Values[5], Values[6]);
+        }
+
+        #endregion
+
+        #region Eventhandling
+
+        [GLib.ConnectBefore]
 		protected void FileTree_CursorChanged(object sender, EventArgs e)
 		{
 			try
 			{
-				if (mw.FileTree.Selection.GetSelectedRows().Length > 0) TreeViewHandler.UpdateRow(mw.FileTree.Selection.GetSelectedRows()[0]);
-				if (mw.MainNotebook.CurrentPage == (int)TabLocation.Filelist) { mw.ThumbViewList.Pixbuf = ProjectManager.CurrentProject.Frames[TreeViewHandler.SelectedRow].Thumb.Pixbuf.ScaleSimple(160, 120, Gdk.InterpType.Bilinear); }
+				if (mw.FileTree.Selection.GetSelectedRows().Length > 0) UpdateRow(mw.FileTree.Selection.GetSelectedRows()[0]);
+				if (mw.MainNotebook.CurrentPage == (int)TabLocation.Filelist) { mw.ThumbViewList.Pixbuf = ProjectManager.CurrentProject.Frames[SelectedRow].Thumb.Pixbuf.ScaleSimple(160, 120, Gdk.InterpType.Bilinear); }
 			}
 			catch (Exception ex) { Error.Report("FileTree CursorChanged", ex); }
 		}
@@ -243,9 +378,9 @@ namespace LapseStudioGtkUI
 				Application.Invoke(delegate
 				{
 					mw.StatusLabel.Text = Message.GetString("Frames loaded");
-					TreeViewHandler.UpdateTable();
+					UpdateTable();
 					InitMovement();
-					mw.FileTree.SetCursor(TreeViewHandler.GetFirstPath(), mw.FileTree.Columns[0], false);
+					mw.FileTree.SetCursor(GetFirstPath(), mw.FileTree.Columns[0], false);
 					mw.FrameSelectScale.SetRange(0, ProjectManager.CurrentProject.Frames.Count - 1);
 					mw.OnFrameSelectScaleValueChanged(null, null);
 					ResetProgress();
@@ -261,14 +396,35 @@ namespace LapseStudioGtkUI
 				Application.Invoke(delegate
 				{
 					mw.StatusLabel.Text = Message.GetString("Brightness calculated");
-					TreeViewHandler.UpdateTable();
+					UpdateTable();
 					ResetProgress();
 				});
 			}
 			catch (Exception ex) { Error.Report("Brightness calculation finished", ex); }
 		}
 
+        private void CellEdited(object o, EditedArgs args)
+        {
+            try { UpdateBrightness(GetIndex(new TreePath(args.Path)), args.NewText); }
+            catch (Exception ex) { Error.Report("Cell edited", ex); }
+        }
+
+        private void KeyframeCell_Toggled(object o, ToggledArgs args)
+        {
+            try { Click_KeyframeToggle(GetIndex(new TreePath(args.Path)), GetToggleState(new TreePath(args.Path), TableLocation.Keyframe)); }
+            catch (Exception ex) { Error.Report("Keyframecell toggled", ex); }
+        }
+
+        private void GtkUI_InfoTextChanged(string Value)
+        {
+            mw.StatusLabel.Text = Value;
+        }
+
+        private void GtkUI_TitleChanged(string Value)
+        {
+            mw.Title = Value;
+        }
+
 		#endregion
 	}
 }
-

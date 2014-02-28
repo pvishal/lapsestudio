@@ -29,9 +29,11 @@ namespace LapseStudioWinFormsUI
 			ProjectManager.BrightnessCalculated += CurrentProject_BrightnessCalculated;
 			ProjectManager.FramesLoaded += CurrentProject_FramesLoaded;
 			ProjectManager.ProgressChanged += CurrentProject_ProgressChanged;
-			ProjectManager.WorkDone += CurrentProject_WorkDone;
+            ProjectManager.WorkDone += CurrentProject_WorkDone;
+            this.InfoTextChanged += WinFormUI_InfoTextChanged;
+            this.TitleChanged += WinFormUI_TitleChanged;
 		}
-        
+
 		#region Methods
 
 		public override void Dispose()
@@ -113,54 +115,23 @@ namespace LapseStudioWinFormsUI
 			mw.MainNotebook.SelectedIndex = (int)TabLocation.Graph;
             mw.MainNotebook.SelectedIndex = (int)TabLocation.Filelist;
 			//mw.CalcTypeCoBox.Active = (int)LSSettings.BrCalcType;
+            UpdateTable();
 		}
 
-        //TODO: put that on the LapseStudioUI class somehow (it's redundant)
-        public void UpdateTable()
+        public override void ClearTable()
         {
-            List<Frame> Framelist = ProjectManager.CurrentProject.Frames;
             if (ProjectManager.CurrentProject.Type == ProjectType.LapseStudio) mw.MainTable.Columns[(int)TableLocation.Keyframe].Visible = false;
             else mw.MainTable.Columns[(int)TableLocation.Keyframe].Visible = true;
             mw.MainTable.Rows.Clear();
-            mw.MainTable.Rows.Add(ProjectManager.CurrentProject.Frames.Count);
-
-            ArrayList LScontent = new ArrayList();
-            int index;
-            for (int i = 0; i < mw.MainTable.Columns.Count; i++) { LScontent.Add("N/A"); }
-
-            for (int i = 0; i < Framelist.Count; i++)
-            {
-                //Nr
-                index = (int)TableLocation.Nr;
-                LScontent[index] = Convert.ToString(i + 1);
-                //Filenames
-                index = (int)TableLocation.Filename;
-                LScontent[index] = Framelist[i].Filename;
-                //Brightness
-                index = (int)TableLocation.Brightness;
-                LScontent[index] = Framelist[i].OriginalBrightness.ToString("N3");
-                //AV
-                index = (int)TableLocation.AV;
-                if (Framelist[i].AVstring != null) { LScontent[index] = Framelist[i].AVstring; }
-                else { LScontent[index] = "N/A"; }
-                //TV
-                index = (int)TableLocation.TV;
-                if (Framelist[i].TVstring != null) { LScontent[index] = Framelist[i].TVstring; }
-                else { LScontent[index] = "N/A"; }
-                //ISO
-                index = (int)TableLocation.ISO;
-                if (Framelist[i].SVstring != null) { LScontent[index] = Framelist[i].SVstring; }
-                else { LScontent[index] = "N/A"; }
-                //Keyframes
-                index = (int)TableLocation.Keyframe;
-                if (Framelist[i].IsKeyframe) { LScontent[index] = true; }
-                else { LScontent[index] = false; }
-
-                //filling the table
-                mw.MainTable.Rows[i].SetValues(LScontent[0], LScontent[1], LScontent[2], LScontent[3], LScontent[4], LScontent[5], LScontent[6]);
-            }
+            int count = ProjectManager.CurrentProject.Frames.Count;
+            if (count > 0) mw.MainTable.Rows.Add(count);
         }
-        
+
+        public override void SetTableRow(int Index, ArrayList Values)
+        {
+            mw.MainTable.Rows[Index].SetValues(Values[0], Values[1], Values[2], Values[3], Values[4], Values[5], Values[6]);
+        }
+
 		#endregion
 
 		#region Eventhandling
@@ -220,11 +191,22 @@ namespace LapseStudioWinFormsUI
             try
             {
                 mw.StatusLabel.Text = Message.GetString("Brightness calculated");
-                UpdateTable();
                 ResetProgress();
+                UpdateTable();
+                MainGraph.RefreshGraph();
             }
             catch (Exception ex) { Error.Report("Brightness calculation finished", ex); }
 		}
+
+        private void WinFormUI_TitleChanged(string Value)
+        {
+            mw.Text = Value;
+        }
+
+        private void WinFormUI_InfoTextChanged(string Value)
+        {
+            mw.StatusLabel.Text = Value;
+        }
 
 		#endregion
 	}

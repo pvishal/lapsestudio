@@ -235,7 +235,9 @@ namespace Timelapse_UI
 			double max = ProjectManager.CurrentProject.Frames.Max(b => b.AlternativeBrightness);
 
 			double x = Left + ((p.X / (double)Pointcount) * CurveArea.Width);
-			double y = Top + (((100 - (((p.Y - min) * 100) / (max - min))) * CurveArea.Height) / 100d);
+            double y;
+            if (max - min != 0) y = Top + (((100 - (((p.Y - min) * 100) / (max - min))) * CurveArea.Height) / 100d);
+            else y = 0;
 
 			return new PointD((float)x, (float)y);
 		}

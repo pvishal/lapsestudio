@@ -1,5 +1,8 @@
 ﻿using System;
+using System.Linq;
 using System.IO;
+using System.Collections;
+using System.Collections.Generic;
 using MessageTranslation;
 using Timelapse_API;
 using System.IO.Compression;
@@ -43,8 +46,9 @@ namespace Timelapse_UI
 		private string _Title;
 
 		public MessageBox MsgBox;
-		public FileDialog FDialog;
+        public FileDialog FDialog;
 		private bool ProjectSaved = true;
+        private bool IsTableUpdate = false;
 		private string ProjectSavePath;
 
 		public BrightnessGraph MainGraph;
@@ -77,6 +81,10 @@ namespace Timelapse_UI
 		public abstract void ResetPictureBoxes();
 
 		public abstract void InitUI();
+
+        public abstract void ClearTable();
+
+        public abstract void SetTableRow(int Index, ArrayList Values);
 
 		#endregion
 
@@ -252,6 +260,121 @@ namespace Timelapse_UI
             ProjectManager.Threadcount = LSSettings.Threadcount;
         }
 
+        public void UpdateTable()
+        {
+            IsTableUpdate = true;
+            List<Frame> Framelist = ProjectManager.CurrentProject.Frames;
+            ClearTable();
+            
+            ArrayList LScontent = new ArrayList();
+            int index;
+            for (int i = 0; i < Enum.GetNames(typeof(TableLocation)).Length; i++) { LScontent.Add("N/A"); }
+
+            for (int i = 0; i < Framelist.Count; i++)
+            {
+                //Nr
+                index = (int)TableLocation.Nr;
+                LScontent[index] = Convert.ToString(i + 1);
+                //Filenames
+                index = (int)TableLocation.Filename;
+                LScontent[index] = Framelist[i].Filename;
+                //Brightness
+                index = (int)TableLocation.Brightness;
+                LScontent[index] = Framelist[i].OriginalBrightness.ToString("N3");
+                //AV
+                index = (int)TableLocation.AV;
+                if (Framelist[i].AVstring != null) { LScontent[index] = Framelist[i].AVstring; }
+                else { LScontent[index] = "N/A"; }
+                //TV
+                index = (int)TableLocation.TV;
+                if (Framelist[i].TVstring != null) { LScontent[index] = Framelist[i].TVstring; }
+                else { LScontent[index] = "N/A"; }
+                //ISO
+                index = (int)TableLocation.ISO;
+                if (Framelist[i].SVstring != null) { LScontent[index] = Framelist[i].SVstring; }
+                else { LScontent[index] = "N/A"; }
+                //Keyframes
+                index = (int)TableLocation.Keyframe;
+                if (Framelist[i].IsKeyframe) { LScontent[index] = true; }
+                else { LScontent[index] = false; }
+
+                //filling the table
+                SetTableRow(i, LScontent);
+            }
+            IsTableUpdate = false;
+        }
+        
+        public void OpenMetaData(int index)
+        {
+            if (LSSettings.UsedProgram == ProjectType.CameraRaw)
+            {
+                XMP CurXmp = ((FrameACR)ProjectManager.CurrentProject.Frames[index]).XMPFile;
+                if (CurXmp == null || (CurXmp != null && CurXmp.Values.Count == 0))
+                {
+                    WindowResponse res = MsgBox.Show(Message.GetString(@"No XMP associated with this file. Do you want to reload to check if there is one now?
+Yes reloads the files XMP values.
+No lets you load values from a standalone XMP file."), MessageWindowType.Question, MessageWindowButtons.YesNoCancel);
+                    if (res == WindowResponse.Yes) { ProjectManager.ReadXMP(); return; }
+                    else if (res == WindowResponse.Cancel) return;
+
+                    using (FileDialog fdlg = FDialog.CreateDialog(FileDialogType.OpenFile, Message.GetString("Open XMP")))
+                    {
+                        fdlg.AddFileTypeFilter(new FileTypeFilter(Message.GetString("XMP"), "xmp", "XMP"));
+                        if (Directory.Exists(LSSettings.LastMetaDir)) fdlg.InitialDirectory = LSSettings.LastMetaDir;
+
+                        if (fdlg.Show() == WindowResponse.Ok)
+                        {
+                            LSSettings.LastMetaDir = Path.GetDirectoryName(fdlg.SelectedPath);
+                            ProjectManager.AddKeyframe(index, fdlg.SelectedPath);
+                        }
+                    }
+                }
+                else { ProjectManager.AddKeyframe(index); }
+            }
+            else if (LSSettings.UsedProgram == ProjectType.RawTherapee)
+            {
+                using (FileDialog fdlg = FDialog.CreateDialog(FileDialogType.OpenFile, Message.GetString("Open PP3")))
+                {
+                    fdlg.AddFileTypeFilter(new FileTypeFilter(Message.GetString("Postprocessing Profile"), "PP3", "pp3"));
+                    if (Directory.Exists(LSSettings.LastMetaDir)) fdlg.InitialDirectory = LSSettings.LastMetaDir;
+
+                    if (fdlg.Show() == WindowResponse.Ok)
+                    {
+                        LSSettings.LastMetaDir = Path.GetDirectoryName(fdlg.SelectedPath);
+                        ProjectManager.AddKeyframe(index, fdlg.SelectedPath);
+                    }
+                }
+            }
+            else { ProjectManager.AddKeyframe(index); }
+        }
+
+        public void UpdateBrightness(int Row, string CurrentValue)
+        {
+            double val;
+            try { val = Convert.ToDouble(CurrentValue); }
+            catch { return; }
+
+            double change = val - ProjectManager.CurrentProject.Frames[Row].AlternativeBrightness;
+            ProjectManager.CurrentProject.Frames[Row].AlternativeBrightness = val;
+
+            for (int i = Row + 1; i < ProjectManager.CurrentProject.Frames.Count; i++)
+            {
+                ProjectManager.CurrentProject.Frames[i].AlternativeBrightness += change;
+            }
+
+            double min = ProjectManager.CurrentProject.Frames.Min(p => p.AlternativeBrightness);
+            if (min < 0)
+            {
+                for (int i = 0; i < ProjectManager.CurrentProject.Frames.Count; i++)
+                {
+                    ProjectManager.CurrentProject.Frames[i].AlternativeBrightness += min + 5;
+                }
+                change += min + 5;
+            }
+
+            if (!IsTableUpdate) UpdateTable();
+        }
+
 		#endregion
 
 		#region User Input Methods
@@ -330,11 +453,13 @@ namespace Timelapse_UI
 
 		public void Click_Process()
 		{
+            string labelstr = "";
 			if (CheckBusy()) return;
-			if (ProjectManager.CurrentProject.KeyframeCount == 0) { MsgBox.ShowMessage(MessageContent.KeyframecountLow); }
+            if (ProjectManager.CurrentProject.KeyframeCount == 0) { MsgBox.ShowMessage(MessageContent.KeyframecountLow, out labelstr); }
 			else if (ProjectManager.CurrentProject.IsBrightnessCalculated) { ProcessFiles(); }
-			else if (LSSettings.UsedProgram == ProjectType.LapseStudio) { MsgBox.ShowMessage(MessageContent.BrightnessNotCalculatedError); }
+            else if (LSSettings.UsedProgram == ProjectType.LapseStudio) { MsgBox.ShowMessage(MessageContent.BrightnessNotCalculatedError, out labelstr); }
 			else if (MsgBox.ShowMessage(MessageContent.BrightnessNotCalculatedWarning) == WindowResponse.Yes) { ProcessFiles(); }
+            if (!string.IsNullOrEmpty(labelstr) && InfoTextChanged != null) InfoTextChanged(labelstr);
 		}
 
 		public void Click_RefreshMetadata()
@@ -358,6 +483,13 @@ namespace Timelapse_UI
 				ProjectManager.ProcessThumbs();
 			}
 		}
+
+        public void Click_KeyframeToggle(int Row, bool Toggled)
+        {
+            if (!Toggled) OpenMetaData(Row);
+            else ProjectManager.RemoveKeyframe(Row, false);
+            UpdateTable();
+        }
 
 		#endregion
     }

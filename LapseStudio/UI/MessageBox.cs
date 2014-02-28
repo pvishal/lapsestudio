@@ -7,7 +7,7 @@ namespace Timelapse_UI
     {
 		public abstract WindowResponse Show(object parent, string message, string title, MessageWindowType type, MessageWindowButtons bType);
         
-		#region Show (Non Modal)
+		#region Show
 
 		public WindowResponse Show(string message)
 		{
