@@ -92,13 +92,18 @@
     <Compile Include="CocoaClasses\CocoaFileDialog.cs" />
     <Compile Include="CocoaClasses\CocoaHelper.cs" />
     <Compile Include="CocoaClasses\CocoaMessageBox.cs" />
+    <Compile Include="Graph.cs" />
+    <Compile Include="Graph.designer.cs">
+      <DependentUpon>Graph.cs</DependentUpon>
+    </Compile>
+    <Compile Include="CocoaClasses\CocoaUI.cs" />
+    <Compile Include="CocoaClasses\TableDataSource.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="locale\de.dic">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
       <Gettext-ScanForTranslations>False</Gettext-ScanForTranslations>
     </None>
-    <None Include="CocoaClasses\CocoaUI.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <ItemGroup>
@@ -117,5 +122,6 @@
   <ItemGroup>
     <InterfaceDefinition Include="MainMenu.xib" />
     <InterfaceDefinition Include="MainWindow.xib" />
+    <InterfaceDefinition Include="Graph.xib" />
   </ItemGroup>
 </Project>

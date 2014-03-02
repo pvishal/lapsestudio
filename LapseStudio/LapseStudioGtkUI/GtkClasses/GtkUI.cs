@@ -161,8 +161,6 @@ namespace LapseStudioGtkUI
 		{
 			mw.refreshMetadataAction.Sensitive = (LSSettings.UsedProgram != ProjectType.CameraRaw) ? false : true;
             InitTreeView();
-			mw.MainNotebook.CurrentPage = (int)TabLocation.Graph;
-			mw.MainNotebook.CurrentPage = (int)TabLocation.Filelist;
 			mw.CalcTypeCoBox.Active = (int)LSSettings.BrCalcType;
 		}
 

@@ -79,8 +79,8 @@ namespace Timelapse_API
         {
             ProjectManager.RunningPlatform = RunningPlatform;
             NewProject(ProjectType.LapseStudio);
-            FileHandle.CreateDirectory(ThumbPath);
-            FileHandle.ClearDirectory(ThumbPath, true);
+			FileHandle.CreateDirectory(ThumbPath);
+			FileHandle.ClearDirectory(ThumbPath, true);
         }
         
         

@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="3.0" toolsVersion="4514" systemVersion="13B42" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none">
+<document type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="3.0" toolsVersion="4514" systemVersion="13C64" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none">
     <dependencies>
         <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="4514"/>
     </dependencies>
@@ -14,7 +14,6 @@
                 <outlet property="FrameSelectSlider" destination="DNh-0n-JQH" id="e0w-LH-TU9"/>
                 <outlet property="FrameSelectedLabel" destination="h8g-In-J8m" id="zBd-mA-oDT"/>
                 <outlet property="GraphResetButton" destination="kna-xa-K0K" id="sbk-bj-dHu"/>
-                <outlet property="MainGraphBox" destination="Ule-bl-ZDG" id="8Zi-av-Gdg"/>
                 <outlet property="MainProgressBar" destination="bOM-SO-ASd" id="Yxm-BR-PIQ"/>
                 <outlet property="MainTabView" destination="vJm-s2-PfO" id="c8U-n0-Bjw"/>
                 <outlet property="MainTable" destination="QF8-q7-ni9" id="2Ug-nA-LMV"/>
@@ -301,11 +300,10 @@
                                             <color key="fillColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                             <font key="titleFont" metaFont="system"/>
                                         </box>
-                                        <imageView horizontalHuggingPriority="251" verticalHuggingPriority="251" id="Ule-bl-ZDG">
-                                            <rect key="frame" x="191" y="0.0" width="538" height="446"/>
+                                        <customView id="QC8-Qh-8aR" customClass="Graph">
+                                            <rect key="frame" x="191" y="0.0" width="538" height="440"/>
                                             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                                            <imageCell key="cell" refusesFirstResponder="YES" alignment="left" id="LMe-Di-2RN"/>
-                                        </imageView>
+                                        </customView>
                                     </subviews>
                                 </view>
                             </tabViewItem>

@@ -4,17 +4,20 @@ using MonoMac.Foundation;
 using Timelapse_API;
 using Timelapse_UI;
 using MessageTranslation;
+using System.Collections;
 
 namespace LapseStudioMacUI
 {
 	public class CocoaUI : LapseStudioUI
 	{
 		MainWindowController mw;
+		TableDataSource TableSource = new TableDataSource();
 
 		public CocoaUI(MainWindowController win, MessageBox MsgBox, FileDialog FDialog) : base(MsgBox, FDialog)
 		{
 			mw = win;
-			Init(Platform.Unix);
+			Init(Platform.MacOSX);
+			mw.PublicMainTable.DataSource = TableSource;
 
 			ProjectManager.BrightnessCalculated += CurrentProject_BrightnessCalculated;
 			ProjectManager.FramesLoaded += CurrentProject_FramesLoaded;
@@ -70,7 +73,7 @@ namespace LapseStudioMacUI
 
 		public override void InitOpenedProject()
 		{
-			//TreeViewHandler.UpdateTable();
+			UpdateTable();
 			InitMovement();
 			/*mw.FileTree.SetCursor(TreeViewHandler.GetFirstPath(), mw.FileTree.Columns[0], false);
 			mw.FrameSelectScale.SetRange(0, ProjectManager.CurrentProject.Frames.Count - 1);
@@ -88,27 +91,36 @@ namespace LapseStudioMacUI
 		{
 			InvokeUI(() =>
 			{
-				mw.MainProgressBar.Fraction = 0;
-				mw.MainProgressBar.Text = String.Empty;
+				mw.PublicMainProgressBar.DoubleValue = 0;
 			});
 		}
 
 		public override void ResetPictureBoxes()
 		{
-			mw.alignThumb.Pixbuf = null;
-			mw.fixThumb.Pixbuf = null;
-			mw.ThumbEditView.Pixbuf = null;
-			mw.ThumbViewList.Pixbuf = null;
-			mw.ThumbViewGraph.Pixbuf = null;
+			//mw.alignThumb.Pixbuf = null;
+			//mw.fixThumb.Pixbuf = null;
+			mw.PublicThumbEditView.Image = null;
+			mw.PublicThumbViewList.Image = null;
+			mw.PublicThumbViewGraph.Image = null;
 		}
 
 		public override void InitUI()
 		{
-			mw.refreshMetadataAction.Sensitive = (LSSettings.UsedProgram != ProjectType.CameraRaw) ? false : true;
-			mw.FileTree = TreeViewHandler.Init(mw.FileTree);
-			mw.MainNotebook.CurrentPage = (int)TabLocation.Graph;
-			mw.MainNotebook.CurrentPage = (int)TabLocation.Filelist;
-			mw.CalcTypeCoBox.Active = (int)LSSettings.BrCalcType;
+			mw.PublicMetadataToolItem.Enabled = (LSSettings.UsedProgram != ProjectType.CameraRaw) ? false : true;
+			//mw.FileTree = TreeViewHandler.Init(mw.FileTree);
+			//mw.CalcTypeCoBox.Active = (int)LSSettings.BrCalcType;
+		}
+
+		public override void ClearTable()
+		{
+			TableSource.Clear();
+			mw.PublicMainTable.ReloadData();
+		}
+
+		public override void SetTableRow(int Index, ArrayList Values)
+		{
+			TableSource.Add(Values);
+			mw.PublicMainTable.ReloadData();
 		}
 
 		#endregion
@@ -126,16 +138,16 @@ namespace LapseStudioMacUI
 						switch (e.Topic)
 						{
 							case Work.ProcessThumbs:
-								mw.OnFrameSelectScaleValueChanged(null, null);
+								mw.FrameSelectChanged();
 								break;
 							case Work.LoadProject:
 								InitOpenedProject();
 								break;
 						}
 
-						mw.StatusLabel.Text = Message.GetString(e.Topic.ToString()) + " " + Message.GetString("is done");
+						mw.PublicStatuslabel.StringValue = Message.GetString(e.Topic.ToString()) + " " + Message.GetString("is done");
 					}
-					else { mw.StatusLabel.Text = Message.GetString(e.Topic.ToString()) + " " + Message.GetString("got cancelled"); }
+					else { mw.PublicStatuslabel.StringValue = Message.GetString(e.Topic.ToString()) + " " + Message.GetString("got cancelled"); }
 					ResetProgress();
 				});
 			}
@@ -148,9 +160,8 @@ namespace LapseStudioMacUI
 			{
 				mw.InvokeOnMainThread(delegate
 				{
-					mw.MainProgressBar.Fraction = e.ProgressPercentage / 100d;
-					mw.MainProgressBar.Text = e.ProgressPercentage + "%";
-					mw.StatusLabel.Text = Message.GetString(e.Topic.ToString());
+					mw.PublicMainProgressBar.DoubleValue = e.ProgressPercentage / 100d;
+					mw.PublicStatuslabel.StringValue = Message.GetString(e.Topic.ToString());
 				});
 			}
 			catch (Exception ex) { Error.Report("Progress changed", ex); }
@@ -162,12 +173,13 @@ namespace LapseStudioMacUI
 			{
 				mw.InvokeOnMainThread(delegate
 				{
-					mw.StatusLabel.Text = Message.GetString("Frames loaded");
-					//TreeViewHandler.UpdateTable();
+					mw.PublicStatuslabel.StringValue = Message.GetString("Frames loaded");
+					UpdateTable();
 					InitMovement();
-					mw.FileTree.SetCursor(TreeViewHandler.GetFirstPath(), mw.FileTree.Columns[0], false);
-					mw.FrameSelectScale.SetRange(0, ProjectManager.CurrentProject.Frames.Count - 1);
-					mw.OnFrameSelectScaleValueChanged(null, null);
+					mw.PublicMainTable.SelectRow(0, true);
+					mw.PublicFrameSelectSlider.MinValue = 0;
+					mw.PublicFrameSelectSlider.MaxValue = ProjectManager.CurrentProject.Frames.Count - 1;
+					mw.FrameSelectChanged();
 					ResetProgress();
 				});
 			}
@@ -180,8 +192,8 @@ namespace LapseStudioMacUI
 			{
 				mw.InvokeOnMainThread(delegate
 				{
-					mw.StatusLabel.Text = Message.GetString("Brightness calculated");
-					//TreeViewHandler.UpdateTable();
+					mw.PublicStatuslabel.StringValue = Message.GetString("Brightness calculated");
+					UpdateTable();
 					ResetProgress();
 				});
 			}
