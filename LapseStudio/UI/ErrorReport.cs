@@ -9,10 +9,12 @@ namespace Timelapse_UI
 	public static class Error
 	{
         private static MessageBox MsgBox;
+		private static string Filepath;
 
-        public static void Init(MessageBox MsgBox)
+		public static void Init(MessageBox MsgBox)
         {
             Error.MsgBox = MsgBox;
+			Filepath = Path.Combine(Timelapse_API.ProjectManager.ApplicationPath, "ErrorLog.txt");
         }
 
 		public static void Report(string Sender, Exception exception)
@@ -20,9 +22,9 @@ namespace Timelapse_UI
 	        try
 	        {
 	            string Text = string.Empty;
-				if (File.Exists("ErrorLog.txt")) { Text = File.ReadAllText("ErrorLog.txt") + Environment.NewLine; }
+				if (File.Exists(Filepath)) { Text = File.ReadAllText(Filepath) + Environment.NewLine; }
 
-				using (StreamWriter writer = new StreamWriter("ErrorLog.txt", false))
+				using (StreamWriter writer = new StreamWriter(Filepath, false))
                 {
                     while (ASCIIEncoding.Unicode.GetByteCount(Text) > 80000) { Text = Text.Substring(Text.IndexOf('#', Text.Length / 2)); }
 

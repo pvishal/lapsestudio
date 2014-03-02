@@ -54,6 +54,7 @@
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
     <Compile Include="Settings.cs" />
+    <Compile Include="SettingsUI.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Timelapse_API\Timelapse_API.csproj">

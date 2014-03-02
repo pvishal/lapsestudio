@@ -5,6 +5,8 @@ using MonoMac.Foundation;
 using MonoMac.AppKit;
 using Timelapse_API;
 using Timelapse_UI;
+using System.Drawing;
+using MonoMac.CoreGraphics;
 
 namespace LapseStudioMacUI
 {
@@ -39,14 +41,39 @@ namespace LapseStudioMacUI
 			this.BaseGraph.Init();
 		}
 
-		/*#region Events
+		//#region Events
 
 		private void Refresh()
 		{
-			Application.Invoke(delegate { GraphEventBox_ExposeEvent(GraphView, null); });
+			//this.InvokeOnMainThread(delegate { GraphEventBox_ExposeEvent(GraphView, null); });
 		}
 
-		protected void GraphEventBox_ExposeEvent(object o, ExposeEventArgs args)
+		public override void MouseUp(NSEvent theEvent)
+		{
+			base.MouseUp(theEvent);
+		}
+
+		public override void MouseDown(NSEvent theEvent)
+		{
+			base.MouseDown(theEvent);
+		}
+
+		public override void MouseMoved(NSEvent theEvent)
+		{
+			base.MouseMoved(theEvent);
+		}
+
+		public override void DrawRect(RectangleF dirtyRect)
+		{
+			base.DrawRect(dirtyRect);
+
+			var context = NSGraphicsContext.CurrentContext.GraphicsPort;
+			context.SetStrokeColor(new CGColor(1.0f, 0f, 0f)); // red
+			context.SetLineWidth(1.0F);
+			context.StrokeEllipseInRect(new RectangleF(5, 5, 10, 10));
+		}
+
+		/*protected void GraphEventBox_ExposeEvent(object o, ExposeEventArgs args)
 		{
 			//Draw all Graph-Parts together:
 			using(Context MainGraph = Gdk.CairoHelper.Create(((DrawingArea)o).GdkWindow))

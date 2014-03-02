@@ -6,7 +6,7 @@ namespace Timelapse_UI
 {
 	public static class LSSettings
 	{
-        private static string SettingsPath = Path.Combine(Directory.GetCurrentDirectory(), "User.stg");
+		private static string SettingsPath = Path.Combine(ProjectManager.ApplicationPath, "User.stg");
 
         public static string LastProjDir { get; set; }
         public static string LastImgDir { get; set; }

@@ -34,7 +34,7 @@ namespace LapseStudioMacUI
 					ofdlg.AllowedFileTypes = filetypes.ToArray();
 
 					resp = CocoaHelper.GetResponse(ofdlg.RunModal());
-					SelectedPath = ofdlg.Url.AbsoluteString;
+					SelectedPath = ofdlg.Url.Path;
 					return resp;
 
 				case FileDialogType.SelectFolder:
@@ -46,7 +46,7 @@ namespace LapseStudioMacUI
 					ofdlg.AllowsMultipleSelection = false;
 
 					resp = CocoaHelper.GetResponse(ofdlg.RunModal());
-					SelectedPath = ofdlg.Url.AbsoluteString;
+					SelectedPath = ofdlg.Url.Path;
 					return resp;
 
 				case FileDialogType.SaveFile:
@@ -56,7 +56,7 @@ namespace LapseStudioMacUI
 					sfdlg.CanCreateDirectories = true;
 
 					resp = CocoaHelper.GetResponse(sfdlg.RunModal());
-					SelectedPath = sfdlg.Url.AbsoluteString;
+					SelectedPath = sfdlg.Url.Path;
 					return resp;
 			}
 

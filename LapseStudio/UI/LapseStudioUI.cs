@@ -59,7 +59,15 @@ namespace Timelapse_UI
 		{
 			this.MsgBox = MsgBox;
 			this.FDialog = FDialog;
-            Error.Init(MsgBox);
+			Error.Init(MsgBox);
+
+			AppDomain currentDomain = AppDomain.CurrentDomain;
+			currentDomain.UnhandledException += HandleUnhandledException;
+		}
+
+		private void HandleUnhandledException (object sender, UnhandledExceptionEventArgs e)
+		{
+			Error.Report("Unhandled Exception", (Exception)e.ExceptionObject);
 		}
 
 		#region Abstract Methods

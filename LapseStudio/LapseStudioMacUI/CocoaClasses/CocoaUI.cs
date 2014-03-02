@@ -17,7 +17,6 @@ namespace LapseStudioMacUI
 		{
 			mw = win;
 			Init(Platform.MacOSX);
-			mw.PublicMainTable.DataSource = TableSource;
 
 			ProjectManager.BrightnessCalculated += CurrentProject_BrightnessCalculated;
 			ProjectManager.FramesLoaded += CurrentProject_FramesLoaded;
@@ -68,7 +67,7 @@ namespace LapseStudioMacUI
 
 		public override void QuitApplication()
 		{
-			mw.Close();
+			NSApplication.SharedApplication.Terminate(mw);
 		}
 
 		public override void InitOpenedProject()
@@ -89,10 +88,7 @@ namespace LapseStudioMacUI
 
 		public override void ResetProgress()
 		{
-			InvokeUI(() =>
-			{
-				mw.PublicMainProgressBar.DoubleValue = 0;
-			});
+			InvokeUI(() => { mw.PublicMainProgressBar.DoubleValue = 0; });
 		}
 
 		public override void ResetPictureBoxes()
@@ -106,6 +102,7 @@ namespace LapseStudioMacUI
 
 		public override void InitUI()
 		{
+			mw.PublicMainTable.DataSource = TableSource;
 			mw.PublicMetadataToolItem.Enabled = (LSSettings.UsedProgram != ProjectType.CameraRaw) ? false : true;
 			//mw.FileTree = TreeViewHandler.Init(mw.FileTree);
 			//mw.CalcTypeCoBox.Active = (int)LSSettings.BrCalcType;
@@ -201,7 +198,6 @@ namespace LapseStudioMacUI
 		}
 
 		#endregion
-
 	}
 }
 

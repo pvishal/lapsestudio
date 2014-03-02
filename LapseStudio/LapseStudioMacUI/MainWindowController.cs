@@ -11,8 +11,8 @@ namespace LapseStudioMacUI
 {
 	public partial class MainWindowController : MonoMac.AppKit.NSWindowController
 	{
-		CocoaUI MainUI;
-		CocoaMessageBox MsgBox = new CocoaMessageBox();
+		internal CocoaUI MainUI;
+		internal CocoaMessageBox MsgBox = new CocoaMessageBox();
 
 		#region Constructors
 
@@ -35,10 +35,6 @@ namespace LapseStudioMacUI
 		// Shared initialization code
 		void Initialize()
 		{
-			MainUI = new CocoaUI(this, new CocoaMessageBox(), new CocoaFileDialog());
-			MainUI.MainGraph = new BrightnessGraph((int)MainGraph.FittingSize.Width, (int)MainGraph.FittingSize.Height);
-			((Graph)MainGraph).Init(MainUI.MainGraph);
-			MainUI.InitBaseUI();
 		}
 
 		#endregion
@@ -53,9 +49,24 @@ namespace LapseStudioMacUI
 			}
 		}
 
+		public override void AwakeFromNib ()
+		{
+			try
+			{
+				base.AwakeFromNib();
+
+				MainUI = new CocoaUI(this, new CocoaMessageBox(), new CocoaFileDialog());
+				MainUI.MainGraph = new BrightnessGraph((int)MainGraph.FittingSize.Width, (int)MainGraph.FittingSize.Height);
+				((Graph)MainGraph).Init(MainUI.MainGraph);
+				MainUI.InitBaseUI();
+			}
+			catch(Exception ex) { Error.Report("Init", ex); }
+		}
+
 		partial void TabChangeButton_Changed(NSObject sender)
 		{
-			MainTabView.SelectAt(TabChangeButton.SelectedSegment);
+			try { MainTabView.SelectAt(TabChangeButton.SelectedSegment); }
+			catch (Exception ex) { Error.Report("TabChangeButton_Changed", ex); }
 		}
 
 		#endregion
@@ -64,27 +75,32 @@ namespace LapseStudioMacUI
 	
 		partial void MetadataToolItem_Clicked(NSObject sender)
 		{
-			MainUI.Click_RefreshMetadata();
+			try { MainUI.Click_RefreshMetadata(); }
+			catch (Exception ex) { Error.Report("MetadataToolItem_Clicked", ex); }
 		}
 
 		partial void OpenFileToolItem_Clicked(NSObject sender)
 		{
-			MainUI.Click_AddFrames();
+			try { MainUI.Click_AddFrames(); }
+			catch (Exception ex) { Error.Report("OpenFileToolItem_Clicked", ex); }
 		}
 
 		partial void ProcessToolItem_Clicked(NSObject sender)
 		{
-			MainUI.Click_Process();
+			try { MainUI.Click_Process(); }
+			catch (Exception ex) { Error.Report("ProcessToolItem_Clicked", ex); }
 		}
 
 		partial void BrightnessToolItem_Clicked(NSObject sender)
 		{
-			MainUI.Click_Calculate();
+			try { MainUI.Click_Calculate(); }
+			catch (Exception ex) { Error.Report("BrightnessToolItem_Clicked", ex); }
 		}
 
 		partial void CancelToolItem_Clicked(NSObject sender)
 		{
-			ProjectManager.Cancel();
+			try { ProjectManager.Cancel(); }
+			catch (Exception ex) { Error.Report("CancelToolItem_Clicked", ex); }
 		}
 
 		#endregion
@@ -93,41 +109,50 @@ namespace LapseStudioMacUI
 
 		partial void BrightnessSlider_Changed(NSObject sender)
 		{
+			try { }
+			catch (Exception ex) { Error.Report("BrightnessSlider_Changed", ex); }
 		}
 
 		partial void EditThumbsButton_Click(NSObject sender)
 		{
-			MainUI.Click_ThumbEdit();
+			try { MainUI.Click_ThumbEdit(); }
+			catch (Exception ex) { Error.Report("EditThumbsButton_Click", ex); }
 		}
 
 		partial void FrameSelectSlider_Changed(NSObject sender)
 		{
-			FrameSelectChanged();
+			try { FrameSelectChanged(); }
+			catch (Exception ex) { Error.Report("FrameSelectSlider_Changed", ex); }
 		}
 
 		partial void MainTable_Changed(NSObject sender)
 		{
-
+			try { }
+			catch (Exception ex) { Error.Report("MainTable_Changed", ex); }
 		}
 
 		partial void YToEndButton_Click(NSObject sender)
 		{
-			MainUI.MainGraph.YtoEnd();
+			try { MainUI.MainGraph.YtoEnd(); }
+			catch (Exception ex) { Error.Report("YToEndButton_Click", ex); }
 		}
 
 		partial void YToStartButton_Click(NSObject sender)
 		{
-			MainUI.MainGraph.YtoStart();
+			try { MainUI.MainGraph.YtoStart(); }
+			catch (Exception ex) { Error.Report("YToStartButton_Click", ex); }
 		}
 
 		partial void AlignXButton_Click(NSObject sender)
 		{
-			MainUI.MainGraph.AlignX();
+			try { MainUI.MainGraph.AlignX(); }
+			catch (Exception ex) { Error.Report("AlignXButton_Click", ex); }
 		}
 
 		partial void GraphResetButton_Click(NSObject sender)
 		{
-			MainUI.MainGraph.Reset();
+			try { MainUI.MainGraph.Reset(); }
+			catch (Exception ex) { Error.Report("GraphResetButton_Click", ex); }
 		}
 
 		#endregion
@@ -186,4 +211,3 @@ namespace LapseStudioMacUI
 		#endregion
 	}
 }
-

@@ -315,7 +315,7 @@ namespace LapseStudioGtkUI
 
         #endregion
 
-        #region Eventhandling
+		#region Eventhandling
 
         [GLib.ConnectBefore]
 		protected void FileTree_CursorChanged(object sender, EventArgs e)

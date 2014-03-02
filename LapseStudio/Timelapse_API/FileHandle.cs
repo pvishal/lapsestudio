@@ -61,7 +61,7 @@ namespace Timelapse_API
         public static void CreateDirectory(string directory)
         {
             int c = 0;
-            while (!Directory.Exists(directory) && c < 5) { Directory.CreateDirectory(directory); Thread.Sleep(50); c++; }
+			while (!Directory.Exists(directory) && c < 5) { Directory.CreateDirectory(directory); Thread.Sleep(50); c++; }
 
             if (!Directory.Exists(directory)) { throw new FileCreateException(); }
         }

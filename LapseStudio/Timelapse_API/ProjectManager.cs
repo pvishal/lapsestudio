@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.IO;
+using System.Reflection;
 
 namespace Timelapse_API
 {
@@ -28,10 +29,26 @@ namespace Timelapse_API
             get { return CurrentProject.ImageSavePath; }
             set { CurrentProject.ImageSavePath = value; }
         }
+		/// <summary>
+		/// Path to where the application is located
+		/// </summary>
+		public static string ApplicationPath {
+			get
+			{
+				switch(RunningPlatform)
+				{
+					case Platform.MacOSX:
+						return Path.Combine(Path.GetDirectoryName(Assembly.GetEntryAssembly().Location), "..", "..", "..");
+
+					default:
+						return Path.GetDirectoryName(Assembly.GetEntryAssembly().Location);
+				}
+			}
+		}
         /// <summary>
         /// Path to the folder where the thumb images are stored
         /// </summary>
-        public static string ThumbPath { get { return Path.Combine(Directory.GetCurrentDirectory(), "Thumbs"); } }
+		public static string ThumbPath { get { return Path.Combine(ApplicationPath, "Thumbs"); } }
         /// <summary>
         /// The number of threads the API should use
         /// </summary>
