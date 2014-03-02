@@ -37,7 +37,7 @@ namespace LapseStudioMacUI
 		MonoMac.AppKit.NSButton GraphResetButton { get; set; }
 
 		[Outlet]
-		MonoMac.AppKit.NSImageView MainGraphBox { get; set; }
+		MonoMac.AppKit.NSView MainGraph { get; set; }
 
 		[Outlet]
 		MonoMac.AppKit.NSProgressIndicator MainProgressBar { get; set; }
@@ -122,39 +122,19 @@ namespace LapseStudioMacUI
 		
 		void ReleaseDesignerOutlets ()
 		{
-			if (TabChangeButton != null) {
-				TabChangeButton.Dispose ();
-				TabChangeButton = null;
+			if (MainGraph != null) {
+				MainGraph.Dispose ();
+				MainGraph = null;
 			}
 
-			if (MainTabView != null) {
-				MainTabView.Dispose ();
-				MainTabView = null;
+			if (AlignXButton != null) {
+				AlignXButton.Dispose ();
+				AlignXButton = null;
 			}
 
-			if (MainTable != null) {
-				MainTable.Dispose ();
-				MainTable = null;
-			}
-
-			if (MainProgressBar != null) {
-				MainProgressBar.Dispose ();
-				MainProgressBar = null;
-			}
-
-			if (Statuslabel != null) {
-				Statuslabel.Dispose ();
-				Statuslabel = null;
-			}
-
-			if (ThumbViewList != null) {
-				ThumbViewList.Dispose ();
-				ThumbViewList = null;
-			}
-
-			if (OpenFileToolItem != null) {
-				OpenFileToolItem.Dispose ();
-				OpenFileToolItem = null;
+			if (BrightnessSlider != null) {
+				BrightnessSlider.Dispose ();
+				BrightnessSlider = null;
 			}
 
 			if (BrightnessToolItem != null) {
@@ -162,9 +142,54 @@ namespace LapseStudioMacUI
 				BrightnessToolItem = null;
 			}
 
+			if (CancelToolItem != null) {
+				CancelToolItem.Dispose ();
+				CancelToolItem = null;
+			}
+
+			if (EditThumbsButton != null) {
+				EditThumbsButton.Dispose ();
+				EditThumbsButton = null;
+			}
+
+			if (FrameSelectedLabel != null) {
+				FrameSelectedLabel.Dispose ();
+				FrameSelectedLabel = null;
+			}
+
+			if (FrameSelectSlider != null) {
+				FrameSelectSlider.Dispose ();
+				FrameSelectSlider = null;
+			}
+
+			if (GraphResetButton != null) {
+				GraphResetButton.Dispose ();
+				GraphResetButton = null;
+			}
+
+			if (MainProgressBar != null) {
+				MainProgressBar.Dispose ();
+				MainProgressBar = null;
+			}
+
+			if (MainTable != null) {
+				MainTable.Dispose ();
+				MainTable = null;
+			}
+
+			if (MainTabView != null) {
+				MainTabView.Dispose ();
+				MainTabView = null;
+			}
+
 			if (MetadataToolItem != null) {
 				MetadataToolItem.Dispose ();
 				MetadataToolItem = null;
+			}
+
+			if (OpenFileToolItem != null) {
+				OpenFileToolItem.Dispose ();
+				OpenFileToolItem = null;
 			}
 
 			if (ProcessToolItem != null) {
@@ -172,9 +197,29 @@ namespace LapseStudioMacUI
 				ProcessToolItem = null;
 			}
 
-			if (CancelToolItem != null) {
-				CancelToolItem.Dispose ();
-				CancelToolItem = null;
+			if (Statuslabel != null) {
+				Statuslabel.Dispose ();
+				Statuslabel = null;
+			}
+
+			if (TabChangeButton != null) {
+				TabChangeButton.Dispose ();
+				TabChangeButton = null;
+			}
+
+			if (ThumbEditView != null) {
+				ThumbEditView.Dispose ();
+				ThumbEditView = null;
+			}
+
+			if (ThumbViewGraph != null) {
+				ThumbViewGraph.Dispose ();
+				ThumbViewGraph = null;
+			}
+
+			if (ThumbViewList != null) {
+				ThumbViewList.Dispose ();
+				ThumbViewList = null;
 			}
 
 			if (YToEndButton != null) {
@@ -185,51 +230,6 @@ namespace LapseStudioMacUI
 			if (YToStartButton != null) {
 				YToStartButton.Dispose ();
 				YToStartButton = null;
-			}
-
-			if (AlignXButton != null) {
-				AlignXButton.Dispose ();
-				AlignXButton = null;
-			}
-
-			if (GraphResetButton != null) {
-				GraphResetButton.Dispose ();
-				GraphResetButton = null;
-			}
-
-			if (EditThumbsButton != null) {
-				EditThumbsButton.Dispose ();
-				EditThumbsButton = null;
-			}
-
-			if (FrameSelectSlider != null) {
-				FrameSelectSlider.Dispose ();
-				FrameSelectSlider = null;
-			}
-
-			if (BrightnessSlider != null) {
-				BrightnessSlider.Dispose ();
-				BrightnessSlider = null;
-			}
-
-			if (ThumbViewGraph != null) {
-				ThumbViewGraph.Dispose ();
-				ThumbViewGraph = null;
-			}
-
-			if (ThumbEditView != null) {
-				ThumbEditView.Dispose ();
-				ThumbEditView = null;
-			}
-
-			if (MainGraphBox != null) {
-				MainGraphBox.Dispose ();
-				MainGraphBox = null;
-			}
-
-			if (FrameSelectedLabel != null) {
-				FrameSelectedLabel.Dispose ();
-				FrameSelectedLabel = null;
 			}
 		}
 	}

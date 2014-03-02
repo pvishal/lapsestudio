@@ -36,8 +36,8 @@ namespace LapseStudioMacUI
 		void Initialize()
 		{
 			MainUI = new CocoaUI(this, new CocoaMessageBox(), new CocoaFileDialog());
-			//MainUI.MainGraph = new BrightnessGraph(MainGraph.Allocation.Width, MainGraph.Allocation.Height);
-			//MainGraph.Init(MainUI.MainGraph);
+			MainUI.MainGraph = new BrightnessGraph((int)MainGraph.FittingSize.Width, (int)MainGraph.FittingSize.Height);
+			((Graph)MainGraph).Init(MainUI.MainGraph);
 			MainUI.InitBaseUI();
 		}
 
@@ -61,32 +61,30 @@ namespace LapseStudioMacUI
 		#endregion
 
 		#region ToolBar
-
-
-
+	
 		partial void MetadataToolItem_Clicked(NSObject sender)
 		{
-			throw new System.NotImplementedException();
+			MainUI.Click_RefreshMetadata();
 		}
 
 		partial void OpenFileToolItem_Clicked(NSObject sender)
 		{
-			throw new System.NotImplementedException();
+			MainUI.Click_AddFrames();
 		}
 
 		partial void ProcessToolItem_Clicked(NSObject sender)
 		{
-			throw new System.NotImplementedException();
+			MainUI.Click_Process();
 		}
 
 		partial void BrightnessToolItem_Clicked(NSObject sender)
 		{
-			throw new System.NotImplementedException();
+			MainUI.Click_Calculate();
 		}
 
 		partial void CancelToolItem_Clicked(NSObject sender)
 		{
-			throw new System.NotImplementedException();
+			ProjectManager.Cancel();
 		}
 
 		#endregion
@@ -95,12 +93,11 @@ namespace LapseStudioMacUI
 
 		partial void BrightnessSlider_Changed(NSObject sender)
 		{
-			throw new System.NotImplementedException();
 		}
 
 		partial void EditThumbsButton_Click(NSObject sender)
 		{
-			throw new System.NotImplementedException();
+			MainUI.Click_ThumbEdit();
 		}
 
 		partial void FrameSelectSlider_Changed(NSObject sender)
@@ -110,27 +107,27 @@ namespace LapseStudioMacUI
 
 		partial void MainTable_Changed(NSObject sender)
 		{
-			throw new System.NotImplementedException();
+
 		}
 
 		partial void YToEndButton_Click(NSObject sender)
 		{
-			throw new System.NotImplementedException();
+			MainUI.MainGraph.YtoEnd();
 		}
 
 		partial void YToStartButton_Click(NSObject sender)
 		{
-			throw new System.NotImplementedException();
+			MainUI.MainGraph.YtoStart();
 		}
 
 		partial void AlignXButton_Click(NSObject sender)
 		{
-			throw new System.NotImplementedException();
+			MainUI.MainGraph.AlignX();
 		}
 
 		partial void GraphResetButton_Click(NSObject sender)
 		{
-			throw new System.NotImplementedException();
+			MainUI.MainGraph.Reset();
 		}
 
 		#endregion
@@ -158,7 +155,7 @@ namespace LapseStudioMacUI
 
 		public NSButton PublicGraphResetButton  { get { return GraphResetButton; } set { GraphResetButton = value; } }
 
-		public NSImageView PublicMainGraphBox  { get { return MainGraphBox; } set { MainGraphBox = value; } }
+		public NSView PublicMainGraph { get { return MainGraph; } set { MainGraph = value; } }
 
 		public NSProgressIndicator PublicMainProgressBar { get { return MainProgressBar; } set { MainProgressBar = value; } }
 

@@ -1,4 +1,4 @@
-
+﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 2012
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Timelapse_API", "Timelapse_API\Timelapse_API.csproj", "{520BF17D-2712-4A53-8612-CC2BA57EC1C2}"
@@ -16,6 +16,17 @@ EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Informations", "Informations", "{8C048959-A7CE-4599-B55F-F1E33DC23187}"
 	ProjectSection(SolutionItems) = preProject
 		INSTALL.txt = INSTALL.txt
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Lib", "Lib", "{46325D3D-712B-4F38-824E-50C0DAD29565}"
+	ProjectSection(SolutionItems) = preProject
+		Lib\ColorManagment.dll = Lib\ColorManagment.dll
+		Lib\ColorManagment.XML = Lib\ColorManagment.XML
+		Lib\ICCReader.dll = Lib\ICCReader.dll
+		Lib\ICCReader.xml = Lib\ICCReader.xml
+		Lib\Magick.NET-x86.dll = Lib\Magick.NET-x86.dll
+		Lib\Magick.NET-x86.xml = Lib\Magick.NET-x86.xml
+		Lib\MessageTranslation.dll = Lib\MessageTranslation.dll
 	EndProjectSection
 EndProject
 Global

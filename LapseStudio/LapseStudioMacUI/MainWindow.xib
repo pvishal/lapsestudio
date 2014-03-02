@@ -14,6 +14,7 @@
                 <outlet property="FrameSelectSlider" destination="DNh-0n-JQH" id="e0w-LH-TU9"/>
                 <outlet property="FrameSelectedLabel" destination="h8g-In-J8m" id="zBd-mA-oDT"/>
                 <outlet property="GraphResetButton" destination="kna-xa-K0K" id="sbk-bj-dHu"/>
+                <outlet property="MainGraph" destination="QC8-Qh-8aR" id="Njf-oS-OdQ"/>
                 <outlet property="MainProgressBar" destination="bOM-SO-ASd" id="Yxm-BR-PIQ"/>
                 <outlet property="MainTabView" destination="vJm-s2-PfO" id="c8U-n0-Bjw"/>
                 <outlet property="MainTable" destination="QF8-q7-ni9" id="2Ug-nA-LMV"/>
