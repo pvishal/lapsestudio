@@ -237,7 +237,7 @@ namespace Timelapse_API
 
         protected void MainWorker_RunWorkerCompleted(object sender, RunWorkerCompletedEventArgs e)
         {
-            if (e.Error != null) { throw e.Error; }
+            if (e.Error != null) { throw e.Error; } //TODO: handle error (no direct UI call => no UI handle)
             KeyValuePair<Work, object> arg = (KeyValuePair<Work, object>)e.Result;
             WorkFinishedEventArgs eArgs = new WorkFinishedEventArgs(e.Cancelled, arg.Key);
             switch (arg.Key)

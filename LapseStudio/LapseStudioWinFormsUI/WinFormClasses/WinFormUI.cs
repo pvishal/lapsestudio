@@ -2,8 +2,6 @@
 using System.Windows.Forms;
 using Timelapse_API;
 using Timelapse_UI;
-using MessageTranslation;
-using System.Collections.Generic;
 using System.Collections;
 using FileDialog = Timelapse_UI.FileDialog;
 using MessageBox = Timelapse_UI.MessageBox;
@@ -112,8 +110,6 @@ namespace LapseStudioWinFormsUI
 		public override void InitUI()
 		{
             mw.MetadataToolButton.Enabled = (LSSettings.UsedProgram != ProjectType.CameraRaw) ? false : true;
-			mw.MainNotebook.SelectedIndex = (int)TabLocation.Graph;
-            mw.MainNotebook.SelectedIndex = (int)TabLocation.Filelist;
 			//mw.CalcTypeCoBox.Active = (int)LSSettings.BrCalcType;
             UpdateTable();
 		}

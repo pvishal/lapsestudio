@@ -95,7 +95,7 @@
             // label5
             // 
             this.label5.AutoSize = true;
-            this.label5.Location = new System.Drawing.Point(12, 202);
+            this.label5.Location = new System.Drawing.Point(12, 173);
             this.label5.Name = "label5";
             this.label5.Size = new System.Drawing.Size(77, 13);
             this.label5.TabIndex = 0;
@@ -104,7 +104,7 @@
             // label6
             // 
             this.label6.AutoSize = true;
-            this.label6.Location = new System.Drawing.Point(13, 227);
+            this.label6.Location = new System.Drawing.Point(13, 198);
             this.label6.Name = "label6";
             this.label6.Size = new System.Drawing.Size(54, 13);
             this.label6.TabIndex = 0;
@@ -113,7 +113,7 @@
             // label7
             // 
             this.label7.AutoSize = true;
-            this.label7.Location = new System.Drawing.Point(12, 251);
+            this.label7.Location = new System.Drawing.Point(12, 222);
             this.label7.Name = "label7";
             this.label7.Size = new System.Drawing.Size(62, 13);
             this.label7.TabIndex = 0;
@@ -122,7 +122,7 @@
             // label8
             // 
             this.label8.AutoSize = true;
-            this.label8.Location = new System.Drawing.Point(13, 285);
+            this.label8.Location = new System.Drawing.Point(13, 256);
             this.label8.Name = "label8";
             this.label8.Size = new System.Drawing.Size(88, 13);
             this.label8.TabIndex = 0;
@@ -131,7 +131,7 @@
             // AbortButton
             // 
             this.AbortButton.DialogResult = System.Windows.Forms.DialogResult.Cancel;
-            this.AbortButton.Location = new System.Drawing.Point(96, 322);
+            this.AbortButton.Location = new System.Drawing.Point(127, 293);
             this.AbortButton.Name = "AbortButton";
             this.AbortButton.Size = new System.Drawing.Size(75, 23);
             this.AbortButton.TabIndex = 1;
@@ -141,11 +141,11 @@
             // 
             // BrowseButton
             // 
-            this.BrowseButton.Location = new System.Drawing.Point(177, 170);
+            this.BrowseButton.Location = new System.Drawing.Point(258, 142);
             this.BrowseButton.Name = "BrowseButton";
-            this.BrowseButton.Size = new System.Drawing.Size(75, 23);
+            this.BrowseButton.Size = new System.Drawing.Size(25, 23);
             this.BrowseButton.TabIndex = 1;
-            this.BrowseButton.Text = "Browse";
+            this.BrowseButton.Text = "...";
             this.BrowseButton.UseVisualStyleBackColor = true;
             this.BrowseButton.Click += new System.EventHandler(this.BrowseButton_Click);
             // 
@@ -187,7 +187,7 @@
             this.LanguageCoBox.FormattingEnabled = true;
             this.LanguageCoBox.Location = new System.Drawing.Point(117, 44);
             this.LanguageCoBox.Name = "LanguageCoBox";
-            this.LanguageCoBox.Size = new System.Drawing.Size(135, 21);
+            this.LanguageCoBox.Size = new System.Drawing.Size(166, 21);
             this.LanguageCoBox.TabIndex = 3;
             this.LanguageCoBox.SelectedIndexChanged += new System.EventHandler(this.LanguageCoBox_SelectedIndexChanged);
             // 
@@ -201,7 +201,7 @@
             "Adobe CameraRaw"});
             this.ProgramCoBox.Location = new System.Drawing.Point(117, 71);
             this.ProgramCoBox.Name = "ProgramCoBox";
-            this.ProgramCoBox.Size = new System.Drawing.Size(135, 21);
+            this.ProgramCoBox.Size = new System.Drawing.Size(166, 21);
             this.ProgramCoBox.TabIndex = 3;
             this.ProgramCoBox.SelectedIndexChanged += new System.EventHandler(this.ProgramCoBox_SelectedIndexChanged);
             // 
@@ -213,7 +213,7 @@
             "jpg",
             "png",
             "tiff"});
-            this.OutputFormatCoBox.Location = new System.Drawing.Point(117, 199);
+            this.OutputFormatCoBox.Location = new System.Drawing.Point(117, 170);
             this.OutputFormatCoBox.Name = "OutputFormatCoBox";
             this.OutputFormatCoBox.Size = new System.Drawing.Size(66, 21);
             this.OutputFormatCoBox.TabIndex = 3;
@@ -227,7 +227,7 @@
             this.BitDepthCoBox.Items.AddRange(new object[] {
             "8 bit",
             "16 bit"});
-            this.BitDepthCoBox.Location = new System.Drawing.Point(117, 224);
+            this.BitDepthCoBox.Location = new System.Drawing.Point(117, 195);
             this.BitDepthCoBox.Name = "BitDepthCoBox";
             this.BitDepthCoBox.Size = new System.Drawing.Size(66, 21);
             this.BitDepthCoBox.TabIndex = 3;
@@ -239,18 +239,18 @@
             this.TiffCompCoBox.Items.AddRange(new object[] {
             "None",
             "LZW"});
-            this.TiffCompCoBox.Location = new System.Drawing.Point(117, 282);
+            this.TiffCompCoBox.Location = new System.Drawing.Point(117, 253);
             this.TiffCompCoBox.Name = "TiffCompCoBox";
             this.TiffCompCoBox.Size = new System.Drawing.Size(66, 21);
             this.TiffCompCoBox.TabIndex = 3;
             // 
             // JpgQualityTrackBar
             // 
-            this.JpgQualityTrackBar.Location = new System.Drawing.Point(145, 251);
+            this.JpgQualityTrackBar.Location = new System.Drawing.Point(145, 222);
             this.JpgQualityTrackBar.Maximum = 100;
             this.JpgQualityTrackBar.Minimum = 1;
             this.JpgQualityTrackBar.Name = "JpgQualityTrackBar";
-            this.JpgQualityTrackBar.Size = new System.Drawing.Size(107, 45);
+            this.JpgQualityTrackBar.Size = new System.Drawing.Size(138, 45);
             this.JpgQualityTrackBar.TabIndex = 4;
             this.JpgQualityTrackBar.TickStyle = System.Windows.Forms.TickStyle.None;
             this.JpgQualityTrackBar.Value = 100;
@@ -259,7 +259,7 @@
             // JpgQualityLabel
             // 
             this.JpgQualityLabel.AutoSize = true;
-            this.JpgQualityLabel.Location = new System.Drawing.Point(114, 251);
+            this.JpgQualityLabel.Location = new System.Drawing.Point(114, 224);
             this.JpgQualityLabel.Name = "JpgQualityLabel";
             this.JpgQualityLabel.Size = new System.Drawing.Size(25, 13);
             this.JpgQualityLabel.TabIndex = 5;
@@ -292,7 +292,7 @@
             // 
             // OkButton
             // 
-            this.OkButton.Location = new System.Drawing.Point(177, 322);
+            this.OkButton.Location = new System.Drawing.Point(208, 293);
             this.OkButton.Name = "OkButton";
             this.OkButton.Size = new System.Drawing.Size(75, 23);
             this.OkButton.TabIndex = 1;
@@ -311,7 +311,7 @@
             this.AcceptButton = this.OkButton;
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(266, 359);
+            this.ClientSize = new System.Drawing.Size(296, 326);
             this.Controls.Add(this.RTPathTextBox);
             this.Controls.Add(this.ThreadUpDo);
             this.Controls.Add(this.JpgQualityLabel);
@@ -341,7 +341,7 @@
             this.Name = "MySettingsDialog";
             this.ShowIcon = false;
             this.ShowInTaskbar = false;
-            this.Text = "MySettingsDialog";
+            this.Text = "Settings";
             ((System.ComponentModel.ISupportInitialize)(this.JpgQualityTrackBar)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.ThreadUpDo)).EndInit();
             this.ResumeLayout(false);
@@ -361,19 +361,19 @@
         private System.Windows.Forms.Label label8;
         private System.Windows.Forms.Button AbortButton;
         private System.Windows.Forms.Button BrowseButton;
-        private System.Windows.Forms.CheckBox AutoThreadChBox;
-        private System.Windows.Forms.CheckBox RunRTChBox;
-        private System.Windows.Forms.CheckBox KeepPP3ChBox;
-        private System.Windows.Forms.ComboBox LanguageCoBox;
-        private System.Windows.Forms.ComboBox ProgramCoBox;
-        private System.Windows.Forms.ComboBox OutputFormatCoBox;
-        private System.Windows.Forms.ComboBox BitDepthCoBox;
-        private System.Windows.Forms.ComboBox TiffCompCoBox;
-        private System.Windows.Forms.TrackBar JpgQualityTrackBar;
         private System.Windows.Forms.Label JpgQualityLabel;
-        private System.Windows.Forms.NumericUpDown ThreadUpDo;
-        private System.Windows.Forms.TextBox RTPathTextBox;
         private System.Windows.Forms.Button OkButton;
         private System.Windows.Forms.OpenFileDialog MainOpenFileDialog;
+        internal System.Windows.Forms.CheckBox AutoThreadChBox;
+        internal System.Windows.Forms.CheckBox RunRTChBox;
+        internal System.Windows.Forms.CheckBox KeepPP3ChBox;
+        internal System.Windows.Forms.ComboBox LanguageCoBox;
+        internal System.Windows.Forms.ComboBox ProgramCoBox;
+        internal System.Windows.Forms.ComboBox OutputFormatCoBox;
+        internal System.Windows.Forms.ComboBox BitDepthCoBox;
+        internal System.Windows.Forms.ComboBox TiffCompCoBox;
+        internal System.Windows.Forms.TrackBar JpgQualityTrackBar;
+        internal System.Windows.Forms.NumericUpDown ThreadUpDo;
+        internal System.Windows.Forms.TextBox RTPathTextBox;
     }
 }

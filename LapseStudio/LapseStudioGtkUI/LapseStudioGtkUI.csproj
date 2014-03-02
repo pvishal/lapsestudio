@@ -68,6 +68,7 @@
     </None>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="GtkClasses\GtkSettingsUI.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="GUI-Build\MainWindow.cs" />
     <Compile Include="GUI-Build\generated.cs" />

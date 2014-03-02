@@ -6,7 +6,6 @@ namespace LapseStudioGtkUI
 {
     public partial class MySettingsDialog
     {
-
         #region Container
 
         private Fixed fixed1;
@@ -27,20 +26,21 @@ namespace LapseStudioGtkUI
 
         #region Important Components
 
-        private ComboBox LanguageCoBox;
-        private ComboBox ProgramCoBox;
-        private ComboBox FormatCoBox;
-        private ComboBox BitdepthCoBox;
-        private ComboBox CompressionCoBox;
-        private CheckButton RunRTChBox;
-        private CheckButton KeepPP3ChBox;
-        private FileChooserButton RTchooseButton;
-        private HScale JpgQualityScale;
-        private SpinButton ThreadSpin;
-        private CheckButton AutothreadsChBox;
+        internal ComboBox LanguageCoBox;
+        internal ComboBox ProgramCoBox;
+        internal ComboBox FormatCoBox;
+        internal ComboBox BitdepthCoBox;
+        internal ComboBox CompressionCoBox;
+        internal CheckButton RunRTChBox;
+        internal CheckButton KeepPP3ChBox;
+        internal Entry RTPathBox;
+        internal Button RTBrowseButton;
+        internal HScale JpgQualityScale;
+        internal SpinButton ThreadSpin;
+        internal CheckButton AutothreadsChBox;
 
-        private Button buttonCancel;
-        private Button buttonOk;
+        internal Button buttonCancel;
+        internal Button buttonOk;
 
         #endregion
 
@@ -164,9 +164,6 @@ namespace LapseStudioGtkUI
 
             //ProgramCoBox
             ProgramCoBox = ComboBox.NewText();
-            ProgramCoBox.AppendText(Message.GetString("LapseStudio"));
-            ProgramCoBox.AppendText(Message.GetString("RawTherapee"));
-            ProgramCoBox.AppendText(Message.GetString("Adobe CameraRaw"));
             ProgramCoBox.Name = "ProgramCoBox";
             ProgramCoBox.Active = 0;
 
@@ -186,23 +183,26 @@ namespace LapseStudioGtkUI
             KeepPP3ChBox.DrawIndicator = true;
             KeepPP3ChBox.UseUnderline = true;
 
-            //RTchooseButton
-            RTchooseButton = new FileChooserButton(Message.GetString("Select a File"), ((FileChooserAction)(0)));
-            RTchooseButton.WidthRequest = 100;
-            RTchooseButton.Name = "RTchooseButton";
+            //RTPathBox
+            RTPathBox = new Entry();
+            RTPathBox.WidthRequest = 100;
+            RTPathBox.IsEditable = false;
+            RTPathBox.Name = "RTPathBox";
+
+            //RTBrowseButton
+            RTBrowseButton = new Button("...");
+            RTBrowseButton.WidthRequest = 20;
+            RTBrowseButton.CanDefault = true;
+            RTBrowseButton.CanFocus = true;
+            RTBrowseButton.Name = "RTBrowseButton";
 
             //FormatCoBox
             FormatCoBox = ComboBox.NewText();
-            FormatCoBox.AppendText(Message.GetString("jpg"));
-            FormatCoBox.AppendText(Message.GetString("png"));
-            FormatCoBox.AppendText(Message.GetString("tiff"));
             FormatCoBox.Name = "FormatCoBox";
             FormatCoBox.Active = 0;
 
             //BitdepthCoBox
             BitdepthCoBox = ComboBox.NewText();
-            BitdepthCoBox.AppendText(Message.GetString("8 bit"));
-            BitdepthCoBox.AppendText(Message.GetString("16 bit"));
             BitdepthCoBox.Name = "BitdepthCoBox";
             BitdepthCoBox.Active = 0;
 
@@ -222,8 +222,6 @@ namespace LapseStudioGtkUI
 
             //CompressionCoBox
             CompressionCoBox = ComboBox.NewText();
-            CompressionCoBox.AppendText(Message.GetString("None"));
-            CompressionCoBox.AppendText(Message.GetString("LZW"));
             CompressionCoBox.Name = "CompressionCoBox";
             CompressionCoBox.Active = 0;
 
@@ -321,7 +319,8 @@ namespace LapseStudioGtkUI
             keepPP3hbox.Add(KeepPP3ChBox);
             w1.Add(keepPP3hbox);
             RTpathhbox.Add(label8);
-            RTpathhbox.Add(RTchooseButton);
+            RTpathhbox.Add(RTPathBox);
+            RTpathhbox.Add(RTBrowseButton);
             w1.Add(RTpathhbox);
             outforhbox.Add(label2);
             outforhbox.Add(FormatCoBox);
@@ -418,8 +417,11 @@ namespace LapseStudioGtkUI
             w18.Expand = false;
             w18.Fill = false;
             //RTchooseButton
-            Box.BoxChild w19 = ((Box.BoxChild)(RTpathhbox[RTchooseButton]));
+            Box.BoxChild w19 = ((Box.BoxChild)(RTpathhbox[RTPathBox]));
             w19.Position = 1;
+            //RTchooseButton
+            Box.BoxChild w36 = ((Box.BoxChild)(RTpathhbox[RTBrowseButton]));
+            w36.Position = 2;
             //RTpathhbox
             Box.BoxChild w20 = ((Box.BoxChild)(w1[RTpathhbox]));
             w20.Position = 5;
@@ -516,10 +518,10 @@ namespace LapseStudioGtkUI
             LanguageCoBox.Changed += OnLanguageCoBoxChanged;
             ProgramCoBox.Changed += OnProgramCoBoxChanged;
             RunRTChBox.Toggled += OnRunRTChBoxToggled;
-            RTchooseButton.SelectionChanged += OnRTchooseButtonSelectionChanged;
             FormatCoBox.Changed += OnFormatCoBoxChanged;
             buttonCancel.Clicked += OnButtonCancelClicked;
             buttonOk.Clicked += OnButtonOkClicked;
+            RTBrowseButton.Clicked += RTBrowseButton_Clicked;
 
             #endregion
         }

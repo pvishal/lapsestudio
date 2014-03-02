@@ -72,6 +72,7 @@
     <Compile Include="WinFormClasses\WinFormFileDialog.cs" />
     <Compile Include="WinFormClasses\WinFormHelper.cs" />
     <Compile Include="WinFormClasses\WinFormMessageBox.cs" />
+    <Compile Include="WinFormClasses\WinFormSettingsUI.cs" />
     <Compile Include="WinFormClasses\WinFormUI.cs" />
     <Compile Include="GUI\TrackBarEx.cs">
       <SubType>UserControl</SubType>

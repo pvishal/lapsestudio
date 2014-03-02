@@ -178,12 +178,25 @@ namespace Timelapse_UI
 			if (LSSettings.UsedProgram == ProjectType.CameraRaw) { ask = false; }
 			else if (LSSettings.UsedProgram == ProjectType.LapseStudio)
             {
-                if (!File.Exists(LSSettings.RTPath)) { MsgBox.Show(Message.GetString("RawTherapee can't be found. Abort!")); return; }
                 ask = true;
                 ((ProjectLS)ProjectManager.CurrentProject).SaveFormat = LSSettings.SaveFormat;
             }
 			else if (LSSettings.UsedProgram == ProjectType.RawTherapee)
 			{
+                if (!File.Exists(LSSettings.RTPath)) {
+                    string NewRTPath = ProjectRT.SearchForRT();
+                    if (NewRTPath != null)
+                    {
+                        LSSettings.RTPath = NewRTPath;
+                        LSSettings.Save();
+                        ((ProjectRT)ProjectManager.CurrentProject).RTPath = NewRTPath;
+                    }
+                    else
+                    {
+                        MsgBox.Show(Message.GetString("RawTherapee can't be found. Abort!"));
+                        return;
+                    }
+                }
 				ask = ((ProjectRT)ProjectManager.CurrentProject).RunRT;
 				((ProjectRT)ProjectManager.CurrentProject).SaveFormat = LSSettings.SaveFormat;
 			}
@@ -196,6 +209,7 @@ namespace Timelapse_UI
 					if(fdlg.Show() == WindowResponse.Ok)
 					{
 						LSSettings.LastProcDir = fdlg.SelectedPath;
+                        LSSettings.Save();
 						if (ProjectManager.CurrentProject.IsBrightnessCalculated) { ProjectManager.SetAltBrightness(MainGraph.Points); }
 						ProjectManager.ProcessFiles(fdlg.SelectedPath);
 					}
@@ -333,6 +347,7 @@ No lets you load values from a standalone XMP file."), MessageWindowType.Questio
                         if (fdlg.Show() == WindowResponse.Ok)
                         {
                             LSSettings.LastMetaDir = Path.GetDirectoryName(fdlg.SelectedPath);
+                            LSSettings.Save();
                             ProjectManager.AddKeyframe(index, fdlg.SelectedPath);
                         }
                     }
@@ -349,6 +364,7 @@ No lets you load values from a standalone XMP file."), MessageWindowType.Questio
                     if (fdlg.Show() == WindowResponse.Ok)
                     {
                         LSSettings.LastMetaDir = Path.GetDirectoryName(fdlg.SelectedPath);
+                        LSSettings.Save();
                         ProjectManager.AddKeyframe(index, fdlg.SelectedPath);
                     }
                 }
@@ -400,7 +416,8 @@ No lets you load values from a standalone XMP file."), MessageWindowType.Questio
 					if(fdlg.Show() == WindowResponse.Ok)
 					{
 						if (Path.GetExtension(fdlg.SelectedPath) != ".lasp") { Path.ChangeExtension(fdlg.SelectedPath, ".lasp"); }
-						LSSettings.LastProjDir = Path.GetDirectoryName(fdlg.SelectedPath);
+                        LSSettings.LastProjDir = Path.GetDirectoryName(fdlg.SelectedPath);
+                        LSSettings.Save();
 						ProjectSavePath = fdlg.SelectedPath;
 						SavingProject();
 					}
@@ -418,7 +435,8 @@ No lets you load values from a standalone XMP file."), MessageWindowType.Questio
 				if(Directory.Exists(LSSettings.LastProjDir)) fdlg.InitialDirectory = LSSettings.LastProjDir;
 				if(fdlg.Show() == WindowResponse.Ok)
 				{
-					LSSettings.LastProjDir = System.IO.Path.GetDirectoryName(fdlg.SelectedPath);
+                    LSSettings.LastProjDir = System.IO.Path.GetDirectoryName(fdlg.SelectedPath);
+                    LSSettings.Save();
 					ProjectSavePath = fdlg.SelectedPath;
 					OpeningProject();
 				}
@@ -436,7 +454,8 @@ No lets you load values from a standalone XMP file."), MessageWindowType.Questio
 					if(Directory.Exists(LSSettings.LastImgDir)) fdlg.InitialDirectory = LSSettings.LastImgDir;
 					if(fdlg.Show() == WindowResponse.Ok)
 					{
-						LSSettings.LastImgDir = fdlg.SelectedPath;
+                        LSSettings.LastImgDir = fdlg.SelectedPath;
+                        LSSettings.Save();
 						ProjectManager.AddFrame(fdlg.SelectedPath);
 						SetSaveStatus(false);
 					}

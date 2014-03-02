@@ -1,4 +1,5 @@
 ﻿using System;
+using System.IO;
 using Timelapse_API;
 using Timelapse_UI;
 using MessageTranslation;
@@ -8,16 +9,22 @@ namespace Timelapse_UI
 	public abstract class SettingsUI
 	{
 		MessageBox MsgBox;
+        FileDialog FileDlg;
 
-		public SettingsUI(MessageBox MsgBox)
+		public SettingsUI(MessageBox MsgBox, FileDialog FileDlg)
 		{
 			this.MsgBox = MsgBox;
-			InitLanguages(Enum.GetNames(typeof(Language)));
-			InitPrograms(Enum.GetNames(typeof(ProjectType)));
-			InitSaveFormats(Enum.GetNames(typeof(FileFormat)));
-			InitBitDepths(Enum.GetNames(typeof(ImageBitDepth)));
-			InitTiffCompressions(Enum.GetNames(typeof(TiffCompressionFormat)));
+            this.FileDlg = FileDlg;
 		}
+
+        public void InitUI()
+        {
+            InitLanguages(Enum.GetNames(typeof(Language)));
+            InitPrograms(Enum.GetNames(typeof(ProjectType)));
+            InitSaveFormats(Enum.GetNames(typeof(FileFormat)));
+            InitBitDepths(Enum.GetNames(typeof(ImageBitDepth)));
+            InitTiffCompressions(Enum.GetNames(typeof(TiffCompressionFormat)));
+        }
 
 		public void Load()
 		{
@@ -51,7 +58,35 @@ namespace Timelapse_UI
 			LSSettings.Save();
 		}
 
-		public void LanguageChanged()
+        public void BrowseRT()
+        {
+            using (FileDialog dlg = FileDlg.CreateDialog(FileDialogType.OpenFile, "Title"))
+            {
+                if (!string.IsNullOrWhiteSpace(RTPath) && Directory.Exists(Path.GetDirectoryName(RTPath)))
+                {
+                    dlg.InitialDirectory = Path.GetDirectoryName(RTPath);
+                }
+                else
+                {
+                    switch (ProjectManager.RunningPlatform)
+                    {
+                        case Platform.MacOSX:
+                            dlg.InitialDirectory = "/Applications/";
+                            break;
+                        case Platform.Unix:
+                            dlg.InitialDirectory = "/usr/bin/";
+                            break;
+                        case Platform.Windows:
+                            dlg.InitialDirectory = @"C:\Program Files\";
+                            break;
+                    }
+                }
+
+                if (dlg.Show() == WindowResponse.Ok) RTPath = dlg.SelectedPath;
+            }
+        }
+
+        public void LanguageChanged()
 		{
 			if (LanguageSelection != (int)LSSettings.UsedLanguage)
 			{
@@ -59,7 +94,7 @@ namespace Timelapse_UI
 			}
 		}
 
-		public void ProgramChanged()
+        public void ProgramChanged()
 		{
 			switch ((ProjectType)ProgramSelection)
 			{
@@ -88,7 +123,7 @@ namespace Timelapse_UI
 			}
 		}
 
-		public void SaveFormatChanged()
+        public void SaveFormatChanged()
 		{
 			switch ((FileFormat)SaveFormatSelection)
 			{
@@ -110,7 +145,7 @@ namespace Timelapse_UI
 			}
 		}
 
-		public void AutoThreadChanged()
+        public void AutoThreadChanged()
 		{
 			if (AutoThread)
 			{
@@ -120,7 +155,7 @@ namespace Timelapse_UI
 			else { ThreadCountEnabled = true; }
 		}
 
-		public void RunRTChanged()
+        public void RunRTChanged()
 		{
 			SaveFormatEnabled = RunRT;
 			JpgQualityEnabled = RunRT;
@@ -130,35 +165,31 @@ namespace Timelapse_UI
 			KeepPP3 = !RunRT;
 			if (RunRT) { SaveFormatChanged(); }
 		}
-
-
-		public abstract bool SaveFormatEnabled { get; set; }
-		public abstract bool JpgQualityEnabled { get; set; }
-		public abstract bool TiffCompressionEnabled { get; set; }
-		public abstract bool BitDepthEnabled { get; set; }
-		public abstract bool KeepPP3Enabled { get; set; }
-		public abstract bool RunRTEnabled { get; set; }
-		public abstract bool ThreadCountEnabled { get; set; }
-
-
-		public abstract void InitLanguages(string[] Entries);
-		public abstract void InitPrograms(string[] Entries);
-		public abstract void InitSaveFormats(string[] Entries);
-		public abstract void InitBitDepths(string[] Entries);
-		public abstract void InitTiffCompressions(string[] Entries);
-
-
-		public abstract string RTPath { get; set; }
-		public abstract int ThreadCount { get; set; }
-		public abstract int JpgQuality { get; set; }
-		public abstract bool AutoThread { get; set; }
-		public abstract bool KeepPP3 { get; set; }
-		public abstract bool RunRT { get; set; }
-		public abstract int LanguageSelection { get; set; }
-		public abstract int ProgramSelection { get; set; }
-		public abstract int SaveFormatSelection { get; set; }
-		public abstract int BitDepthSelection { get; set; }
-		public abstract int TiffCompressionSelection { get; set; }
+        
+        protected abstract bool SaveFormatEnabled { get; set; }
+        protected abstract bool JpgQualityEnabled { get; set; }
+        protected abstract bool TiffCompressionEnabled { get; set; }
+        protected abstract bool BitDepthEnabled { get; set; }
+        protected abstract bool KeepPP3Enabled { get; set; }
+        protected abstract bool RunRTEnabled { get; set; }
+        protected abstract bool ThreadCountEnabled { get; set; }
+        
+        protected abstract void InitLanguages(string[] Entries);
+        protected abstract void InitPrograms(string[] Entries);
+        protected abstract void InitSaveFormats(string[] Entries);
+        protected abstract void InitBitDepths(string[] Entries);
+        protected abstract void InitTiffCompressions(string[] Entries);
+        
+        public abstract string RTPath { get; set; }
+        public abstract int ThreadCount { get; set; }
+        public abstract int JpgQuality { get; set; }
+        public abstract bool AutoThread { get; set; }
+        public abstract bool KeepPP3 { get; set; }
+        public abstract bool RunRT { get; set; }
+        public abstract int LanguageSelection { get; set; }
+        public abstract int ProgramSelection { get; set; }
+        public abstract int SaveFormatSelection { get; set; }
+        public abstract int BitDepthSelection { get; set; }
+        public abstract int TiffCompressionSelection { get; set; }
 	}
 }
-

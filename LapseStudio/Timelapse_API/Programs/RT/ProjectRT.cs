@@ -114,7 +114,41 @@ namespace Timelapse_API
             Frames[index].IsKeyframe = false;
             if (removeLink) { ((FrameRT)Frames[index]).PP3File = null; }
         }
-        
+
+        /// <summary>
+        /// This method searches for the RawTherapee executable depending on the platform
+        /// </summary>
+        /// <returns>The patht to the RawTherapee executable or null if not found</returns>
+        public static string SearchForRT()
+        {
+            switch (ProjectManager.RunningPlatform)
+            {
+                case Platform.MacOSX:
+                    string MacRTPath = "/Applications/RawTherapee.app";
+                    if (File.Exists(MacRTPath)) return MacRTPath;
+                    else return null;
+
+                case Platform.Unix:
+                    string UnixRTPath = "/usr/bin/rawtherapee";
+                    if (File.Exists(UnixRTPath)) return UnixRTPath;
+                    else return null;
+
+                case Platform.Windows:
+                    string[] FoldersX64 = Directory.GetDirectories(@"C:\Program Files\");
+                    int idx = FoldersX64.ToList().FindIndex(t => t.ToLower().Contains("rawtherapee"));
+                    if (idx >= 0 && File.Exists(Path.Combine(FoldersX64[idx], "rawtherapee.exe"))) { return Path.Combine(FoldersX64[idx], "rawtherapee.exe"); }
+                    else
+                    {
+                        string[] FoldersX86 = Directory.GetDirectories(@"C:\Program Files (x86)\");
+                        idx = FoldersX86.ToList().FindIndex(t => t.ToLower().Contains("rawtherapee"));
+                        if (idx >= 0 && File.Exists(Path.Combine(FoldersX86[idx], "rawtherapee.exe"))) { return Path.Combine(FoldersX86[idx], "rawtherapee.exe"); }
+                    }
+                    return null;
+
+                default:
+                    return null;
+            }
+        }
 
         protected override void WriteFiles()
         {
