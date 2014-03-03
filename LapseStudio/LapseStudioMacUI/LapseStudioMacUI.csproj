@@ -108,6 +108,7 @@
     <Compile Include="SettingsDialog.designer.cs">
       <DependentUpon>SettingsDialog.cs</DependentUpon>
     </Compile>
+    <Compile Include="CocoaClasses\CocoaGraphDrawer.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="locale\de.dic">

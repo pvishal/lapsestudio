@@ -4,7 +4,6 @@ using System;
 
 using MonoMac.Foundation;
 using MonoMac.AppKit;
-using MonoMac.Foundation;
 
 namespace LapseStudioMacUI
 {
