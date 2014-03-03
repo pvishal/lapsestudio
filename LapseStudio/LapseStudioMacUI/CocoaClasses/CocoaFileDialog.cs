@@ -30,8 +30,11 @@ namespace LapseStudioMacUI
 					ofdlg.CanChooseFiles = true;
 					ofdlg.CanChooseDirectories = false;
 					ofdlg.AllowsMultipleSelection = false;
-					foreach(FileTypeFilter arr in FileTypeFilters) filetypes.AddRange(arr.Filter);
-					ofdlg.AllowedFileTypes = filetypes.ToArray();
+					if(filetypes.Count > 0)
+					{
+						foreach(FileTypeFilter arr in FileTypeFilters) filetypes.AddRange(arr.Filter);
+						ofdlg.AllowedFileTypes = filetypes.ToArray();
+					}
 
 					resp = CocoaHelper.GetResponse(ofdlg.RunModal());
 					SelectedPath = ofdlg.Url.Path;

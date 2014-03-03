@@ -1,240 +1,185 @@
-﻿using System;
-using Timelapse_UI;
+﻿using Timelapse_UI;
+using MonoMac.AppKit;
 
 namespace LapseStudioMacUI
 {
 	public class CocoaSettingsUI : SettingsUI
 	{
-		SettingsDialog StgDlg;
+		SettingsWindowController Dlg;
 
-		public CocoaSettingsUI(SettingsDialog StgDlg) : base(new CocoaMessageBox())
+		public CocoaSettingsUI(SettingsWindowController Dlg)
+			: base(new CocoaMessageBox(), new CocoaFileDialog())
 		{
-			this.StgDlg = StgDlg;
-			Load();
+			this.Dlg = Dlg;
 		}
+			
 
-		public override void InitLanguages(string[] Entries)
+		protected override void InitLanguages(string[] Entries)
 		{
-			throw new NotImplementedException();
+			Dlg.PublicLanguageCoBox.RemoveAllItems();
+			Dlg.PublicLanguageCoBox.AddItems(Entries);
 		}
 
-		public override void InitPrograms(string[] Entries)
+		protected override void InitPrograms(string[] Entries)
 		{
-			throw new NotImplementedException();
+			Dlg.PublicProgramCoBox.RemoveAllItems();
+			Dlg.PublicProgramCoBox.AddItems(Entries);
 		}
 
-		public override void InitSaveFormats(string[] Entries)
+		protected override void InitSaveFormats(string[] Entries)
 		{
-			throw new NotImplementedException();
+			Dlg.PublicSaveFormatCoBox.RemoveAllItems();
+			Dlg.PublicSaveFormatCoBox.AddItems(Entries);
 		}
 
-		public override void InitBitDepths(string[] Entries)
+		protected override void InitBitDepths(string[] Entries)
 		{
-			throw new NotImplementedException();
+			Dlg.PublicBitDepthCoBox.RemoveAllItems();
+			Dlg.PublicBitDepthCoBox.AddItems(Entries);
 		}
 
-		public override void InitTiffCompressions(string[] Entries)
+		protected override void InitTiffCompressions(string[] Entries)
 		{
-			throw new NotImplementedException();
+			Dlg.PublicTiffCompressionChBox.RemoveAllItems();
+			Dlg.PublicTiffCompressionChBox.AddItems(Entries);
 		}
 
-		public override bool SaveFormatEnabled {
-			get
-			{
-				throw new NotImplementedException();
-			}
-			set
-			{
-				throw new NotImplementedException();
-			}
+
+		protected override bool SaveFormatEnabled
+		{
+			get { return Dlg.PublicSaveFormatCoBox.Enabled; }
+			set { Dlg.PublicSaveFormatCoBox.Enabled = value; }
 		}
 
-		public override bool JpgQualityEnabled {
-			get
-			{
-				throw new NotImplementedException();
-			}
-			set
-			{
-				throw new NotImplementedException();
-			}
+		protected override bool JpgQualityEnabled
+		{
+			get { return Dlg.PublicJpgQualitySlider.Enabled; }
+			set { Dlg.PublicJpgQualitySlider.Enabled = value; }
 		}
 
-		public override bool TiffCompressionEnabled {
-			get
-			{
-				throw new NotImplementedException();
-			}
-			set
-			{
-				throw new NotImplementedException();
-			}
+		protected override bool TiffCompressionEnabled
+		{
+			get { return Dlg.PublicTiffCompressionChBox.Enabled; }
+			set { Dlg.PublicTiffCompressionChBox.Enabled = value; }
 		}
 
-		public override bool BitDepthEnabled {
-			get
-			{
-				throw new NotImplementedException();
-			}
-			set
-			{
-				throw new NotImplementedException();
-			}
+		protected override bool BitDepthEnabled
+		{
+			get { return Dlg.PublicBitDepthCoBox.Enabled; }
+			set { Dlg.PublicBitDepthCoBox.Enabled = value; }
 		}
 
-		public override bool KeepPP3Enabled {
-			get
-			{
-				throw new NotImplementedException();
-			}
+		protected override bool KeepPP3Enabled
+		{
+			get { return Dlg.PublicKeepPP3ChBox.Enabled; }
+			set { Dlg.PublicKeepPP3ChBox.Enabled = value; }
+		}
+
+		protected override bool RunRTEnabled
+		{
+			get { return Dlg.PublicRunRTChBox.Enabled; }
+			set { Dlg.PublicRunRTChBox.Enabled = value; }
+		}
+
+		protected override bool ThreadCountEnabled
+		{
+			get { return Dlg.PublicThreadUpDo.Enabled; }
 			set
 			{
-				throw new NotImplementedException();
+				Dlg.PublicThreadUpDo.Enabled = value;
+				Dlg.PublicThreadBox.Enabled = value;
 			}
 		}
 
-		public override bool RunRTEnabled {
-			get
-			{
-				throw new NotImplementedException();
-			}
+
+		public override string RTPath
+		{
+			get { return Dlg.PublicRTPathTextBox.StringValue; }
+			set { Dlg.PublicRTPathTextBox.StringValue = value; }
+		}
+
+		public override int ThreadCount
+		{
+			get { return Dlg.PublicThreadUpDo.IntValue; }
 			set
 			{
-				throw new NotImplementedException();
+				Dlg.PublicThreadUpDo.IntValue = value;
+				Dlg.PublicThreadBox.IntValue = value;
 			}
 		}
 
-		public override bool ThreadCountEnabled {
-			get
-			{
-				throw new NotImplementedException();
-			}
+		public override int JpgQuality
+		{
+			get { return Dlg.PublicJpgQualitySlider.IntValue; }
 			set
 			{
-				throw new NotImplementedException();
+				Dlg.PublicJpgQualitySlider.IntValue = value;
+				Dlg.PublicJpgQualityLabel.StringValue = value.ToString();
 			}
 		}
 
-		public override string RTPath {
-			get
-			{
-				throw new NotImplementedException();
-			}
+		public override bool AutoThread
+		{
+			get { return Dlg.PublicAutoThreadsChBox.State == NSCellStateValue.On; }
 			set
 			{
-				throw new NotImplementedException();
+				Dlg.PublicAutoThreadsChBox.State = (value) ? NSCellStateValue.On : NSCellStateValue.Off;
+				AutoThreadChanged();
 			}
 		}
 
-		public override int ThreadCount {
-			get
-			{
-				throw new NotImplementedException();
-			}
+		public override bool KeepPP3
+		{
+			get { return Dlg.PublicKeepPP3ChBox.State == NSCellStateValue.On; }
+			set { Dlg.PublicKeepPP3ChBox.State = (value) ? NSCellStateValue.On : NSCellStateValue.Off; }
+		}
+
+		public override bool RunRT
+		{
+			get { return Dlg.PublicRunRTChBox.State == NSCellStateValue.On; }
+			set { Dlg.PublicRunRTChBox.State = (value) ? NSCellStateValue.On : NSCellStateValue.Off; }
+		}
+
+		public override int LanguageSelection
+		{
+			get { return Dlg.PublicLanguageCoBox.IndexOfSelectedItem; }
 			set
 			{
-				throw new NotImplementedException();
+				Dlg.PublicLanguageCoBox.SelectItem(value); 
+				LanguageChanged();
 			}
 		}
 
-		public override int JpgQuality {
-			get
-			{
-				throw new NotImplementedException();
-			}
+		public override int ProgramSelection
+		{
+			get { return Dlg.PublicProgramCoBox.IndexOfSelectedItem; }
 			set
 			{
-				throw new NotImplementedException();
+				Dlg.PublicProgramCoBox.SelectItem(value); 
+				ProgramChanged();
 			}
 		}
 
-		public override bool AutoThread {
-			get
-			{
-				throw new NotImplementedException();
-			}
+		public override int SaveFormatSelection
+		{
+			get { return Dlg.PublicSaveFormatCoBox.IndexOfSelectedItem; }
 			set
 			{
-				throw new NotImplementedException();
+				Dlg.PublicSaveFormatCoBox.SelectItem(value); 
+				SaveFormatChanged();
 			}
 		}
 
-		public override bool KeepPP3 {
-			get
-			{
-				throw new NotImplementedException();
-			}
-			set
-			{
-				throw new NotImplementedException();
-			}
+		public override int BitDepthSelection
+		{
+			get { return Dlg.PublicBitDepthCoBox.IndexOfSelectedItem; }
+			set { Dlg.PublicBitDepthCoBox.SelectItem(value); }
 		}
 
-		public override bool RunRT {
-			get
-			{
-				throw new NotImplementedException();
-			}
-			set
-			{
-				throw new NotImplementedException();
-			}
-		}
-
-		public override int LanguageSelection {
-			get
-			{
-				throw new NotImplementedException();
-			}
-			set
-			{
-				throw new NotImplementedException();
-			}
-		}
-
-		public override int ProgramSelection {
-			get
-			{
-				throw new NotImplementedException();
-			}
-			set
-			{
-				throw new NotImplementedException();
-			}
-		}
-
-		public override int SaveFormatSelection {
-			get
-			{
-				throw new NotImplementedException();
-			}
-			set
-			{
-				throw new NotImplementedException();
-			}
-		}
-
-		public override int BitDepthSelection {
-			get
-			{
-				throw new NotImplementedException();
-			}
-			set
-			{
-				throw new NotImplementedException();
-			}
-		}
-
-		public override int TiffCompressionSelection {
-			get
-			{
-				throw new NotImplementedException();
-			}
-			set
-			{
-				throw new NotImplementedException();
-			}
+		public override int TiffCompressionSelection
+		{
+			get { return Dlg.PublicTiffCompressionChBox.IndexOfSelectedItem; }
+			set { Dlg.PublicTiffCompressionChBox.SelectItem(value); }
 		}
 	}
 }
-

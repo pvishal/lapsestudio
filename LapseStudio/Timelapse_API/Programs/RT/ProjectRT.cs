@@ -125,7 +125,7 @@ namespace Timelapse_API
             {
                 case Platform.MacOSX:
                     string MacRTPath = "/Applications/RawTherapee.app";
-                    if (File.Exists(MacRTPath)) return MacRTPath;
+					if (Directory.Exists(MacRTPath)) return MacRTPath;
                     else return null;
 
                 case Platform.Unix:

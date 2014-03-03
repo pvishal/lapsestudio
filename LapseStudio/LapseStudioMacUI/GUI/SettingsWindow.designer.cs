@@ -9,8 +9,8 @@ using System.CodeDom.Compiler;
 
 namespace LapseStudioMacUI
 {
-	[Register ("SettingsDialog")]
-	partial class SettingsDialog
+	[Register ("SettingsWindowController")]
+	partial class SettingsWindowController
 	{
 		[Outlet]
 		MonoMac.AppKit.NSButton AutoThreadsChBox { get; set; }
@@ -38,6 +38,12 @@ namespace LapseStudioMacUI
 
 		[Outlet]
 		MonoMac.AppKit.NSPopUpButton ProgramCoBox { get; set; }
+
+		[Outlet]
+		MonoMac.AppKit.NSButton RTBrowseButton { get; set; }
+
+		[Outlet]
+		MonoMac.AppKit.NSTextField RTPathTextBox { get; set; }
 
 		[Outlet]
 		MonoMac.AppKit.NSButton RunRTChBox { get; set; }
@@ -72,6 +78,9 @@ namespace LapseStudioMacUI
 		[Action ("ProgramCoBox_Changed:")]
 		partial void ProgramCoBox_Changed (MonoMac.Foundation.NSObject sender);
 
+		[Action ("RTBrowseButton_Click:")]
+		partial void RTBrowseButton_Click (MonoMac.Foundation.NSObject sender);
+
 		[Action ("RunRTChBox_Toggled:")]
 		partial void RunRTChBox_Toggled (MonoMac.Foundation.NSObject sender);
 
@@ -86,44 +95,9 @@ namespace LapseStudioMacUI
 		
 		void ReleaseDesignerOutlets ()
 		{
-			if (ThreadUpDo != null) {
-				ThreadUpDo.Dispose ();
-				ThreadUpDo = null;
-			}
-
-			if (ThreadBox != null) {
-				ThreadBox.Dispose ();
-				ThreadBox = null;
-			}
-
 			if (AutoThreadsChBox != null) {
 				AutoThreadsChBox.Dispose ();
 				AutoThreadsChBox = null;
-			}
-
-			if (LanguageCoBox != null) {
-				LanguageCoBox.Dispose ();
-				LanguageCoBox = null;
-			}
-
-			if (ProgramCoBox != null) {
-				ProgramCoBox.Dispose ();
-				ProgramCoBox = null;
-			}
-
-			if (RunRTChBox != null) {
-				RunRTChBox.Dispose ();
-				RunRTChBox = null;
-			}
-
-			if (KeepPP3ChBox != null) {
-				KeepPP3ChBox.Dispose ();
-				KeepPP3ChBox = null;
-			}
-
-			if (SaveFormatCoBox != null) {
-				SaveFormatCoBox.Dispose ();
-				SaveFormatCoBox = null;
 			}
 
 			if (BitDepthCoBox != null) {
@@ -131,9 +105,9 @@ namespace LapseStudioMacUI
 				BitDepthCoBox = null;
 			}
 
-			if (JpgQualitySlider != null) {
-				JpgQualitySlider.Dispose ();
-				JpgQualitySlider = null;
+			if (CancelButton != null) {
+				CancelButton.Dispose ();
+				CancelButton = null;
 			}
 
 			if (JpgQualityLabel != null) {
@@ -141,9 +115,19 @@ namespace LapseStudioMacUI
 				JpgQualityLabel = null;
 			}
 
-			if (TiffCompressionChBox != null) {
-				TiffCompressionChBox.Dispose ();
-				TiffCompressionChBox = null;
+			if (JpgQualitySlider != null) {
+				JpgQualitySlider.Dispose ();
+				JpgQualitySlider = null;
+			}
+
+			if (KeepPP3ChBox != null) {
+				KeepPP3ChBox.Dispose ();
+				KeepPP3ChBox = null;
+			}
+
+			if (LanguageCoBox != null) {
+				LanguageCoBox.Dispose ();
+				LanguageCoBox = null;
 			}
 
 			if (OkButton != null) {
@@ -151,10 +135,54 @@ namespace LapseStudioMacUI
 				OkButton = null;
 			}
 
-			if (CancelButton != null) {
-				CancelButton.Dispose ();
-				CancelButton = null;
+			if (ProgramCoBox != null) {
+				ProgramCoBox.Dispose ();
+				ProgramCoBox = null;
 			}
+
+			if (RTBrowseButton != null) {
+				RTBrowseButton.Dispose ();
+				RTBrowseButton = null;
+			}
+
+			if (RTPathTextBox != null) {
+				RTPathTextBox.Dispose ();
+				RTPathTextBox = null;
+			}
+
+			if (RunRTChBox != null) {
+				RunRTChBox.Dispose ();
+				RunRTChBox = null;
+			}
+
+			if (SaveFormatCoBox != null) {
+				SaveFormatCoBox.Dispose ();
+				SaveFormatCoBox = null;
+			}
+
+			if (ThreadBox != null) {
+				ThreadBox.Dispose ();
+				ThreadBox = null;
+			}
+
+			if (ThreadUpDo != null) {
+				ThreadUpDo.Dispose ();
+				ThreadUpDo = null;
+			}
+
+			if (TiffCompressionChBox != null) {
+				TiffCompressionChBox.Dispose ();
+				TiffCompressionChBox = null;
+			}
+		}
+	}
+
+	[Register ("SettingsWindow")]
+	partial class SettingsWindow
+	{
+		
+		void ReleaseDesignerOutlets ()
+		{
 		}
 	}
 }

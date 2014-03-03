@@ -10,6 +10,7 @@ namespace LapseStudioMacUI
 	public partial class AppDelegate : NSApplicationDelegate
 	{
 		MainWindowController mainWindowController;
+		SettingsWindowController SettingsDialog;
 
 		public AppDelegate()
 		{
@@ -46,12 +47,23 @@ namespace LapseStudioMacUI
 		{
 			try
 			{
-				SettingsDialog dlg = new SettingsDialog(this.Handle);
-				NSApplication.SharedApplication.RunModalForWindow(dlg);
-				if (dlg.Result == WindowResponse.Ok) mainWindowController.MainUI.SettingsChanged();
-				dlg.Dispose();
+				SettingsDialog = new SettingsWindowController();
+				SettingsDialog.LoadWindow();
+				SettingsDialog.Window.WillClose += SettingsDialog_WillClose;
+				NSApplication.SharedApplication.RunModalForWindow(SettingsDialog.Window);
 			}
 			catch(Exception ex) { Error.Report("MenuPreferencesItem_Click", ex); }
+		}
+
+		private void SettingsDialog_WillClose(object sender, EventArgs e)
+		{
+			try
+			{
+				NSApplication.SharedApplication.StopModal();
+				if(SettingsDialog.Result == WindowResponse.Ok) mainWindowController.MainUI.SettingsChanged();
+				SettingsDialog.Dispose();
+			}
+			catch(Exception ex) { Error.Report("SettingsDialog_WillClose", ex); }
 		}
 
 		partial void MenuCloseItem_Click(NSObject sender)

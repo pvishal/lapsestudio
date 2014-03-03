@@ -38,8 +38,25 @@ namespace Timelapse_UI
 			BitDepthSelection = (int)LSSettings.BitDepth;
 			JpgQuality = LSSettings.JpgQuality;
 			TiffCompressionSelection = (int)LSSettings.TiffCompression;
-			RTPath = LSSettings.RTPath;
+			RTPath = CheckRT();
 			KeepPP3 = LSSettings.KeepPP3;
+		}
+
+		private string CheckRT()
+		{
+			if(!string.IsNullOrEmpty(LSSettings.RTPath) && AppExists(LSSettings.RTPath))return LSSettings.RTPath;
+			else
+			{
+				string rt = ProjectRT.SearchForRT();
+				if(rt != null) return rt;
+				else return "";
+			}
+		}
+
+		private bool AppExists(string path)
+		{
+			if(ProjectManager.RunningPlatform == Platform.MacOSX) return Directory.Exists(path);
+			else return File.Exists(path);
 		}
 
 		public void Save()
@@ -81,6 +98,16 @@ namespace Timelapse_UI
                             break;
                     }
                 }
+
+				switch (ProjectManager.RunningPlatform)
+				{
+					case Platform.MacOSX:
+						dlg.AddFileTypeFilter(new FileTypeFilter(Message.GetString("Application"), "app", "App"));
+						break;
+					case Platform.Windows:
+						dlg.AddFileTypeFilter(new FileTypeFilter(Message.GetString("Executable"), "exe"));
+						break;
+				}
 
                 if (dlg.Show() == WindowResponse.Ok) RTPath = dlg.SelectedPath;
             }

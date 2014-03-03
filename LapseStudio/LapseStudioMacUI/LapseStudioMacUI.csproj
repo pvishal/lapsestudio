@@ -75,7 +75,6 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="Resources\" />
     <Folder Include="CocoaClasses\" />
     <Folder Include="GUI\" />
   </ItemGroup>
@@ -99,11 +98,16 @@
     <Compile Include="GUI\Graph.designer.cs">
       <DependentUpon>Graph.cs</DependentUpon>
     </Compile>
-    <Compile Include="GUI\SettingsDialog.cs" />
-    <Compile Include="GUI\SettingsDialog.designer.cs">
+    <Compile Include="CocoaClasses\CocoaSettingsUI.cs" />
+    <Compile Include="GUI\SettingsWindow.cs" />
+    <Compile Include="GUI\SettingsWindowController.cs" />
+    <Compile Include="GUI\SettingsWindow.designer.cs">
+      <DependentUpon>SettingsWindow.cs</DependentUpon>
+    </Compile>
+    <Compile Include="SettingsDialog.cs" />
+    <Compile Include="SettingsDialog.designer.cs">
       <DependentUpon>SettingsDialog.cs</DependentUpon>
     </Compile>
-    <Compile Include="CocoaClasses\CocoaSettingsUI.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="locale\de.dic">
@@ -129,6 +133,6 @@
     <InterfaceDefinition Include="MainMenu.xib" />
     <InterfaceDefinition Include="MainWindow.xib" />
     <InterfaceDefinition Include="GUI\Graph.xib" />
-    <InterfaceDefinition Include="GUI\SettingsDialog.xib" />
+    <InterfaceDefinition Include="GUI\SettingsWindow.xib" />
   </ItemGroup>
 </Project>
