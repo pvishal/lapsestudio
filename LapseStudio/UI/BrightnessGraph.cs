@@ -41,7 +41,16 @@ namespace Timelapse_UI
 		public bool IsOnCurveArea
 		{
 			get { return (Xpos > Left - 2 && Xpos < Width - Right + 2 && Ypos > Top - 2 && Ypos < Height - Bottom + 2) ? true : false; }
-		}
+        }
+
+        public static readonly float[] GraphBackground = { 0.9f, 0.9f, 0.9f };
+        public static readonly float[] BasePenColor = { 0f, 0f, 0f };
+        public static readonly float[] CurvePenColor = { 0.8f, 0.8f, 0f };
+        public static readonly float[] CustomCurvePenColor = { 0f, 0f, 0f };
+        public static readonly float[] PointPenColor = { 0.8f, 0f, 0f };
+        public static readonly float[] SelPointPenColor = { 0f, 0.8f, 0.8f };
+        private const float GridWidth = 10.5f;
+        private const float PointRadius = 3f;
 
 		#endregion
 
@@ -71,9 +80,85 @@ namespace Timelapse_UI
 
 		#endregion
 
-		#region Methods
+        #region Drawing
 
-		public void SetFromLoading(List<PointD> Points, int SelectedPoint)
+        public void DrawFullGraph(IGraphDrawer Drawer)
+        {
+            Drawer.ClearGraph();
+            DrawScale(Drawer);
+            DrawCurve(Drawer);
+            Drawer.DrawFull();
+        }
+
+        private void DrawScale(IGraphDrawer Drawer)
+        {
+            Drawer.SetBaseLinePen();
+
+            //draw Y axe
+            Drawer.DrawLine(Left, Top, Left, this.Height - Bottom);
+            Drawer.DrawLine(this.Width - Right, Top, this.Width - Right, this.Height - Bottom + GridWidth);
+
+            //draw X axe
+            Drawer.DrawLine(Left, this.Height - Bottom, this.Width - Right, this.Height - Bottom);
+            Drawer.DrawLine(Left - GridWidth, Top, this.Width - Right, Top);
+
+            double Xs = (this.Width - Left - Right) / 10d;
+            double Ys = (this.Height - Top - Bottom) / 10d;
+
+            //draw X and Y scales
+            for (int i = 1; i < 10; i++)
+            {
+                //Y scale
+                Drawer.DrawLine(Left - GridWidth, (float)(this.Height - Bottom - i * Ys), this.Width - Right, (float)(this.Height - Bottom - i * Ys));
+                //X scale
+                Drawer.DrawLine((float)(Left + i * Xs), Top, (float)(Left + i * Xs), this.Height - Bottom + GridWidth);
+            }
+        }
+
+        private void DrawCurve(IGraphDrawer Drawer)
+        {
+            PointD[] pout;
+
+            //Drawing Brightness Curve
+            if (ProjectManager.CurrentProject.Frames.Count > 0)
+            {
+                Drawer.SetCurveLinePen();
+                List<PointD> BrP = new List<PointD>();
+                for (int i = 0; i < ProjectManager.CurrentProject.Frames.Count; i++)
+                {
+                    BrP.Add(new PointD(i, (float)ProjectManager.CurrentProject.Frames[i].AlternativeBrightness));
+                }
+
+                pout = this.RealToGraph(BrP);
+                for (int i = 1; i < pout.Length; i++) Drawer.DrawLine((float)pout[i - 1].X, (float)pout[i - 1].Y, (float)pout[i].X, (float)pout[i].Y);
+            }
+
+            if (this.Points.Count > 0 && ProjectManager.CurrentProject.IsBrightnessCalculated)
+            {
+                //Drawing Custom Curve
+                Drawer.SetCustomCurveLinePen();
+                pout = this.RealToGraph(Interpolation.Do(this.Points.ToArray(), BrightnessGraph.Smoothness));
+                for (int i = 1; i < pout.Length; i++) Drawer.DrawLine((float)pout[i - 1].X, (float)pout[i - 1].Y, (float)pout[i].X, (float)pout[i].Y);
+
+                //Drawing Points
+                Drawer.SetPointPen();
+                for (int i = 0; i < this.Points.Count; i++)
+                {
+                    PointD tmp = this.RealToGraph(this.Points[i]);
+                    Drawer.DrawCircle((float)tmp.X - PointRadius, (float)tmp.Y - PointRadius, PointRadius * 2);
+                }
+                //Drawing Selected Point
+                Drawer.SetSelectedPointPen();
+                PointD tmpSel = this.RealToGraph(this.Points[this.SelectedPoint]);
+                Drawer.DrawCircle((float)tmpSel.X - PointRadius, (float)tmpSel.Y - PointRadius, PointRadius * 2);
+            }
+        }
+
+        #endregion
+
+        #region Methods
+
+        public void SetFromLoading(List<PointD> Points, int SelectedPoint)
 		{
 			this.Points = Points;
 			this.SelectedPoint = SelectedPoint;
@@ -121,11 +206,11 @@ namespace Timelapse_UI
 			double Yvalue = Ypos;
 
 			bool HitPoint = false;
-			int HitIndex = 1;
+			int HitIndex = 0;
 			float rX = 5;
 			float rY = 5;
 
-			for (int i = 1; i < Points.Count; i++)
+			for (int i = 0; i < Points.Count; i++)
 			{
 				PointD p = RealToGraph(Points[i]);
 				if (Xvalue > p.X - rX && Xvalue < p.X + rX && Yvalue > p.Y - rY && Yvalue < p.Y + rY)
@@ -172,10 +257,10 @@ namespace Timelapse_UI
 		public Action RefreshGraph;
 
 		#endregion
+        
+        #region Eventhandling
 
-		#region Eventhandling
-
-		private void CurrentProject_BrightnessCalculated(object sender, WorkFinishedEventArgs e)
+        private void CurrentProject_BrightnessCalculated(object sender, WorkFinishedEventArgs e)
 		{
 			InitPoints();
 		}

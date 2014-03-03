@@ -43,6 +43,7 @@
     <Compile Include="Enums.cs" />
     <Compile Include="ErrorReport.cs" />
     <Compile Include="GeneralValues.cs" />
+    <Compile Include="GraphDrawer.cs" />
     <Compile Include="MessageBox.cs" />
     <Compile Include="LapseStudioUI.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
