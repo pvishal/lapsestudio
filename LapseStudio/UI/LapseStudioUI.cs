@@ -261,20 +261,6 @@ namespace Timelapse_UI
 			else return false;
 		}
 
-        public void SetBrightnessScale(double Val)
-        {
-            if (ProjectManager.CurrentProject.IsBrightnessCalculated)
-            {
-                for (int i = 1; i < ProjectManager.CurrentProject.Frames.Count; i++)
-                {
-                    //TODO_L: make brightness scale working
-                    double orig1 = ProjectManager.CurrentProject.Frames[i - 1].OriginalBrightness;
-                    double orig2 = ProjectManager.CurrentProject.Frames[i].OriginalBrightness;
-                    ProjectManager.CurrentProject.Frames[i].AlternativeBrightness = orig2 + ((orig2 - orig1) * Val / 100);
-                }
-            }
-        }
-
         public void SettingsChanged()
         {
             if (LSSettings.UsedProgram != ProjectManager.CurrentProject.Type) { if (Click_NewProject() == WindowResponse.Cancel) { LSSettings.UsedProgram = ProjectManager.CurrentProject.Type; } }
@@ -517,6 +503,21 @@ No lets you load values from a standalone XMP file."), MessageWindowType.Questio
             else ProjectManager.RemoveKeyframe(Row, false);
             UpdateTable();
         }
+
+		public void Click_BrightnessSlider(double Value)
+		{
+			if (ProjectManager.CurrentProject.IsBrightnessCalculated)
+			{
+				for (int i = 1; i < ProjectManager.CurrentProject.Frames.Count; i++)
+				{
+					//TODO_L: make brightness scale working
+					double orig1 = ProjectManager.CurrentProject.Frames[i - 1].OriginalBrightness;
+					double orig2 = ProjectManager.CurrentProject.Frames[i].OriginalBrightness;
+					ProjectManager.CurrentProject.Frames[i].AlternativeBrightness = orig2 + ((orig2 - orig1) * Value / 100);
+				}
+				MainGraph.RefreshGraph();
+			}
+		}
 
 		#endregion
     }

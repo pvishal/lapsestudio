@@ -396,6 +396,7 @@ namespace LapseStudioGtkUI
 					mw.StatusLabel.Text = Message.GetString("Brightness calculated");
 					UpdateTable();
 					ResetProgress();
+					MainGraph.RefreshGraph();
 				});
 			}
 			catch (Exception ex) { Error.Report("Brightness calculation finished", ex); }

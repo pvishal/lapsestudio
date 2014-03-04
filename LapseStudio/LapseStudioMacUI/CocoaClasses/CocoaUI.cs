@@ -157,7 +157,8 @@ namespace LapseStudioMacUI
 			{
 				mw.InvokeOnMainThread(delegate
 				{
-					mw.PublicMainProgressBar.DoubleValue = e.ProgressPercentage / 100d;
+					mw.PublicMainProgressBar.DoubleValue = e.ProgressPercentage;
+					mw.PublicMainProgressBar.NeedsDisplay = true;
 					mw.PublicStatuslabel.StringValue = Message.GetString(e.Topic.ToString());
 				});
 			}
@@ -192,6 +193,7 @@ namespace LapseStudioMacUI
 					mw.PublicStatuslabel.StringValue = Message.GetString("Brightness calculated");
 					UpdateTable();
 					ResetProgress();
+					MainGraph.RefreshGraph();
 				});
 			}
 			catch (Exception ex) { Error.Report("Brightness calculation finished", ex); }

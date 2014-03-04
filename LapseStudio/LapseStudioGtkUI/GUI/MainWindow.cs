@@ -29,12 +29,13 @@ public partial class MainWindow : Window
 	public void OnDeleteEvent(object sender, DeleteEventArgs a)
     {
 		try { a.RetVal = MainUI.Quit(ClosingReason.User); }
-        catch (Exception ex) { Error.Report("Delete event", ex); }
+		catch (Exception ex) { Error.Report("OnDeleteEvent", ex); }
     }
 
 	public void OnExposeEvent(object sender, ExposeEventArgs a)
     {
-		if (MainNotebook.CurrentPage == (int)TabLocation.Graph) { MainUI.MainGraph.RefreshGraph(); }
+		try { if (MainNotebook.CurrentPage == (int)TabLocation.Graph) { MainUI.MainGraph.RefreshGraph(); } }
+		catch (Exception ex) { Error.Report("OnExposeEvent", ex); }
     }
     
     #endregion
@@ -44,13 +45,13 @@ public partial class MainWindow : Window
 	public void OnNewActionActivated(object sender, EventArgs e)
     {
 		try { MainUI.Click_NewProject(); }
-        catch (Exception ex) { Error.Report("New button clicked", ex); }
+		catch (Exception ex) { Error.Report("OnNewActionActivated", ex); }
     }
 
 	public void OnOpenActionActivated(object sender, EventArgs e)
 	{
 		try { MainUI.Click_OpenProject(); }
-        catch (Exception ex) { Error.Report("Open button clicked", ex); }
+		catch (Exception ex) { Error.Report("OnOpenActionActivated", ex); }
     }
 
 	public void OnAboutActionActivated(object sender, EventArgs e)
@@ -61,7 +62,7 @@ public partial class MainWindow : Window
             dlg.Run();
             dlg.Destroy();
         }
-        catch (Exception ex) { Error.Report("About button clicked", ex); }
+		catch (Exception ex) { Error.Report("OnAboutActionActivated", ex); }
     }
 
 	public void OnHelpActionActivated(object sender, EventArgs e)
@@ -72,7 +73,7 @@ public partial class MainWindow : Window
             dlg.Run();
             dlg.Destroy();
         }
-        catch (Exception ex) { Error.Report("Help button clicked", ex); }
+		catch (Exception ex) { Error.Report("OnHelpActionActivated", ex); }
     }
 
 	public void OnPreferencesActionActivated(object sender, EventArgs e)
@@ -84,25 +85,25 @@ public partial class MainWindow : Window
             dlg.Destroy();
             MainUI.SettingsChanged();
         }
-        catch (Exception ex) { Error.Report("Preferences button clicked", ex); }
+		catch (Exception ex) { Error.Report("OnPreferencesActionActivated", ex); }
     }
 
 	public void OnQuitActionActivated(object sender, EventArgs e)
     {
 		try { MainUI.Quit(ClosingReason.User); }
-        catch (Exception ex) { Error.Report("Quit button clicked", ex); }
+		catch (Exception ex) { Error.Report("OnQuitActionActivated", ex); }
     }
 
 	public void OnSaveAsActionActivated(object sender, EventArgs e)
 	{
 		try { MainUI.Click_SaveProject(true); }
-        catch (Exception ex) { Error.Report("Save as button clicked", ex); }
+		catch (Exception ex) { Error.Report("OnSaveAsActionActivated", ex); }
     }
 
 	public void OnSaveActionActivated(object sender, EventArgs e)
 	{
 		try { MainUI.Click_SaveProject(false); }
-        catch (Exception ex) { Error.Report("Save button clicked", ex); }
+		catch (Exception ex) { Error.Report("OnSaveActionActivated", ex); }
     }
 
     #endregion
@@ -112,31 +113,31 @@ public partial class MainWindow : Window
 	public void OnCancelActionActivated(object sender, EventArgs e)
     {
 		try { ProjectManager.Cancel(); }
-        catch (Exception ex) { Error.Report("Cancel button clicked", ex); }
+		catch (Exception ex) { Error.Report("OnCancelActionActivated", ex); }
     }
 
 	public void OnProcessActionActivated(object sender, EventArgs e)
 	{
 		try { MainUI.Click_Process(); }
-        catch (Exception ex) { Error.Report("Process button clicked", ex); }
+		catch (Exception ex) { Error.Report("OnProcessActionActivated", ex); }
     }
 
 	public void OnRefreshMetadataActionActivated(object sender, EventArgs e)
 	{
 		try { MainUI.Click_RefreshMetadata(); }
-        catch (Exception ex) { Error.Report("Refresh metadata button clicked", ex); }
+		catch (Exception ex) { Error.Report("OnRefreshMetadataActionActivated", ex); }
     }
 
 	public void OnCalculateActionActivated(object sender, EventArgs e)
 	{
 		try { MainUI.Click_Calculate(); }
-        catch (Exception ex) { Error.Report("Calculate button clicked", ex); }
+		catch (Exception ex) { Error.Report("OnCalculateActionActivated", ex); }
     }
 
 	public void OnAddFilesActionActivated(object sender, EventArgs e)
 	{
 		try { MainUI.Click_AddFrames(); }
-        catch (Exception ex) { Error.Report("Add files button clicked", ex); }
+		catch (Exception ex) { Error.Report("OnAddFilesActionActivated", ex); }
     }
 
     #endregion
@@ -145,83 +146,105 @@ public partial class MainWindow : Window
 
 	public void OnYtoEndButtonClicked(object sender, EventArgs e)
 	{
-		MainUI.MainGraph.YtoEnd();
+		try { MainUI.MainGraph.YtoEnd(); }
+		catch (Exception ex) { Error.Report("OnYtoEndButtonClicked", ex); }
 	}
 
 	public void OnYtoStartButtonClicked(object sender, EventArgs e)
     {
-		MainUI.MainGraph.YtoStart();
+		try { MainUI.MainGraph.YtoStart(); }
+		catch (Exception ex) { Error.Report("OnYtoStartButtonClicked", ex); }
 	}
 
 	public void OnAlignXButtonClicked(object sender, EventArgs e)
     {
-		MainUI.MainGraph.AlignX();
+		try { MainUI.MainGraph.AlignX(); }
+		catch (Exception ex) { Error.Report("OnAlignXButtonClicked", ex); }
 	}
 
 	public void OnResetGraphButtonClicked(object sender, EventArgs e)
     {
-		MainUI.MainGraph.Reset();
+		try { MainUI.MainGraph.Reset(); }
+		catch (Exception ex) { Error.Report("OnResetGraphButtonClicked", ex); }
 	}
 
 	public void OnXmovScaleValueChanged(object sender, EventArgs e)
     {
-        if (fixThumb.Pixbuf != null && alignThumb.Pixbuf != null)
-        {
-            XmovLabel.Text = Message.GetString("X Movement:") + " " + ((int)XmovScale.Value).ToString() + "%";
-            ProjectManager.SetXMovement((int)XmovScale.Value);
-            int movementAbs = (int)(fixThumb.Pixbuf.Width * XmovScale.Value / 100);
-            MoveAlignment.LeftPadding = (uint)((fixThumb.Pixbuf.Width * 75 / 100) + movementAbs);
-        }
+		try
+		{
+	        if (fixThumb.Pixbuf != null && alignThumb.Pixbuf != null)
+	        {
+	            XmovLabel.Text = Message.GetString("X Movement:") + " " + ((int)XmovScale.Value).ToString() + "%";
+	            ProjectManager.SetXMovement((int)XmovScale.Value);
+	            int movementAbs = (int)(fixThumb.Pixbuf.Width * XmovScale.Value / 100);
+	            MoveAlignment.LeftPadding = (uint)((fixThumb.Pixbuf.Width * 75 / 100) + movementAbs);
+			}
+		}
+		catch (Exception ex) { Error.Report("OnXmovScaleValueChanged", ex); }
     }
 
 	public void OnYmovScaleValueChanged(object sender, EventArgs e)
     {
-        if (fixThumb.Pixbuf != null && alignThumb.Pixbuf != null)
-        {
-            YmovLabel.Text = Message.GetString("Y Movement:") + " " + ((int)YmovScale.Value).ToString() + "%";
-            ProjectManager.SetYMovement((int)YmovScale.Value);
-            int movementAbs = (int)(fixThumb.Pixbuf.Height * YmovScale.Value / 100);
-            MoveAlignment.TopPadding = (uint)((fixThumb.Pixbuf.Height * 75 / 100) + movementAbs);
-        }
+		try
+		{
+	        if (fixThumb.Pixbuf != null && alignThumb.Pixbuf != null)
+	        {
+	            YmovLabel.Text = Message.GetString("Y Movement:") + " " + ((int)YmovScale.Value).ToString() + "%";
+	            ProjectManager.SetYMovement((int)YmovScale.Value);
+	            int movementAbs = (int)(fixThumb.Pixbuf.Height * YmovScale.Value / 100);
+	            MoveAlignment.TopPadding = (uint)((fixThumb.Pixbuf.Height * 75 / 100) + movementAbs);
+			} 
+		}
+		catch (Exception ex) { Error.Report("OnYmovScaleValueChanged", ex); }
     }
 
 	public void OnCalcTypeCoBoxChanged(object sender, EventArgs e)
     {
-        switch (CalcTypeCoBox.Active)
-        {
-            case 0:
-                LSSettings.BrCalcType = BrightnessCalcType.Advanced;
-                break;
-            case 1:
-                LSSettings.BrCalcType = BrightnessCalcType.Simple;
-                break;
-            case 2:
-                LSSettings.BrCalcType = BrightnessCalcType.Exif;
-                break;
-        }
+		try
+		{
+        	switch (CalcTypeCoBox.Active)
+	        {
+	            case 0:
+	                LSSettings.BrCalcType = BrightnessCalcType.Advanced;
+	                break;
+	            case 1:
+	                LSSettings.BrCalcType = BrightnessCalcType.Simple;
+	                break;
+	            case 2:
+	                LSSettings.BrCalcType = BrightnessCalcType.Exif;
+	                break;
+	        }
+		}
+		catch (Exception ex) { Error.Report("OnCalcTypeCoBoxChanged", ex); }
     }
     
 	public void OnFrameSelectScaleValueChanged(object sender, EventArgs e)
     {
-        if (FrameSelectScale.Value >= 0 && FrameSelectScale.Value < ProjectManager.CurrentProject.Frames.Count)
-        {
-            ThumbEditView.Pixbuf = ProjectManager.CurrentProject.Frames[(int)FrameSelectScale.Value].ThumbEdited.Pixbuf.Copy();
-            ThumbViewGraph.Pixbuf = ProjectManager.CurrentProject.Frames[(int)FrameSelectScale.Value].Thumb.Pixbuf.Copy();
+		try
+		{
+	        if (FrameSelectScale.Value >= 0 && FrameSelectScale.Value < ProjectManager.CurrentProject.Frames.Count)
+	        {
+	            ThumbEditView.Pixbuf = ProjectManager.CurrentProject.Frames[(int)FrameSelectScale.Value].ThumbEdited.Pixbuf.Copy();
+	            ThumbViewGraph.Pixbuf = ProjectManager.CurrentProject.Frames[(int)FrameSelectScale.Value].Thumb.Pixbuf.Copy();
 
-            double factor = (double)ThumbViewGraph.Pixbuf.Width / (double)ThumbViewGraph.Pixbuf.Height;
-            ThumbEditView.Pixbuf = ThumbEditView.Pixbuf.ScaleSimple(160, (int)(160 / factor), Gdk.InterpType.Bilinear);
-            ThumbViewGraph.Pixbuf = ThumbViewGraph.Pixbuf.ScaleSimple(160, (int)(160 / factor), Gdk.InterpType.Bilinear);
-        }
+	            double factor = (double)ThumbViewGraph.Pixbuf.Width / (double)ThumbViewGraph.Pixbuf.Height;
+	            ThumbEditView.Pixbuf = ThumbEditView.Pixbuf.ScaleSimple(160, (int)(160 / factor), Gdk.InterpType.Bilinear);
+	            ThumbViewGraph.Pixbuf = ThumbViewGraph.Pixbuf.ScaleSimple(160, (int)(160 / factor), Gdk.InterpType.Bilinear);
+			}
+		}
+		catch (Exception ex) { Error.Report("OnFrameSelectScaleValueChanged", ex); }
     }
 
 	public void OnThumbEditButtonClicked(object sender, EventArgs e)
     {
-		MainUI.Click_ThumbEdit();
+		try { MainUI.Click_ThumbEdit(); }
+		catch (Exception ex) { Error.Report("OnThumbEditButtonClicked", ex); }
     }
     
 	public void OnBrightnessScaleValueChanged(object sender, EventArgs e)
-    {
-        MainUI.SetBrightnessScale(BrightnessScale.Value);
+	{
+		try { MainUI.Click_BrightnessSlider(BrightnessScale.Value); }
+		catch (Exception ex) { Error.Report("OnBrightnessScaleValueChanged", ex); }
     }
 
 	#endregion

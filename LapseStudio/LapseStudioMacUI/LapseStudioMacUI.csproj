@@ -104,10 +104,6 @@
     <Compile Include="GUI\SettingsWindow.designer.cs">
       <DependentUpon>SettingsWindow.cs</DependentUpon>
     </Compile>
-    <Compile Include="SettingsDialog.cs" />
-    <Compile Include="SettingsDialog.designer.cs">
-      <DependentUpon>SettingsDialog.cs</DependentUpon>
-    </Compile>
     <Compile Include="CocoaClasses\CocoaGraphDrawer.cs" />
   </ItemGroup>
   <ItemGroup>

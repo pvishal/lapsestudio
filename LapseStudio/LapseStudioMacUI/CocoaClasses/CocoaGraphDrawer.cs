@@ -21,6 +21,8 @@ namespace LapseStudioMacUI
 			this.g = g;
 			this.w = w;
 			this.h = h;
+			g.SetAllowsAntialiasing(true);
+			g.InterpolationQuality = CGInterpolationQuality.High;
 		}
 			
 		public void DrawLine(float xB, float yB, float xE, float yE)
@@ -69,13 +71,12 @@ namespace LapseStudioMacUI
 
 		public void DrawFull()
 		{
-			//Nothing to do here for now
+			//Nothing to do here
 		}
 
 		public void Dispose()
 		{
-			//g.Dispose();
+			g.Dispose();
 		}
 	}
 }
-

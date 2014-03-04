@@ -109,7 +109,7 @@ namespace LapseStudioMacUI
 
 		partial void BrightnessSlider_Changed(NSObject sender)
 		{
-			try { }
+			try { MainUI.Click_BrightnessSlider(BrightnessSlider.DoubleValue); }
 			catch (Exception ex) { Error.Report("BrightnessSlider_Changed", ex); }
 		}
 

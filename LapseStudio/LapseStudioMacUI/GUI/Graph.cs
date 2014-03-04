@@ -1,12 +1,9 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using MonoMac.Foundation;
-using MonoMac.AppKit;
-using Timelapse_API;
-using Timelapse_UI;
 using System.Drawing;
+using MonoMac.AppKit;
+using MonoMac.Foundation;
 using MonoMac.CoreGraphics;
+using Timelapse_UI;
 
 namespace LapseStudioMacUI
 {
@@ -39,14 +36,14 @@ namespace LapseStudioMacUI
 			this.BaseGraph = BaseGraph;
 			this.BaseGraph.RefreshGraph = Refresh;
 			this.BaseGraph.Init();
+			BaseGraph.SetNewSize((int)Frame.Width, (int)Frame.Height);
 		}
 
 		#region Events
 
 		private void Refresh()
 		{
-			//this.InvokeOnMainThread(delegate { DrawRect(Frame); });
-			DrawRect(Frame);
+			this.InvokeOnMainThread(new NSAction(delegate { this.SetNeedsDisplayInRect(Bounds); } ));
 		}
 
 		public override void MouseUp(NSEvent theEvent)
@@ -58,20 +55,20 @@ namespace LapseStudioMacUI
 		public override void MouseDown(NSEvent theEvent)
 		{
 			base.MouseDown(theEvent);
-			BaseGraph.Mouse_Down(theEvent.LocationInWindow.X-this.Frame.Left, this.Frame.Height-theEvent.LocationInWindow.Y);
+			PointF np = ConvertPointFromView(theEvent.LocationInWindow, null);
+			BaseGraph.Mouse_Down(np.X, Bounds.Height - np.Y);
 		}
 
-		public override void MouseMoved(NSEvent theEvent)
+		public override void MouseDragged(NSEvent theEvent)
 		{
-			base.MouseMoved(theEvent);
-			BaseGraph.Mouse_Move(theEvent.LocationInWindow.X-this.Frame.Left, this.Frame.Height-theEvent.LocationInWindow.Y);
+			base.MouseDragged(theEvent);
+			PointF np = ConvertPointFromView(theEvent.LocationInWindow, null);
+			BaseGraph.Mouse_Move(np.X,  Bounds.Height - np.Y);
 		}
 
 		public override void DrawRect(RectangleF dirtyRect)
 		{
 			base.DrawRect(dirtyRect);
-
-			//if(Frame.Width != BaseGraph.Width || Frame.Height != BaseGraph.Height) BaseGraph.SetNewSize((int)Frame.Width, (int)Frame.Height);
 
 			using (CGContext graph = NSGraphicsContext.CurrentContext.GraphicsPort)
 			using (CocoaGraphDrawer drawer = new CocoaGraphDrawer(graph, BaseGraph.Width, BaseGraph.Height))
@@ -95,4 +92,3 @@ namespace LapseStudioMacUI
 		#endregion
 	}
 }
-
