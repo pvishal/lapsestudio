@@ -19,18 +19,13 @@ namespace LapseStudioGtkUI
 			mw = win;
 			Init(Platform.Unix);
 
-			ProjectManager.BrightnessCalculated += CurrentProject_BrightnessCalculated;
-			ProjectManager.FramesLoaded += CurrentProject_FramesLoaded;
-			ProjectManager.ProgressChanged += CurrentProject_ProgressChanged;
-			ProjectManager.WorkDone += CurrentProject_WorkDone;
             this.TitleChanged += GtkUI_TitleChanged;
-            this.InfoTextChanged += GtkUI_InfoTextChanged;
-            
-			mw.FileTree.CursorChanged += FileTree_CursorChanged;
+            this.InfoTextChanged += GtkUI_InfoTextChanged;            
+			mw.PublicFileTree.CursorChanged += FileTree_CursorChanged;
 
-			mw.ThumbEventBox.ButtonPressEvent += new ButtonPressEventHandler(fixThumb_ButtonPressEvent);
-			mw.ThumbEventBox.ButtonReleaseEvent += new ButtonReleaseEventHandler(fixThumb_ButtonReleaseEvent);
-			mw.ThumbEventBox.MotionNotifyEvent += new MotionNotifyEventHandler(fixThumb_MotionNotifyEvent);
+			//mw.ThumbEventBox.ButtonPressEvent += new ButtonPressEventHandler(fixThumb_ButtonPressEvent);
+			//mw.ThumbEventBox.ButtonReleaseEvent += new ButtonReleaseEventHandler(fixThumb_ButtonReleaseEvent);
+			//mw.ThumbEventBox.MotionNotifyEvent += new MotionNotifyEventHandler(fixThumb_MotionNotifyEvent);
 		}
 
 		#region Test:
@@ -61,7 +56,7 @@ namespace LapseStudioGtkUI
 		void fixThumb_ButtonReleaseEvent(object o, ButtonReleaseEventArgs args)
 		{
 			ismoving = false;
-			ProjectManager.CurrentProject.SimpleCalculationArea = new Rectangle(startx, starty, (int)args.Event.X - startx, (int)args.Event.Y - starty);
+			ProjectManager.CurrentProject.SimpleCalculationArea = new Timelapse_API.Rectangle(startx, starty, (int)args.Event.X - startx, (int)args.Event.Y - starty);
 		}
 
 		void fixThumb_ButtonPressEvent(object o, ButtonPressEventArgs args)
@@ -77,24 +72,24 @@ namespace LapseStudioGtkUI
 
 		public override void Dispose()
 		{
-			if (mw.fixThumb.Pixbuf != null) mw.fixThumb.Pixbuf.Dispose();
-			if (mw.alignThumb.Pixbuf != null) mw.alignThumb.Pixbuf.Dispose();
-			if (mw.ThumbEditView.Pixbuf != null) mw.ThumbEditView.Pixbuf.Dispose();
-			if (mw.ThumbViewList.Pixbuf != null) mw.ThumbViewList.Pixbuf.Dispose();
-			if (mw.ThumbViewGraph.Pixbuf != null) mw.ThumbViewGraph.Pixbuf.Dispose();
+			//if (mw.fixThumb.Pixbuf != null) mw.fixThumb.Pixbuf.Dispose();
+			//if (mw.alignThumb.Pixbuf != null) mw.alignThumb.Pixbuf.Dispose();
+			if (mw.PublicThumbEditView.Pixbuf != null) mw.PublicThumbEditView.Pixbuf.Dispose();
+			if (mw.PublicThumbViewList.Pixbuf != null) mw.PublicThumbViewList.Pixbuf.Dispose();
+			if (mw.PublicThumbViewGraph.Pixbuf != null) mw.PublicThumbViewGraph.Pixbuf.Dispose();
 		}
 
 		public override void ResetMovement()
 		{
-			mw.XmovScale.Value = 0;
-			mw.YmovScale.Value = 0;
-			if (mw.alignThumb.Pixbuf != null) mw.alignThumb.Pixbuf.Dispose();
-			if (mw.fixThumb.Pixbuf != null) mw.fixThumb.Pixbuf.Dispose();
+			//mw.XmovScale.Value = 0;
+			//mw.YmovScale.Value = 0;
+			//if (mw.alignThumb.Pixbuf != null) mw.alignThumb.Pixbuf.Dispose();
+			//if (mw.fixThumb.Pixbuf != null) mw.fixThumb.Pixbuf.Dispose();
 		}
 
 		public override void InitMovement()
 		{
-			mw.alignThumb.Pixbuf = ProjectManager.CurrentProject.Frames[1].Thumb.Pixbuf;
+			/*mw.alignThumb.Pixbuf = ProjectManager.CurrentProject.Frames[1].Thumb.Pixbuf;
 			mw.fixThumb.Pixbuf = ProjectManager.CurrentProject.Frames[0].Thumb.Pixbuf;
 
 			double factor = (double)mw.fixThumb.Pixbuf.Width / (double)mw.fixThumb.Pixbuf.Height;
@@ -110,7 +105,7 @@ namespace LapseStudioGtkUI
 			mw.FixAlignment.LeftPadding = (uint)nl;
 			mw.FixAlignment.TopPadding = (uint)nh;
 			mw.MoveAlignment.LeftPadding = (uint)nl;
-			mw.MoveAlignment.TopPadding = (uint)nh;
+			mw.MoveAlignment.TopPadding = (uint)nh;*/
 		}
 
 		public override void InvokeUI(Action action)
@@ -127,8 +122,8 @@ namespace LapseStudioGtkUI
 		{
 			UpdateTable();
 			InitMovement();
-			mw.FileTree.SetCursor(GetFirstPath(), mw.FileTree.Columns[0], false);
-			mw.FrameSelectScale.SetRange(0, ProjectManager.CurrentProject.Frames.Count - 1);
+			mw.PublicFileTree.SetCursor(GetFirstPath(), mw.PublicFileTree.Columns[0], false);
+			mw.PublicFrameSelectScale.SetRange(0, ProjectManager.CurrentProject.Frames.Count - 1);
 			/*OnFrameSelectScaleValueChanged(null, null);
 
 			mw.MainNotebook.CurrentPage = (int)TabLocation.Graph;
@@ -143,25 +138,25 @@ namespace LapseStudioGtkUI
 		{
 			InvokeUI(() =>
 			{
-				mw.MainProgressBar.Fraction = 0;
-				mw.MainProgressBar.Text = String.Empty;
+				mw.PublicMainProgressBar.Fraction = 0;
+				mw.PublicMainProgressBar.Text = String.Empty;
 			});
 		}
 
 		public override void ResetPictureBoxes()
 		{
-			mw.alignThumb.Pixbuf = null;
-			mw.fixThumb.Pixbuf = null;
-			mw.ThumbEditView.Pixbuf = null;
-			mw.ThumbViewList.Pixbuf = null;
-			mw.ThumbViewGraph.Pixbuf = null;
+			//mw.alignThumb.Pixbuf = null;
+			//mw.fixThumb.Pixbuf = null;
+			mw.PublicThumbEditView.Pixbuf = null;
+			mw.PublicThumbViewList.Pixbuf = null;
+			mw.PublicThumbViewGraph.Pixbuf = null;
 		}
 
 		public override void InitUI()
 		{
-			mw.refreshMetadataAction.Sensitive = (LSSettings.UsedProgram != ProjectType.CameraRaw) ? false : true;
+			mw.PublicReloadAction.Sensitive = LSSettings.UsedProgram == ProjectType.CameraRaw;
             InitTreeView();
-			mw.CalcTypeCoBox.Active = (int)LSSettings.BrCalcType;
+			//mw.CalcTypeCoBox.Active = (int)LSSettings.BrCalcType;
 		}
 
         public override void ClearTable()
@@ -198,7 +193,7 @@ namespace LapseStudioGtkUI
         
         private void InitTreeView()
         {
-            foreach (TreeViewColumn col in mw.FileTree.Columns) { mw.FileTree.RemoveColumn(col); }
+			foreach (TreeViewColumn col in mw.PublicFileTree.Columns) { mw.PublicFileTree.RemoveColumn(col); }
             TreeViewTable = new ListStore(typeof(string), typeof(bool), typeof(string), typeof(string), typeof(string), typeof(string), typeof(string));
 
             TreeViewColumn NrColumn = new TreeViewColumn();
@@ -267,15 +262,15 @@ namespace LapseStudioGtkUI
             KeyframeColumn.AddAttribute(KeyframeCell, "toggle", (int)TableLocation.Keyframe);
 
 
-            mw.FileTree.AppendColumn(NrColumn);
-            mw.FileTree.AppendColumn(KeyframeColumn);
-            mw.FileTree.AppendColumn(FileColumn);
-            mw.FileTree.AppendColumn(BrightnessColumn);
-            mw.FileTree.AppendColumn(AVColumn);
-            mw.FileTree.AppendColumn(TVColumn);
-            mw.FileTree.AppendColumn(ISOColumn);
+			mw.PublicFileTree.AppendColumn(NrColumn);
+			mw.PublicFileTree.AppendColumn(KeyframeColumn);
+			mw.PublicFileTree.AppendColumn(FileColumn);
+			mw.PublicFileTree.AppendColumn(BrightnessColumn);
+			mw.PublicFileTree.AppendColumn(AVColumn);
+			mw.PublicFileTree.AppendColumn(TVColumn);
+			mw.PublicFileTree.AppendColumn(ISOColumn);
 
-            mw.FileTree.Model = TreeViewTable;
+			mw.PublicFileTree.Model = TreeViewTable;
         }
 
         private void UpdateRow(TreePath path)
@@ -322,13 +317,13 @@ namespace LapseStudioGtkUI
 		{
 			try
 			{
-				if (mw.FileTree.Selection.GetSelectedRows().Length > 0) UpdateRow(mw.FileTree.Selection.GetSelectedRows()[0]);
-				if (mw.MainNotebook.CurrentPage == (int)TabLocation.Filelist) { mw.ThumbViewList.Pixbuf = ProjectManager.CurrentProject.Frames[SelectedRow].Thumb.Pixbuf.ScaleSimple(160, 120, Gdk.InterpType.Bilinear); }
+				if (mw.PublicFileTree.Selection.GetSelectedRows().Length > 0) UpdateRow(mw.PublicFileTree.Selection.GetSelectedRows()[0]);
+				if (mw.PublicMainNotebook.CurrentPage == (int)TabLocation.Filelist) { mw.PublicThumbViewList.Pixbuf = ProjectManager.CurrentProject.Frames[SelectedRow].Thumb.Pixbuf.ScaleSimple(160, 120, Gdk.InterpType.Bilinear); }
 			}
 			catch (Exception ex) { Error.Report("FileTree CursorChanged", ex); }
 		}
 
-		private void CurrentProject_WorkDone(object sender, WorkFinishedEventArgs e)
+		protected override void CurrentProject_WorkDone(object sender, WorkFinishedEventArgs e)
 		{
 			try
 			{
@@ -346,40 +341,40 @@ namespace LapseStudioGtkUI
 								break;
 						}
 
-						mw.StatusLabel.Text = Message.GetString(e.Topic.ToString()) + " " + Message.GetString("is done");
+						mw.PublicStatusLabel.Text = Message.GetString(e.Topic.ToString()) + " " + Message.GetString("is done");
 					}
-					else { mw.StatusLabel.Text = Message.GetString(e.Topic.ToString()) + " " + Message.GetString("got cancelled"); }
+					else { mw.PublicStatusLabel.Text = Message.GetString(e.Topic.ToString()) + " " + Message.GetString("got cancelled"); }
 					ResetProgress();
 				});
 			}
 			catch (Exception ex) { Error.Report("Work finished", ex); }
 		}
 
-		private void CurrentProject_ProgressChanged(object sender, ProgressChangeEventArgs e)
+		protected override void CurrentProject_ProgressChanged(object sender, ProgressChangeEventArgs e)
 		{
 			try
 			{
 				Application.Invoke(delegate
 				{
-					mw.MainProgressBar.Fraction = e.ProgressPercentage / 100d;
-					mw.MainProgressBar.Text = e.ProgressPercentage + "%";
-					mw.StatusLabel.Text = Message.GetString(e.Topic.ToString());
+					mw.PublicMainProgressBar.Fraction = e.ProgressPercentage / 100d;
+					mw.PublicMainProgressBar.Text = e.ProgressPercentage + "%";
+					mw.PublicStatusLabel.Text = Message.GetString(e.Topic.ToString());
 				});
 			}
 			catch (Exception ex) { Error.Report("Progress changed", ex); }
 		}
 
-		private void CurrentProject_FramesLoaded(object sender, WorkFinishedEventArgs e)
+		protected override void CurrentProject_FramesLoaded(object sender, WorkFinishedEventArgs e)
 		{
 			try
 			{
 				Application.Invoke(delegate
 				{
-					mw.StatusLabel.Text = Message.GetString("Frames loaded");
+					mw.PublicStatusLabel.Text = Message.GetString("Frames loaded");
 					UpdateTable();
 					InitMovement();
-					mw.FileTree.SetCursor(GetFirstPath(), mw.FileTree.Columns[0], false);
-					mw.FrameSelectScale.SetRange(0, ProjectManager.CurrentProject.Frames.Count - 1);
+					mw.PublicFileTree.SetCursor(GetFirstPath(), mw.PublicFileTree.Columns[0], false);
+					mw.PublicFrameSelectScale.SetRange(0, ProjectManager.CurrentProject.Frames.Count - 1);
 					mw.OnFrameSelectScaleValueChanged(null, null);
 					ResetProgress();
 				});
@@ -387,13 +382,13 @@ namespace LapseStudioGtkUI
 			catch (Exception ex) { Error.Report("Frames loading finished", ex); }
 		}
 
-		private void CurrentProject_BrightnessCalculated(object sender, WorkFinishedEventArgs e)
+		protected override void CurrentProject_BrightnessCalculated(object sender, WorkFinishedEventArgs e)
 		{
 			try
 			{
 				Application.Invoke(delegate
 				{
-					mw.StatusLabel.Text = Message.GetString("Brightness calculated");
+					mw.PublicStatusLabel.Text = Message.GetString("Brightness calculated");
 					UpdateTable();
 					ResetProgress();
 					MainGraph.RefreshGraph();
@@ -416,7 +411,7 @@ namespace LapseStudioGtkUI
 
         private void GtkUI_InfoTextChanged(string Value)
         {
-            mw.StatusLabel.Text = Value;
+			mw.PublicStatusLabel.Text = Value;
         }
 
         private void GtkUI_TitleChanged(string Value)

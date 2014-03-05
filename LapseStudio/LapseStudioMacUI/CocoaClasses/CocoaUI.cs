@@ -17,11 +17,6 @@ namespace LapseStudioMacUI
 		{
 			mw = win;
 			Init(Platform.MacOSX);
-
-			ProjectManager.BrightnessCalculated += CurrentProject_BrightnessCalculated;
-			ProjectManager.FramesLoaded += CurrentProject_FramesLoaded;
-			ProjectManager.ProgressChanged += CurrentProject_ProgressChanged;
-			ProjectManager.WorkDone += CurrentProject_WorkDone;
 		}
 
 		#region Methods
@@ -124,7 +119,7 @@ namespace LapseStudioMacUI
 
 		#region Eventhandling
 
-		private void CurrentProject_WorkDone(object sender, WorkFinishedEventArgs e)
+        protected override void CurrentProject_WorkDone(object sender, WorkFinishedEventArgs e)
 		{
 			try
 			{
@@ -151,7 +146,7 @@ namespace LapseStudioMacUI
 			catch (Exception ex) { Error.Report("Work finished", ex); }
 		}
 
-		private void CurrentProject_ProgressChanged(object sender, ProgressChangeEventArgs e)
+        protected override void CurrentProject_ProgressChanged(object sender, ProgressChangeEventArgs e)
 		{
 			try
 			{
@@ -165,7 +160,7 @@ namespace LapseStudioMacUI
 			catch (Exception ex) { Error.Report("Progress changed", ex); }
 		}
 
-		private void CurrentProject_FramesLoaded(object sender, WorkFinishedEventArgs e)
+        protected override void CurrentProject_FramesLoaded(object sender, WorkFinishedEventArgs e)
 		{
 			try
 			{
@@ -184,7 +179,7 @@ namespace LapseStudioMacUI
 			catch (Exception ex) { Error.Report("Frames loading finished", ex); }
 		}
 
-		private void CurrentProject_BrightnessCalculated(object sender, WorkFinishedEventArgs e)
+        protected override void CurrentProject_BrightnessCalculated(object sender, WorkFinishedEventArgs e)
 		{
 			try
 			{

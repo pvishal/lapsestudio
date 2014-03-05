@@ -14,137 +14,137 @@ namespace LapseStudioGtkUI
         
         protected override bool SaveFormatEnabled
         {
-            get { return Dlg.FormatCoBox.Sensitive; }
-            set { Dlg.FormatCoBox.Sensitive = value; }
+			get { return Dlg.PublicFormatCoBox.Sensitive; }
+			set { Dlg.PublicFormatCoBox.Sensitive = value; }
         }
 
         protected override bool JpgQualityEnabled
         {
-            get { return Dlg.JpgQualityScale.Sensitive; }
-            set { Dlg.JpgQualityScale.Sensitive = value; }
+			get { return Dlg.PublicJpgQualityScale.Sensitive; }
+			set { Dlg.PublicJpgQualityScale.Sensitive = value; }
         }
 
         protected override bool TiffCompressionEnabled
         {
-            get { return Dlg.CompressionCoBox.Sensitive; }
-            set { Dlg.CompressionCoBox.Sensitive = value; }
+			get { return Dlg.PublicCompressionCoBox.Sensitive; }
+			set { Dlg.PublicCompressionCoBox.Sensitive = value; }
         }
 
         protected override bool BitDepthEnabled
         {
-            get { return Dlg.BitdepthCoBox.Sensitive; }
-            set { Dlg.BitdepthCoBox.Sensitive = value; }
+			get { return Dlg.PublicBitdepthCoBox.Sensitive; }
+			set { Dlg.PublicBitdepthCoBox.Sensitive = value; }
         }
 
         protected override bool KeepPP3Enabled
         {
-            get { return Dlg.KeepPP3ChBox.Sensitive; }
-            set { Dlg.KeepPP3ChBox.Sensitive = value; }
+			get { return Dlg.PublicKeepPP3ChBox.Sensitive; }
+			set { Dlg.PublicKeepPP3ChBox.Sensitive = value; }
         }
 
         protected override bool RunRTEnabled
         {
-            get { return Dlg.RunRTChBox.Sensitive; }
-            set { Dlg.RunRTChBox.Sensitive = value; }
+			get { return Dlg.PublicRunRTChBox.Sensitive; }
+			set { Dlg.PublicRunRTChBox.Sensitive = value; }
         }
 
         protected override bool ThreadCountEnabled
         {
-            get { return Dlg.ThreadSpin.Sensitive; }
-            set { Dlg.ThreadSpin.Sensitive = value; }
+			get { return Dlg.PublicThreadSpin.Sensitive; }
+			set { Dlg.PublicThreadSpin.Sensitive = value; }
         }
         
 
         protected override void InitLanguages(string[] Entries)
         {
-            foreach (string entry in Entries) { Dlg.LanguageCoBox.AppendText(entry); }
+			foreach (string entry in Entries) { Dlg.PublicLanguageCoBox.AppendText(entry); }
         }
 
         protected override void InitPrograms(string[] Entries)
         {
-            foreach (string entry in Entries) { Dlg.ProgramCoBox.AppendText(entry); }
+			foreach (string entry in Entries) { Dlg.PublicProgramCoBox.AppendText(entry); }
         }
 
         protected override void InitSaveFormats(string[] Entries)
         {
-            foreach (string entry in Entries) { Dlg.FormatCoBox.AppendText(entry); }
+			foreach (string entry in Entries) { Dlg.PublicFormatCoBox.AppendText(entry); }
         }
 
         protected override void InitBitDepths(string[] Entries)
         {
-            foreach (string entry in Entries) { Dlg.BitdepthCoBox.AppendText(entry); }
+			foreach (string entry in Entries) { Dlg.PublicBitdepthCoBox.AppendText(entry); }
         }
 
         protected override void InitTiffCompressions(string[] Entries)
         {
-            foreach (string entry in Entries) { Dlg.CompressionCoBox.AppendText(entry); }
+			foreach (string entry in Entries) { Dlg.PublicCompressionCoBox.AppendText(entry); }
         }
         
 
         public override string RTPath
         {
-            get { return Dlg.RTPathBox.Text; }
-            set { Dlg.RTPathBox.Text = value; }
+			get { return Dlg.PublicRTPathBox.Text; }
+			set { Dlg.PublicRTPathBox.Text = value; }
         }
 
         public override int ThreadCount
         {
-            get { return Dlg.ThreadSpin.ValueAsInt; }
-            set { Dlg.ThreadSpin.Value = value; }
+			get { return Dlg.PublicThreadSpin.ValueAsInt; }
+			set { Dlg.PublicThreadSpin.Value = value; }
         }
 
         public override int JpgQuality
         {
-            get { return (int)Dlg.JpgQualityScale.Value; }
-            set { Dlg.JpgQualityScale.Value = value; }
+			get { return (int)Dlg.PublicJpgQualityScale.Value; }
+			set { Dlg.PublicJpgQualityScale.Value = value; }
         }
 
         public override bool AutoThread
         {
-            get { return Dlg.AutothreadsChBox.Active; }
-            set { Dlg.AutothreadsChBox.Active = value; }
+			get { return Dlg.PublicAutothreadChBox.Active; }
+			set { Dlg.PublicAutothreadChBox.Active = value; }
         }
 
         public override bool KeepPP3
         {
-            get { return Dlg.KeepPP3ChBox.Active; }
-            set { Dlg.KeepPP3ChBox.Active = value; }
+			get { return Dlg.PublicKeepPP3ChBox.Active; }
+			set { Dlg.PublicKeepPP3ChBox.Active = value; }
         }
 
         public override bool RunRT
         {
-            get { return Dlg.RunRTChBox.Active; }
-            set { Dlg.RunRTChBox.Active = value; }
+			get { return Dlg.PublicRunRTChBox.Active; }
+			set { Dlg.PublicRunRTChBox.Active = value; }
         }
 
         public override int LanguageSelection
         {
-            get { return Dlg.LanguageCoBox.Active; }
-            set { Dlg.LanguageCoBox.Active = value; }
+			get { return Dlg.PublicLanguageCoBox.Active; }
+			set { Dlg.PublicLanguageCoBox.Active = value; }
         }
 
         public override int ProgramSelection
         {
-            get { return Dlg.ProgramCoBox.Active; }
-            set { Dlg.ProgramCoBox.Active = value; }
+			get { return Dlg.PublicProgramCoBox.Active; }
+			set { Dlg.PublicProgramCoBox.Active = value; }
         }
 
         public override int SaveFormatSelection
         {
-            get { return Dlg.FormatCoBox.Active; }
-            set { Dlg.FormatCoBox.Active = value; }
+			get { return Dlg.PublicFormatCoBox.Active; }
+			set { Dlg.PublicFormatCoBox.Active = value; }
         }
 
         public override int BitDepthSelection
         {
-            get { return Dlg.BitdepthCoBox.Active; }
-            set { Dlg.BitdepthCoBox.Active = value; }
+			get { return Dlg.PublicBitdepthCoBox.Active; }
+			set { Dlg.PublicBitdepthCoBox.Active = value; }
         }
 
         public override int TiffCompressionSelection
         {
-            get { return Dlg.CompressionCoBox.Active; }
-            set { Dlg.CompressionCoBox.Active = value; }
+			get { return Dlg.PublicCompressionCoBox.Active; }
+			set { Dlg.PublicCompressionCoBox.Active = value; }
         }
     }
 }

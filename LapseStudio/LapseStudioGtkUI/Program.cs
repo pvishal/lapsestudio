@@ -1,7 +1,6 @@
-using System;
 using Gtk;
 
-namespace LapseStudioGUI
+namespace LapseStudioGtkUI
 {
 	class MainClass
 	{

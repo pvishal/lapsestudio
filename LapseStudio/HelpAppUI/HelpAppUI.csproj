@@ -3,8 +3,6 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProductVersion>12.0.0</ProductVersion>
-    <SchemaVersion>2.0</SchemaVersion>
     <ProjectGuid>{33DB1A8E-741B-439A-AB53-D8F9088F6D01}</ProjectGuid>
     <OutputType>WinExe</OutputType>
     <RootNamespace>HelpAppUI</RootNamespace>

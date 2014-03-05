@@ -3,8 +3,6 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProductVersion>10.0.0</ProductVersion>
-    <SchemaVersion>2.0</SchemaVersion>
     <ProjectGuid>{FD96B06C-EDC3-4407-986B-122258B13BC1}</ProjectGuid>
     <OutputType>WinExe</OutputType>
     <RootNamespace>LapseStudioGtkUI</RootNamespace>
@@ -71,21 +69,51 @@
     <Compile Include="GtkClasses\GtkGraphDrawer.cs" />
     <Compile Include="GtkClasses\GtkSettingsUI.cs" />
     <Compile Include="Program.cs" />
-    <Compile Include="GUI-Build\MainWindow.cs" />
-    <Compile Include="GUI-Build\generated.cs" />
-    <Compile Include="GUI-Build\GUI.MyAboutDialog.cs" />
-    <Compile Include="GUI-Build\GUI.Graph.cs" />
-    <Compile Include="GUI-Build\GUI.MyHelpDialog.cs" />
-    <Compile Include="GUI-Build\GUI.MySettingsDialog.cs" />
-    <Compile Include="GUI\Graph.cs" />
-    <Compile Include="GUI\MainWindow.cs" />
-    <Compile Include="GUI\MyAboutDialog.cs" />
-    <Compile Include="GUI\MyHelpDialog.cs" />
-    <Compile Include="GUI\MySettingsDialog.cs" />
     <Compile Include="GtkClasses\GtkMessageBox.cs" />
     <Compile Include="GtkClasses\GtkUI.cs" />
     <Compile Include="GtkClasses\GtkFileDialog.cs" />
     <Compile Include="GtkClasses\GtkHelper.cs" />
+    <Compile Include="gtk-gui\generated.cs" />
+    <Compile Include="MainWindow.cs" />
+    <Compile Include="gtk-gui\LapseStudioGtkUI.MainWindow.cs" />
+    <Compile Include="Graph.cs" />
+    <Compile Include="gtk-gui\LapseStudioGtkUI.Graph.cs" />
+    <Compile Include="MySettingsDialog.cs" />
+    <Compile Include="gtk-gui\LapseStudioGtkUI.MySettingsDialog.cs" />
+    <Compile Include="MyAboutDialog.cs" />
+    <Compile Include="gtk-gui\LapseStudioGtkUI.MyAboutDialog.cs" />
+    <Compile Include="MyHelpDialog.cs" />
+    <Compile Include="gtk-gui\LapseStudioGtkUI.MyHelpDialog.cs" />
   </ItemGroup>
   <ItemGroup />
+  <ItemGroup>
+    <EmbeddedResource Include="gtk-gui\gui.stetic">
+      <LogicalName>gui.stetic</LogicalName>
+    </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Icons\" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Icons\Add_32x32.png">
+      <DeployService-UseProjectRelativePath>True</DeployService-UseProjectRelativePath>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Icons\Calculate_32x32.png">
+      <DeployService-UseProjectRelativePath>True</DeployService-UseProjectRelativePath>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Icons\Cancel_32x32.png">
+      <DeployService-UseProjectRelativePath>True</DeployService-UseProjectRelativePath>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Icons\Reload_32x32.png">
+      <DeployService-UseProjectRelativePath>True</DeployService-UseProjectRelativePath>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Icons\Save_32x32.png">
+      <DeployService-UseProjectRelativePath>True</DeployService-UseProjectRelativePath>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+  </ItemGroup>
 </Project>

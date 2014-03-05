@@ -24,10 +24,6 @@ namespace LapseStudioWinFormsUI
             mw.ProcessToolButton.Image = Timelapse_UI.Properties.Resources.Save_32x32;
             mw.CancelToolButton.Image = Timelapse_UI.Properties.Resources.Cancel_32x32;
 
-			ProjectManager.BrightnessCalculated += CurrentProject_BrightnessCalculated;
-			ProjectManager.FramesLoaded += CurrentProject_FramesLoaded;
-			ProjectManager.ProgressChanged += CurrentProject_ProgressChanged;
-            ProjectManager.WorkDone += CurrentProject_WorkDone;
             this.InfoTextChanged += WinFormUI_InfoTextChanged;
             this.TitleChanged += WinFormUI_TitleChanged;
 		}
@@ -132,7 +128,7 @@ namespace LapseStudioWinFormsUI
 
 		#region Eventhandling
         
-        private void CurrentProject_WorkDone(object sender, WorkFinishedEventArgs e)
+        protected override void CurrentProject_WorkDone(object sender, WorkFinishedEventArgs e)
         {
             try
             {
@@ -156,7 +152,7 @@ namespace LapseStudioWinFormsUI
             catch (Exception ex) { Error.Report("Work finished", ex); }
         }
 
-		private void CurrentProject_ProgressChanged(object sender, ProgressChangeEventArgs e)
+        protected override void CurrentProject_ProgressChanged(object sender, ProgressChangeEventArgs e)
 		{
             try
             {
@@ -167,7 +163,7 @@ namespace LapseStudioWinFormsUI
             catch (Exception ex) { Error.Report("Progress changed", ex); }
 		}
 
-		private void CurrentProject_FramesLoaded(object sender, WorkFinishedEventArgs e)
+        protected override void CurrentProject_FramesLoaded(object sender, WorkFinishedEventArgs e)
 		{
             try
             {
@@ -182,7 +178,7 @@ namespace LapseStudioWinFormsUI
             catch (Exception ex) { Error.Report("Frames loading finished", ex); }
 		}
 
-		private void CurrentProject_BrightnessCalculated(object sender, WorkFinishedEventArgs e)
+        protected override void CurrentProject_BrightnessCalculated(object sender, WorkFinishedEventArgs e)
 		{
             try
             {

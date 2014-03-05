@@ -63,6 +63,11 @@ namespace Timelapse_UI
 
 			AppDomain currentDomain = AppDomain.CurrentDomain;
 			currentDomain.UnhandledException += HandleUnhandledException;
+
+			ProjectManager.BrightnessCalculated += CurrentProject_BrightnessCalculated;
+			ProjectManager.FramesLoaded += CurrentProject_FramesLoaded;
+			ProjectManager.ProgressChanged += CurrentProject_ProgressChanged;
+			ProjectManager.WorkDone += CurrentProject_WorkDone;
 		}
 
 		private void HandleUnhandledException (object sender, UnhandledExceptionEventArgs e)
@@ -71,6 +76,14 @@ namespace Timelapse_UI
 		}
 
 		#region Abstract Methods
+
+		protected abstract void CurrentProject_WorkDone(object sender, WorkFinishedEventArgs e);
+
+		protected abstract void CurrentProject_ProgressChanged(object sender, ProgressChangeEventArgs e);
+
+		protected abstract void CurrentProject_FramesLoaded(object sender, WorkFinishedEventArgs e);
+
+		protected abstract void CurrentProject_BrightnessCalculated(object sender, WorkFinishedEventArgs e);
 
         public abstract void Dispose();
 
@@ -120,6 +133,11 @@ namespace Timelapse_UI
 			LSSettings.Save();
 
 			this.Dispose();
+
+			ProjectManager.BrightnessCalculated -= CurrentProject_BrightnessCalculated;
+			ProjectManager.FramesLoaded -= CurrentProject_FramesLoaded;
+			ProjectManager.ProgressChanged -= CurrentProject_ProgressChanged;
+			ProjectManager.WorkDone -= CurrentProject_WorkDone;
 
 			//TODO: add a waitone thing variable to project
 			while (ProjectManager.CurrentProject.IsWorking) { System.Threading.Thread.Sleep(50); }
