@@ -67,6 +67,7 @@
     <Compile Include="GUI\MySettingsDialog.Designer.cs">
       <DependentUpon>MySettingsDialog.cs</DependentUpon>
     </Compile>
+    <Compile Include="WinFormClasses\OpenFolderDialog.cs" />
     <Compile Include="WinFormClasses\WinFormFileDialog.cs" />
     <Compile Include="WinFormClasses\WinFormGraphDrawer.cs" />
     <Compile Include="WinFormClasses\WinFormHelper.cs" />

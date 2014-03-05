@@ -7,24 +7,29 @@ namespace LapseStudioWinFormsUI
 	public class WinFormFileDialog : Timelapse_UI.FileDialog
 	{
         private FileDialog fdlg;
-        private FolderBrowserDialog fbdlg;
+        private OpenFolderDialog fbdlg;
+        private static IWin32Window owner;
 
         protected override Timelapse_UI.FileDialog GetDialog()
 		{
 			return this;
 		}
 
+        public static void InitOpenFolderDialog(IWin32Window win)
+        {
+            owner = win;
+        }
+
 		public override WindowResponse Show()
 		{
             if (DialogType == FileDialogType.SelectFolder)
             {
-                fbdlg = new FolderBrowserDialog();
-                fbdlg.SelectedPath = InitialDirectory;
-                fbdlg.ShowNewFolderButton = true;
-                fbdlg.Description = Title;
+                fbdlg = new OpenFolderDialog();
+                fbdlg.InitialFolder = InitialDirectory;
+                fbdlg.Title = Title;
 
-                WindowResponse resp = WinFormHelper.GetResponse(fbdlg.ShowDialog());
-                SelectedPath = fbdlg.SelectedPath;
+                WindowResponse resp = WinFormHelper.GetResponse(fbdlg.ShowDialog(owner));
+                SelectedPath = fbdlg.Folder;
                 return resp;
             }
             else
@@ -62,4 +67,3 @@ namespace LapseStudioWinFormsUI
 		}
 	}
 }
-

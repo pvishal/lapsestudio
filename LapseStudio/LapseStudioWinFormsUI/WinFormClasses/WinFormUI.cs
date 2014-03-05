@@ -18,6 +18,7 @@ namespace LapseStudioWinFormsUI
 		{
 			mw = win;
 			Init(Platform.Windows);
+            WinFormFileDialog.InitOpenFolderDialog(mw);
             mw.AddFileToolButton.Image = Timelapse_UI.Properties.Resources.Add_32x32;
             mw.CalculateToolButton.Image = Timelapse_UI.Properties.Resources.Calculate_32x32;
             mw.MetadataToolButton.Image = Timelapse_UI.Properties.Resources.Reload_32x32;
