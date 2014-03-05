@@ -14,6 +14,7 @@
                 <outlet property="FrameSelectSlider" destination="DNh-0n-JQH" id="e0w-LH-TU9"/>
                 <outlet property="FrameSelectedLabel" destination="h8g-In-J8m" id="zBd-mA-oDT"/>
                 <outlet property="GraphResetButton" destination="kna-xa-K0K" id="sbk-bj-dHu"/>
+                <outlet property="KFColumn" destination="wNS-ug-hjO" id="hSd-Wn-zXz"/>
                 <outlet property="MainGraph" destination="QC8-Qh-8aR" id="Njf-oS-OdQ"/>
                 <outlet property="MainProgressBar" destination="bOM-SO-ASd" id="Yxm-BR-PIQ"/>
                 <outlet property="MainTabView" destination="vJm-s2-PfO" id="c8U-n0-Bjw"/>
@@ -67,7 +68,7 @@
                                                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                                         <color key="gridColor" name="gridColor" catalog="System" colorSpace="catalog"/>
                                                         <tableColumns>
-                                                            <tableColumn editable="NO" width="26" minWidth="25" maxWidth="1000" id="lRm-KW-ybn">
+                                                            <tableColumn editable="NO" width="25" minWidth="25" maxWidth="1000" id="lRm-KW-ybn">
                                                                 <tableHeaderCell key="headerCell" lineBreakMode="truncatingTail" borderStyle="border" alignment="left" title="Nr">
                                                                     <font key="font" metaFont="smallSystem"/>
                                                                     <color key="textColor" name="headerTextColor" catalog="System" colorSpace="catalog"/>
@@ -86,13 +87,15 @@
                                                                     <color key="textColor" name="headerTextColor" catalog="System" colorSpace="catalog"/>
                                                                     <color key="backgroundColor" white="0.33333298560000002" alpha="1" colorSpace="calibratedWhite"/>
                                                                 </tableHeaderCell>
-                                                                <textFieldCell key="dataCell" lineBreakMode="truncatingTail" selectable="YES" editable="YES" alignment="left" title="Text Cell" id="lWP-8y-MCD">
+                                                                <buttonCell key="dataCell" type="check" bezelStyle="regularSquare" imagePosition="left" alignment="left" inset="2" id="8ka-a4-EsS">
+                                                                    <behavior key="behavior" pushIn="YES" changeContents="YES" lightByContents="YES"/>
                                                                     <font key="font" metaFont="system"/>
-                                                                    <color key="textColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
-                                                                    <color key="backgroundColor" name="controlBackgroundColor" catalog="System" colorSpace="catalog"/>
-                                                                </textFieldCell>
+                                                                    <connections>
+                                                                        <action selector="KFCell_Changed:" target="-2" id="9j8-TX-4wX"/>
+                                                                    </connections>
+                                                                </buttonCell>
                                                             </tableColumn>
-                                                            <tableColumn editable="NO" width="110" minWidth="30" maxWidth="3.4028234663852886e+38" id="a9U-hC-WBW">
+                                                            <tableColumn editable="NO" width="56" minWidth="30" maxWidth="3.4028234663852886e+38" id="a9U-hC-WBW">
                                                                 <tableHeaderCell key="headerCell" lineBreakMode="truncatingTail" borderStyle="border" alignment="left" title="Filename">
                                                                     <font key="font" metaFont="smallSystem"/>
                                                                     <color key="textColor" name="headerTextColor" catalog="System" colorSpace="catalog"/>
@@ -105,7 +108,7 @@
                                                                 </textFieldCell>
                                                                 <tableColumnResizingMask key="resizingMask" resizeWithTable="YES" userResizable="YES"/>
                                                             </tableColumn>
-                                                            <tableColumn width="65" minWidth="20" maxWidth="3.4028234663852886e+38" id="ndY-6C-xHI">
+                                                            <tableColumn width="63" minWidth="20" maxWidth="3.4028234663852886e+38" id="ndY-6C-xHI">
                                                                 <tableHeaderCell key="headerCell" lineBreakMode="truncatingTail" borderStyle="border" alignment="left" title="Brightness">
                                                                     <font key="font" metaFont="smallSystem"/>
                                                                     <color key="textColor" name="headerTextColor" catalog="System" colorSpace="catalog"/>
@@ -115,10 +118,13 @@
                                                                     <font key="font" metaFont="system"/>
                                                                     <color key="textColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
                                                                     <color key="backgroundColor" name="controlBackgroundColor" catalog="System" colorSpace="catalog"/>
+                                                                    <connections>
+                                                                        <action selector="BrightnessCell_Changed:" target="-2" id="Gwz-oC-qgj"/>
+                                                                    </connections>
                                                                 </textFieldCell>
                                                                 <tableColumnResizingMask key="resizingMask" resizeWithTable="YES" userResizable="YES"/>
                                                             </tableColumn>
-                                                            <tableColumn editable="NO" width="35" minWidth="20" maxWidth="3.4028234663852886e+38" id="5SU-dl-8Jp">
+                                                            <tableColumn editable="NO" width="23" minWidth="20" maxWidth="3.4028234663852886e+38" id="5SU-dl-8Jp">
                                                                 <tableHeaderCell key="headerCell" lineBreakMode="truncatingTail" borderStyle="border" alignment="left" title="AV">
                                                                     <font key="font" metaFont="smallSystem"/>
                                                                     <color key="textColor" name="headerTextColor" catalog="System" colorSpace="catalog"/>
@@ -131,7 +137,7 @@
                                                                 </textFieldCell>
                                                                 <tableColumnResizingMask key="resizingMask" resizeWithTable="YES" userResizable="YES"/>
                                                             </tableColumn>
-                                                            <tableColumn editable="NO" width="35" minWidth="20" maxWidth="3.4028234663852886e+38" id="FTv-59-WcL">
+                                                            <tableColumn editable="NO" width="22" minWidth="20" maxWidth="3.4028234663852886e+38" id="FTv-59-WcL">
                                                                 <tableHeaderCell key="headerCell" lineBreakMode="truncatingTail" borderStyle="border" alignment="left" title="TV">
                                                                     <font key="font" metaFont="smallSystem"/>
                                                                     <color key="textColor" name="headerTextColor" catalog="System" colorSpace="catalog"/>
@@ -144,7 +150,7 @@
                                                                 </textFieldCell>
                                                                 <tableColumnResizingMask key="resizingMask" resizeWithTable="YES" userResizable="YES"/>
                                                             </tableColumn>
-                                                            <tableColumn editable="NO" width="250" minWidth="20" maxWidth="3.4028234663852886e+38" id="hKQ-Nr-AjP">
+                                                            <tableColumn editable="NO" width="26" minWidth="20" maxWidth="3.4028234663852886e+38" id="hKQ-Nr-AjP">
                                                                 <tableHeaderCell key="headerCell" lineBreakMode="truncatingTail" borderStyle="border" alignment="left" title="ISO">
                                                                     <font key="font" metaFont="smallSystem"/>
                                                                     <color key="textColor" name="headerTextColor" catalog="System" colorSpace="catalog"/>
@@ -311,9 +317,9 @@
                         </tabViewItems>
                     </tabView>
                     <segmentedControl verticalHuggingPriority="750" id="I2I-Gc-CeW">
-                        <rect key="frame" x="231" y="481" width="266" height="23"/>
+                        <rect key="frame" x="231" y="481" width="266" height="24"/>
                         <autoresizingMask key="autoresizingMask" flexibleMinX="YES" flexibleMaxX="YES" flexibleMinY="YES"/>
-                        <segmentedCell key="cell" alignment="left" style="capsule" trackingMode="selectOne" id="fe9-Po-jWu">
+                        <segmentedCell key="cell" alignment="left" style="rounded" trackingMode="selectOne" id="fe9-Po-jWu">
                             <font key="font" metaFont="system"/>
                             <segments>
                                 <segment label="Files" width="86" selected="YES"/>

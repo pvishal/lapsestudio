@@ -155,6 +155,18 @@ namespace LapseStudioMacUI
 			catch (Exception ex) { Error.Report("GraphResetButton_Click", ex); }
 		}
 
+		partial void BrightnessCell_Changed(NSObject sender)
+		{//TODO: brightness change does not work
+			try { MainUI.UpdateBrightness(MainTable.SelectedRow, (string)((TableDataSource)MainTable.DataSource).Rows[MainTable.SelectedRow][(int)TableLocation.Brightness]); }
+			catch (Exception ex) { Error.Report("BrightnessCell_Changed", ex); }
+		}
+
+		partial void KFCell_Changed(NSObject sender)
+		{
+			try { MainUI.Click_KeyframeToggle(MainTable.SelectedRow, (bool)((TableDataSource)MainTable.DataSource).Rows[MainTable.SelectedRow][(int)TableLocation.Keyframe]); }
+			catch (Exception ex) { Error.Report("KFCell_Changed", ex); }
+		}
+
 		#endregion
 
 		public void FrameSelectChanged()

@@ -12,7 +12,7 @@ namespace LapseStudioMacUI
 	[Register ("TableViewDataSource")]
 	public class TableDataSource : NSTableViewDataSource
 	{
-		List<ArrayList> Rows = new List<ArrayList>();
+		public List<ArrayList> Rows = new List<ArrayList>();
 
 		public TableDataSource ()
 		{
@@ -36,7 +36,7 @@ namespace LapseStudioMacUI
 				case "ISO":
 					return new NSString(Rows[row][(int)TableLocation.ISO].ToString());
 				case "KF":
-					return new NSString(Rows[row][(int)TableLocation.Keyframe].ToString());
+					return NSObject.FromObject(((bool)(Rows[row][(int)TableLocation.Keyframe])) ? NSCellStateValue.On : NSCellStateValue.Off);
 				case "Filename":
 					return new NSString(Rows[row][(int)TableLocation.Filename].ToString());
 				case "Nr":
@@ -45,13 +45,13 @@ namespace LapseStudioMacUI
 					return new NSString(Rows[row][(int)TableLocation.Brightness].ToString());
 
 				default:
-					return new NSObject();
+					return new NSString("N/A");
 			}
 		}
 
 		public void Add(ArrayList row)
 		{
-			Rows.Add(row);
+			Rows.Add(new ArrayList(row));
 		}
 
 		public void Clear()
@@ -66,6 +66,5 @@ namespace LapseStudioMacUI
 				Rows.RemoveAt(index);
 			}
 		}
-
 	}
 }

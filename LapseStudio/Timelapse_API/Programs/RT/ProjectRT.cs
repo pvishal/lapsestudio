@@ -204,11 +204,13 @@ namespace Timelapse_API
 
         private void StartRT()
         {
-            if (!File.Exists(RTPath)) { throw new FileNotFoundException("RawTherapee execution file not found"); }
+			string ExecPath = RTPath;
+			if (ProjectManager.RunningPlatform == Platform.MacOSX) ExecPath = Path.Combine(RTPath, "Contents/MacOS/rawtherapee");
+			if (!File.Exists(ExecPath)) { throw new FileNotFoundException("RawTherapee execution file not found"); }
             FileHandle.CreateDirectory(ProjectManager.ImageSavePath);
 
             ProcessStartInfo RTStartInfo = new ProcessStartInfo();
-            RTStartInfo = new ProcessStartInfo(RTPath);
+			RTStartInfo = new ProcessStartInfo(ExecPath);
 
             RTStartInfo.UseShellExecute = false;
             RTStartInfo.CreateNoWindow = true;

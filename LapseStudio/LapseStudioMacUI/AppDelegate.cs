@@ -24,9 +24,8 @@ namespace LapseStudioMacUI
 
 		public override bool ApplicationShouldTerminateAfterLastWindowClosed(NSApplication sender)
 		{
-			return true;
+			return false;
 		}
-
 
 		partial void MenuAboutItem_Click(NSObject sender)
 		{

@@ -10,8 +10,8 @@ namespace LapseStudioMacUI
 		{
 			NSAlert al = new NSAlert();
 			al.AlertStyle = CocoaHelper.GetWinType(type);
-			al.MessageText = message;
-			al.InformativeText = title;
+			al.MessageText = title;
+			al.InformativeText = message;
 
 			switch (bType)
 			{

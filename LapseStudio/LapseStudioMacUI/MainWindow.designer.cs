@@ -81,6 +81,9 @@ namespace LapseStudioMacUI
 		[Action ("AlignXButton_Click:")]
 		partial void AlignXButton_Click (MonoMac.Foundation.NSObject sender);
 
+		[Action ("BrightnessCell_Changed:")]
+		partial void BrightnessCell_Changed (MonoMac.Foundation.NSObject sender);
+
 		[Action ("BrightnessSlider_Changed:")]
 		partial void BrightnessSlider_Changed (MonoMac.Foundation.NSObject sender);
 
@@ -98,6 +101,9 @@ namespace LapseStudioMacUI
 
 		[Action ("GraphResetButton_Click:")]
 		partial void GraphResetButton_Click (MonoMac.Foundation.NSObject sender);
+
+		[Action ("KFCell_Changed:")]
+		partial void KFCell_Changed (MonoMac.Foundation.NSObject sender);
 
 		[Action ("MainTable_Changed:")]
 		partial void MainTable_Changed (MonoMac.Foundation.NSObject sender);
@@ -122,11 +128,6 @@ namespace LapseStudioMacUI
 		
 		void ReleaseDesignerOutlets ()
 		{
-			if (MainGraph != null) {
-				MainGraph.Dispose ();
-				MainGraph = null;
-			}
-
 			if (AlignXButton != null) {
 				AlignXButton.Dispose ();
 				AlignXButton = null;
@@ -165,6 +166,11 @@ namespace LapseStudioMacUI
 			if (GraphResetButton != null) {
 				GraphResetButton.Dispose ();
 				GraphResetButton = null;
+			}
+
+			if (MainGraph != null) {
+				MainGraph.Dispose ();
+				MainGraph = null;
 			}
 
 			if (MainProgressBar != null) {
