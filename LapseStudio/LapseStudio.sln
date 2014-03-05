@@ -139,7 +139,7 @@ Global
 	GlobalSection(NestedProjects) = preSolution
 	EndGlobalSection
 	GlobalSection(MonoDevelopProperties) = preSolution
-		StartupItem = LapseStudioGtkUI\LapseStudioGtkUI.csproj
+		StartupItem = LapseStudioMacUI\LapseStudioMacUI.csproj
 		Policies = $0
 		$0.VersionControlPolicy = $1
 		$1.inheritsSet = Mono

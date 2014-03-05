@@ -3,12 +3,10 @@ using System.Collections.Generic;
 
 namespace Timelapse_API
 {
-	//TODO: make this more flexible
-
     [Serializable()]
 	public class SavingStorage
     {
-        internal int FileVersion = 1;
+		internal int FileVersion = 1;
         internal ProjectType UsedProgram;
 
         internal List<Frame> Frames;

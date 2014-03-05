@@ -1,4 +1,5 @@
 ﻿using System;
+using System.IO;
 using System.Collections.Generic;
 using MonoMac.AppKit;
 using MonoMac.Foundation;
@@ -20,12 +21,14 @@ namespace LapseStudioMacUI
 		{
 			WindowResponse resp;
 			List<string> filetypes = new List<string>();
+			NSUrl initDir = null;
+			if (Directory.Exists(InitialDirectory)) initDir = new NSUrl(InitialDirectory);
 
 			switch(DialogType)
 			{
 				case FileDialogType.OpenFile:
 					ofdlg = new NSOpenPanel();
-					ofdlg.DirectoryUrl = new NSUrl(InitialDirectory);
+					if (initDir != null) ofdlg.DirectoryUrl = initDir;
 					ofdlg.Title = Title;
 					ofdlg.CanChooseFiles = true;
 					ofdlg.CanChooseDirectories = false;
@@ -42,7 +45,7 @@ namespace LapseStudioMacUI
 
 				case FileDialogType.SelectFolder:
 					ofdlg = new NSOpenPanel();
-					ofdlg.DirectoryUrl = new NSUrl(InitialDirectory);
+					if (initDir != null) ofdlg.DirectoryUrl = initDir;
 					ofdlg.Title = Title;
 					ofdlg.CanChooseFiles = false;
 					ofdlg.CanChooseDirectories = true;
@@ -54,7 +57,7 @@ namespace LapseStudioMacUI
 
 				case FileDialogType.SaveFile:
 					sfdlg = new NSSavePanel();
-					sfdlg.DirectoryUrl = new NSUrl(InitialDirectory);
+					if (initDir != null) sfdlg.DirectoryUrl = initDir;
 					sfdlg.Title = Title;
 					sfdlg.CanCreateDirectories = true;
 

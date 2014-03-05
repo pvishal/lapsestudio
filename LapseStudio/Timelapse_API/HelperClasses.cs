@@ -2,6 +2,7 @@
 
 namespace Timelapse_API
 {
+	[Serializable()]
     public struct Rectangle
     {
         public int X;

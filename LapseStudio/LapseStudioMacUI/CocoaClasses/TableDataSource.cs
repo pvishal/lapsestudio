@@ -27,7 +27,7 @@ namespace LapseStudioMacUI
 		[Export ("tableView:objectValueForTableColumn:row:")]
 		public NSObject ObjectValueForTableColumn(NSTableView table, NSTableColumn col, int row)
 		{
-			switch(col.DataCell.StringValue)
+			switch(col.HeaderCell.StringValue)
 			{
 				case "AV":
 					return new NSString(Rows[row][(int)TableLocation.AV].ToString());
