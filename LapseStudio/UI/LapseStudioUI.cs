@@ -306,7 +306,7 @@ namespace Timelapse_UI
                 LScontent[index] = Framelist[i].Filename;
                 //Brightness
                 index = (int)TableLocation.Brightness;
-                LScontent[index] = Framelist[i].OriginalBrightness.ToString("N3");
+				LScontent[index] = Framelist[i].AlternativeBrightness.ToString("N3");
                 //AV
                 index = (int)TableLocation.AV;
                 if (Framelist[i].AVstring != null) { LScontent[index] = Framelist[i].AVstring; }

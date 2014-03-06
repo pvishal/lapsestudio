@@ -98,21 +98,48 @@ namespace LapseStudioMacUI
 		public override void InitUI()
 		{
 			mw.PublicMainTable.DataSource = TableSource;
+			TableSource.BrightnessCellEdited += HandleBrightnessCellEdited;
+			mw.PublicMainTable.Delegate = new TableDelegate();
+			((TableDelegate)mw.PublicMainTable.Delegate).TableSelectionChanged += HandleTableSelectionChanged;
 			mw.PublicMetadataToolItem.Enabled = (LSSettings.UsedProgram != ProjectType.CameraRaw) ? false : true;
 			//mw.FileTree = TreeViewHandler.Init(mw.FileTree);
 			//mw.CalcTypeCoBox.Active = (int)LSSettings.BrCalcType;
 		}
 
+		private void HandleTableSelectionChanged()
+		{
+			try
+			{
+				//TODO: set NSImage instead of pixbuf
+				if (mw.PublicTabChangeButton.SelectedSegment == (int)TabLocation.Filelist) { mw.PublicThumbViewList.Image = new NSImage(new System.Drawing.SizeF(160,120));/*ProjectManager.CurrentProject.Frames[mw.PublicMainTable.SelectedRow].Thumb.Pixbuf;*/ }
+			}
+			catch (Exception ex) { Error.Report("HandleTableSelectionChanged", ex); }
+		}
+
+		private void HandleBrightnessCellEdited(int Row, string value)
+		{
+			try { UpdateBrightness(Row, value); }
+			catch (Exception ex) { Error.Report("HandleBrightnessCellEdited", ex); }
+		}
+
 		public override void ClearTable()
 		{
-			TableSource.Clear();
-			mw.PublicMainTable.ReloadData();
+			try
+			{
+				TableSource.Clear();
+				mw.PublicMainTable.ReloadData();
+			}
+			catch (Exception ex) { Error.Report("ClearTable", ex); }
 		}
 
 		public override void SetTableRow(int Index, ArrayList Values)
 		{
-			TableSource.Add(Values);
-			mw.PublicMainTable.ReloadData();
+			try
+			{
+				TableSource.Add(Values);
+				mw.PublicMainTable.ReloadData();
+			}
+			catch (Exception ex) { Error.Report("SetTableRow", ex); }
 		}
 
 		#endregion

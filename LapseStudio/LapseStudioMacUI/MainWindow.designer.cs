@@ -81,9 +81,6 @@ namespace LapseStudioMacUI
 		[Action ("AlignXButton_Click:")]
 		partial void AlignXButton_Click (MonoMac.Foundation.NSObject sender);
 
-		[Action ("BrightnessCell_Changed:")]
-		partial void BrightnessCell_Changed (MonoMac.Foundation.NSObject sender);
-
 		[Action ("BrightnessSlider_Changed:")]
 		partial void BrightnessSlider_Changed (MonoMac.Foundation.NSObject sender);
 
