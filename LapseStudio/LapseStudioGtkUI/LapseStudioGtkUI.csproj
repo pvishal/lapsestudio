@@ -6,7 +6,7 @@
     <ProjectGuid>{FD96B06C-EDC3-4407-986B-122258B13BC1}</ProjectGuid>
     <OutputType>WinExe</OutputType>
     <RootNamespace>LapseStudioGtkUI</RootNamespace>
-    <AssemblyName>LapseStudioGtkUI</AssemblyName>
+    <AssemblyName>LapseStudio</AssemblyName>
     <UseMSBuildEngine>False</UseMSBuildEngine>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
@@ -30,6 +30,9 @@
     <PlatformTarget>x86</PlatformTarget>
     <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
     <DebugType>none</DebugType>
+  </PropertyGroup>
+  <PropertyGroup>
+    <ApplicationIcon>Icon256.ico</ApplicationIcon>
   </PropertyGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <ItemGroup>
@@ -84,6 +87,7 @@
     <Compile Include="gtk-gui\LapseStudioGtkUI.MyAboutDialog.cs" />
     <Compile Include="MyHelpDialog.cs" />
     <Compile Include="gtk-gui\LapseStudioGtkUI.MyHelpDialog.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup />
   <ItemGroup>
@@ -92,10 +96,9 @@
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup />
+  <ItemGroup />
   <ItemGroup>
-    <Folder Include="Icons\" />
-  </ItemGroup>
-  <ItemGroup>
+    <Content Include="Icon256.ico" />
     <Content Include="Icons\Add32.png">
       <DeployService-UseProjectRelativePath>True</DeployService-UseProjectRelativePath>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
