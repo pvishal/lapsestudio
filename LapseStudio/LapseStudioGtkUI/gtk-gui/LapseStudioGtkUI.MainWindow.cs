@@ -16,11 +16,11 @@ namespace LapseStudioGtkUI
 		private global::Gtk.Action HelpAction;
 		private global::Gtk.Action helpAction;
 		private global::Gtk.Action aboutAction;
-		private global::Gtk.Action AddAction;
-		private global::Gtk.Action CalculateAction;
+		private global::Gtk.Action Add32Action;
+		private global::Gtk.Action Calculate32Action;
 		private global::Gtk.Action ReloadAction;
-		private global::Gtk.Action ProcessAction;
-		private global::Gtk.Action CancelAction;
+		private global::Gtk.Action Save32Action;
+		private global::Gtk.Action Cancel32Action;
 		private global::Gtk.VBox vbox1;
 		private global::Gtk.MenuBar MainMenuBar;
 		private global::Gtk.Toolbar MainToolBar;
@@ -95,16 +95,16 @@ namespace LapseStudioGtkUI
 			this.aboutAction = new global::Gtk.Action ("aboutAction", global::Mono.Unix.Catalog.GetString ("About"), null, "gtk-about");
 			this.aboutAction.ShortLabel = global::Mono.Unix.Catalog.GetString ("About");
 			w1.Add (this.aboutAction, null);
-			this.AddAction = new global::Gtk.Action ("AddAction", null, global::Mono.Unix.Catalog.GetString ("Add Frames"), "AddIcon32x32");
-			w1.Add (this.AddAction, null);
-			this.CalculateAction = new global::Gtk.Action ("CalculateAction", null, global::Mono.Unix.Catalog.GetString ("Calculate Brightnes"), "CalculateIcon32x32");
-			w1.Add (this.CalculateAction, null);
-			this.ReloadAction = new global::Gtk.Action ("ReloadAction", null, global::Mono.Unix.Catalog.GetString ("Reload XMP"), "ReloadIcon32x32");
+			this.Add32Action = new global::Gtk.Action ("Add32Action", null, global::Mono.Unix.Catalog.GetString ("Add Frames"), "Add32");
+			w1.Add (this.Add32Action, null);
+			this.Calculate32Action = new global::Gtk.Action ("Calculate32Action", null, global::Mono.Unix.Catalog.GetString ("Calculate Brightnes"), "Calculate32");
+			w1.Add (this.Calculate32Action, null);
+			this.ReloadAction = new global::Gtk.Action ("ReloadAction", null, global::Mono.Unix.Catalog.GetString ("Reload XMP"), "Reload32");
 			w1.Add (this.ReloadAction, null);
-			this.ProcessAction = new global::Gtk.Action ("ProcessAction", null, global::Mono.Unix.Catalog.GetString ("Process Frames"), "SaveIcon32x32");
-			w1.Add (this.ProcessAction, null);
-			this.CancelAction = new global::Gtk.Action ("CancelAction", null, global::Mono.Unix.Catalog.GetString ("Cancel"), "CancelIcon32x32");
-			w1.Add (this.CancelAction, null);
+			this.Save32Action = new global::Gtk.Action ("Save32Action", null, global::Mono.Unix.Catalog.GetString ("Process Frames"), "Save32");
+			w1.Add (this.Save32Action, null);
+			this.Cancel32Action = new global::Gtk.Action ("Cancel32Action", null, global::Mono.Unix.Catalog.GetString ("Cancel"), "Cancel32");
+			w1.Add (this.Cancel32Action, null);
 			this.UIManager.InsertActionGroup (w1, 0);
 			this.AddAccelGroup (this.UIManager.AccelGroup);
 			this.Name = "LapseStudioGtkUI.MainWindow";
@@ -124,7 +124,7 @@ namespace LapseStudioGtkUI
 			w2.Expand = false;
 			w2.Fill = false;
 			// Container child vbox1.Gtk.Box+BoxChild
-			this.UIManager.AddUiFromString (@"<ui><toolbar name='MainToolBar'><toolitem name='AddAction' action='AddAction'/><toolitem name='CalculateAction' action='CalculateAction'/><toolitem name='ReloadAction' action='ReloadAction'/><toolitem name='ProcessAction' action='ProcessAction'/><toolitem name='CancelAction' action='CancelAction'/></toolbar></ui>");
+			this.UIManager.AddUiFromString (@"<ui><toolbar name='MainToolBar'><toolitem name='Add32Action' action='Add32Action'/><toolitem name='Calculate32Action' action='Calculate32Action'/><toolitem name='ReloadAction' action='ReloadAction'/><toolitem name='Save32Action' action='Save32Action'/><toolitem name='Cancel32Action' action='Cancel32Action'/></toolbar></ui>");
 			this.MainToolBar = ((global::Gtk.Toolbar)(this.UIManager.GetWidget ("/MainToolBar")));
 			this.MainToolBar.Name = "MainToolBar";
 			this.MainToolBar.ShowArrow = false;
@@ -363,9 +363,7 @@ namespace LapseStudioGtkUI
 			w24.Expand = false;
 			w24.Fill = false;
 			// Container child hbox3.Gtk.Box+BoxChild
-			this.MainGraph = new global::LapseStudioGtkUI.Graph ();
-			this.MainGraph.Events = ((global::Gdk.EventMask)(256));
-			this.MainGraph.Name = "MainGraph";
+            this.MainGraph = new Graph();
 			this.hbox3.Add (this.MainGraph);
 			global::Gtk.Box.BoxChild w25 = ((global::Gtk.Box.BoxChild)(this.hbox3 [this.MainGraph]));
 			w25.Position = 1;
@@ -432,11 +430,11 @@ namespace LapseStudioGtkUI
 			this.preferencesAction.Activated += new global::System.EventHandler (this.OnPreferencesActionActivated);
 			this.helpAction.Activated += new global::System.EventHandler (this.OnHelpActionActivated);
 			this.aboutAction.Activated += new global::System.EventHandler (this.OnAboutActionActivated);
-			this.AddAction.Activated += new global::System.EventHandler (this.OnAddActionActivated);
-			this.CalculateAction.Activated += new global::System.EventHandler (this.OnCalculateActionActivated);
+			this.Add32Action.Activated += new global::System.EventHandler (this.OnAddActionActivated);
+			this.Calculate32Action.Activated += new global::System.EventHandler (this.OnCalculateActionActivated);
 			this.ReloadAction.Activated += new global::System.EventHandler (this.OnReloadActionActivated);
-			this.ProcessAction.Activated += new global::System.EventHandler (this.OnProcessActionActivated);
-			this.CancelAction.Activated += new global::System.EventHandler (this.OnCancelActionActivated);
+			this.Save32Action.Activated += new global::System.EventHandler (this.OnProcessActionActivated);
+			this.Cancel32Action.Activated += new global::System.EventHandler (this.OnCancelActionActivated);
 			this.YToStartButton.Clicked += new global::System.EventHandler (this.OnYToStartButtonClicked);
 			this.AlignXButton.Clicked += new global::System.EventHandler (this.OnAlignXButtonClicked);
 			this.YToEndButton.Clicked += new global::System.EventHandler (this.OnYToEndButtonClicked);

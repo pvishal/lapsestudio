@@ -7,8 +7,6 @@
     <OutputType>WinExe</OutputType>
     <RootNamespace>HelpAppUI</RootNamespace>
     <AssemblyName>HelpAppUI</AssemblyName>
-    <ProductVersion>12.0.0</ProductVersion>
-    <SchemaVersion>2.0</SchemaVersion>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>

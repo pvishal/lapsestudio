@@ -9,29 +9,29 @@
     <widget-library name="../bin/Debug/LapseStudioGtkUI.exe" internal="true" />
   </import>
   <icon-factory>
-    <icon-set id="AddIcon32x32">
+    <icon-set id="Add32">
       <source>
-        <property name="Image">file:.\Icons\Add_32x32.png</property>
+        <property name="Image">file:.\Icons\Add32.png</property>
       </source>
     </icon-set>
-    <icon-set id="CalculateIcon32x32">
+    <icon-set id="Calculate32">
       <source>
-        <property name="Image">file:.\Icons\Calculate_32x32.png</property>
+        <property name="Image">file:.\Icons\Calculate32.png</property>
       </source>
     </icon-set>
-    <icon-set id="CancelIcon32x32">
+    <icon-set id="Cancel32">
       <source>
-        <property name="Image">file:.\Icons\Cancel_32x32.png</property>
+        <property name="Image">file:.\Icons\Cancel32.png</property>
       </source>
     </icon-set>
-    <icon-set id="ReloadIcon32x32">
+    <icon-set id="Reload32">
       <source>
-        <property name="Image">file:.\Icons\Reload_32x32.png</property>
+        <property name="Image">file:.\Icons\Reload32.png</property>
       </source>
     </icon-set>
-    <icon-set id="SaveIcon32x32">
+    <icon-set id="Save32">
       <source>
-        <property name="Image">file:.\Icons\Save_32x32.png</property>
+        <property name="Image">file:.\Icons\Save32.png</property>
       </source>
     </icon-set>
   </icon-factory>
@@ -108,38 +108,38 @@
         <property name="StockId">gtk-about</property>
         <signal name="Activated" handler="OnAboutActionActivated" />
       </action>
-      <action id="AddAction">
+      <action id="Add32Action">
         <property name="Type">Action</property>
         <property name="Label" translatable="yes" />
-        <property name="StockId">AddIcon32x32</property>
+        <property name="StockId">Add32</property>
         <property name="Tooltip" translatable="yes">Add Frames</property>
         <signal name="Activated" handler="OnAddActionActivated" />
       </action>
-      <action id="CalculateAction">
+      <action id="Calculate32Action">
         <property name="Type">Action</property>
         <property name="Label" translatable="yes" />
-        <property name="StockId">CalculateIcon32x32</property>
+        <property name="StockId">Calculate32</property>
         <property name="Tooltip" translatable="yes">Calculate Brightnes</property>
         <signal name="Activated" handler="OnCalculateActionActivated" />
       </action>
       <action id="ReloadAction">
         <property name="Type">Action</property>
         <property name="Label" translatable="yes" />
-        <property name="StockId">ReloadIcon32x32</property>
+        <property name="StockId">Reload32</property>
         <property name="Tooltip" translatable="yes">Reload XMP</property>
         <signal name="Activated" handler="OnReloadActionActivated" />
       </action>
-      <action id="ProcessAction">
+      <action id="Save32Action">
         <property name="Type">Action</property>
         <property name="Label" translatable="yes" />
-        <property name="StockId">SaveIcon32x32</property>
+        <property name="StockId">Save32</property>
         <property name="Tooltip" translatable="yes">Process Frames</property>
         <signal name="Activated" handler="OnProcessActionActivated" />
       </action>
-      <action id="CancelAction">
+      <action id="Cancel32Action">
         <property name="Type">Action</property>
         <property name="Label" translatable="yes" />
-        <property name="StockId">CancelIcon32x32</property>
+        <property name="StockId">Cancel32</property>
         <property name="Tooltip" translatable="yes">Cancel</property>
         <signal name="Activated" handler="OnCancelActionActivated" />
       </action>
@@ -189,11 +189,11 @@
             <property name="ButtonStyle">Icons</property>
             <property name="IconSize">LargeToolbar</property>
             <node name="MainToolBar" type="Toolbar">
-              <node type="Toolitem" action="AddAction" />
-              <node type="Toolitem" action="CalculateAction" />
+              <node type="Toolitem" action="Add32Action" />
+              <node type="Toolitem" action="Calculate32Action" />
               <node type="Toolitem" action="ReloadAction" />
-              <node type="Toolitem" action="ProcessAction" />
-              <node type="Toolitem" action="CancelAction" />
+              <node type="Toolitem" action="Save32Action" />
+              <node type="Toolitem" action="Cancel32Action" />
             </node>
           </widget>
           <packing>

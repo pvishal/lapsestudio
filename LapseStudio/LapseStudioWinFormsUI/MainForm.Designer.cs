@@ -464,7 +464,7 @@
             this.CalculationTab.Location = new System.Drawing.Point(4, 22);
             this.CalculationTab.Name = "CalculationTab";
             this.CalculationTab.Padding = new System.Windows.Forms.Padding(3);
-            this.CalculationTab.Size = new System.Drawing.Size(766, 455);
+            this.CalculationTab.Size = new System.Drawing.Size(766, 441);
             this.CalculationTab.TabIndex = 1;
             this.CalculationTab.Text = "Calculation";
             this.CalculationTab.UseVisualStyleBackColor = true;
@@ -475,7 +475,7 @@
             this.GraphTab.Location = new System.Drawing.Point(4, 22);
             this.GraphTab.Name = "GraphTab";
             this.GraphTab.Padding = new System.Windows.Forms.Padding(3);
-            this.GraphTab.Size = new System.Drawing.Size(766, 455);
+            this.GraphTab.Size = new System.Drawing.Size(766, 441);
             this.GraphTab.TabIndex = 2;
             this.GraphTab.Text = "Graph";
             this.GraphTab.UseVisualStyleBackColor = true;
@@ -506,7 +506,7 @@
             // 
             this.splitContainer3.Panel2.BackColor = System.Drawing.Color.White;
             this.splitContainer3.Panel2.Controls.Add(this.MainGraph);
-            this.splitContainer3.Size = new System.Drawing.Size(760, 449);
+            this.splitContainer3.Size = new System.Drawing.Size(760, 435);
             this.splitContainer3.SplitterDistance = 160;
             this.splitContainer3.TabIndex = 0;
             // 
@@ -613,7 +613,7 @@
             this.MainGraph.Dock = System.Windows.Forms.DockStyle.Fill;
             this.MainGraph.Location = new System.Drawing.Point(0, 0);
             this.MainGraph.Name = "MainGraph";
-            this.MainGraph.Size = new System.Drawing.Size(596, 449);
+            this.MainGraph.Size = new System.Drawing.Size(596, 435);
             this.MainGraph.TabIndex = 0;
             // 
             // MainForm
@@ -625,6 +625,7 @@
             this.Controls.Add(this.MainToolStrip);
             this.Controls.Add(this.MainStatusStrip);
             this.Controls.Add(this.MyMainMenuStrip);
+            this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.MinimumSize = new System.Drawing.Size(790, 590);
             this.Name = "MainForm";
             this.Text = "LapseStudio";

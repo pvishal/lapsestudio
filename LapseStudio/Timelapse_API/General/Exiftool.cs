@@ -95,8 +95,7 @@ namespace Timelapse_API
             string[] lines = data.Split(new string[] { Environment.NewLine, "\n", "\r" }, StringSplitOptions.RemoveEmptyEntries);
             return lines;
         }
-
-
+        
         private static void SetProcess(string command, bool redirect)
         {
             exiftool = new Process();
@@ -112,6 +111,5 @@ namespace Timelapse_API
             exiftoolStartInfo.RedirectStandardOutput = redirect;
             exiftool.StartInfo = exiftoolStartInfo;
         }
-
     }
 }

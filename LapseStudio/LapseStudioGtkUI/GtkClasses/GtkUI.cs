@@ -1,10 +1,12 @@
 ﻿using System;
 using Gtk;
+using Gdk;
 using System.Collections;
 using Timelapse_API;
 using Timelapse_UI;
 using MessageTranslation;
 using Action = System.Action;
+using Error = Timelapse_UI.Error;
 
 namespace LapseStudioGtkUI
 {
@@ -14,19 +16,27 @@ namespace LapseStudioGtkUI
         int SelectedRow;
         ListStore TreeViewTable;
 
-		public GtkUI(MainWindow win, MessageBox MsgBox, FileDialog FDialog) : base(MsgBox, FDialog)
-		{
-			mw = win;
-			Init(Platform.Unix);
+        public GtkUI(MainWindow win, MessageBox MsgBox, FileDialog FDialog)
+            : base(MsgBox, FDialog)
+        {
+            mw = win;
+            Init(Platform.Unix);
 
             this.TitleChanged += GtkUI_TitleChanged;
             MsgBox.InfoTextChanged += MsgBox_InfoTextChanged;
-			mw.PublicFileTree.CursorChanged += FileTree_CursorChanged;
+            mw.PublicFileTree.CursorChanged += FileTree_CursorChanged;
+            Pixbuf[] iconlist = new Pixbuf[5];
+            iconlist[0] = new Pixbuf("Icons/Icon16.png");
+            iconlist[1] = new Pixbuf("Icons/Icon32.png");
+            iconlist[2] = new Pixbuf("Icons/Icon64.png");
+            iconlist[3] = new Pixbuf("Icons/Icon128.png");
+            iconlist[4] = new Pixbuf("Icons/Icon256.png");
+            mw.IconList = iconlist;
 
-			//mw.ThumbEventBox.ButtonPressEvent += new ButtonPressEventHandler(fixThumb_ButtonPressEvent);
-			//mw.ThumbEventBox.ButtonReleaseEvent += new ButtonReleaseEventHandler(fixThumb_ButtonReleaseEvent);
-			//mw.ThumbEventBox.MotionNotifyEvent += new MotionNotifyEventHandler(fixThumb_MotionNotifyEvent);
-		}
+            //mw.ThumbEventBox.ButtonPressEvent += new ButtonPressEventHandler(fixThumb_ButtonPressEvent);
+            //mw.ThumbEventBox.ButtonReleaseEvent += new ButtonReleaseEventHandler(fixThumb_ButtonReleaseEvent);
+            //mw.ThumbEventBox.MotionNotifyEvent += new MotionNotifyEventHandler(fixThumb_MotionNotifyEvent);
+        }
 
 		#region Test:
 
