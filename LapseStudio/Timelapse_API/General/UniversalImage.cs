@@ -7,7 +7,7 @@ using System.IO;
 
 namespace Timelapse_API
 {
-    //TODO: replace with MagickImage
+    //TODO: replace with general multiplatform solution (NOT System.Drawing.Bitmap)
 
     public class UniversalImage
     {
@@ -34,6 +34,11 @@ namespace Timelapse_API
             }
         }
         
+        public UniversalImage(string path)
+        {
+            pxf = new Pixbuf(path);
+        }
+
         public UniversalImage(Bitmap bmp)
         {
             this.bmp = bmp;
@@ -42,6 +47,13 @@ namespace Timelapse_API
         public UniversalImage(Pixbuf pxf)
         {
             this.pxf = pxf;
+        }
+
+        public UniversalImage Clone()
+        {
+            if (pxf != null) return new UniversalImage(pxf.Copy());
+            else if (bmp != null) return new UniversalImage((Bitmap)bmp.Clone());
+            else return new UniversalImage(new Bitmap(160, 120));
         }
 
         public Pixbuf Pixbuf

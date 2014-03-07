@@ -25,7 +25,7 @@ namespace LapseStudioWinFormsUI
             mw.ProcessToolButton.Image = Timelapse_UI.Properties.Resources.Save_32x32;
             mw.CancelToolButton.Image = Timelapse_UI.Properties.Resources.Cancel_32x32;
 
-            this.InfoTextChanged += WinFormUI_InfoTextChanged;
+            MsgBox.InfoTextChanged += MsgBox_InfoTextChanged;
             this.TitleChanged += WinFormUI_TitleChanged;
 		}
 
@@ -196,7 +196,7 @@ namespace LapseStudioWinFormsUI
             mw.Text = Value;
         }
 
-        private void WinFormUI_InfoTextChanged(string Value)
+        private void MsgBox_InfoTextChanged(string Value)
         {
             mw.StatusLabel.Text = Value;
         }

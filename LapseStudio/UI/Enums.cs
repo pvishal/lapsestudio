@@ -64,6 +64,7 @@ namespace Timelapse_UI
         KeyframecountLow,
         NotEnoughFrames,
         ProjectSaved,
+        NotEnoughValidFiles,
 
         //Static:
         RemoveMetadataLink,

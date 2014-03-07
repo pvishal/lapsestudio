@@ -43,6 +43,16 @@ namespace Timelapse_API
                 return this.Frames.Count(t => ((FrameACR)t).XMPFile != null && t.IsKeyframe);
             }
         }
+        /// <summary>
+        /// File extensions supported by the project. (e.g. ".jpg")
+        /// </summary>
+        public override string[] AllowedFileExtensions
+        {
+            get { return extensions; }
+        }
+
+        private static readonly string[] extensions = { ".jpg", ".jpeg", ".png", ".tif", ".tiff",".dng", ".cr2", ".crw", ".x3f", ".nef", ".srw", ".srf", ".sr2", ".arw",
+                ".erf", ".pef", ".raf", ".3fr", ".fff", ".dcr", ".dcs", ".kdc", ".kdc", ".rwl", ".mrw", ".mdc", ".nrw",".orf", ".rw2" };
 
 
         /// <summary>

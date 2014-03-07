@@ -15,25 +15,12 @@ namespace Timelapse_UI
 		#region Events
 
 		public delegate void StringUpdate(string Value);
-
-		public event StringUpdate InfoTextChanged;
 		public event StringUpdate TitleChanged;
 
 		#endregion
 
 		#region Variables
-
-		public string InfoText
-		{
-			get { return _InfoText; }
-			set
-			{
-				if(_InfoText != value && InfoTextChanged != null) InfoTextChanged(value);
-				_InfoText = value;
-			}
-		}
-		private string _InfoText;
-
+        
 		public string Title
 		{
 			get { return _Title; }
@@ -113,7 +100,7 @@ namespace Timelapse_UI
 
 		public bool Quit(ClosingReason reason)
 		{
-			//the return value defines if the quiting should get cancelled or not
+			//the return value defines if the quiting should get canceled or not
 			if (reason != ClosingReason.Error)
 			{
 				WindowResponse res;
@@ -139,8 +126,7 @@ namespace Timelapse_UI
 			ProjectManager.ProgressChanged -= CurrentProject_ProgressChanged;
 			ProjectManager.WorkDone -= CurrentProject_WorkDone;
 
-			//TODO: add a waitone thing variable to project
-			while (ProjectManager.CurrentProject.IsWorking) { System.Threading.Thread.Sleep(50); }
+            if (ProjectManager.CurrentProject.IsWorking) { ProjectManager.CurrentProject.IsWorkingWaitHandler.WaitOne(10000); }
 
 			QuitApplication();
 			return false;
@@ -402,7 +388,7 @@ No lets you load values from a standalone XMP file."), MessageWindowType.Questio
 
             if (!IsTableUpdate) UpdateTable();
         }
-
+        
 		#endregion
 
 		#region User Input Methods
@@ -460,8 +446,8 @@ No lets you load values from a standalone XMP file."), MessageWindowType.Questio
 					{
                         LSSettings.LastImgDir = fdlg.SelectedPath;
                         LSSettings.Save();
-						ProjectManager.AddFrame(fdlg.SelectedPath);
-						SetSaveStatus(false);
+						if (ProjectManager.AddFrames(fdlg.SelectedPath)) SetSaveStatus(false);
+                        else { MsgBox.ShowMessage(MessageContent.NotEnoughValidFiles); }
 					}
 				}
 			}
@@ -484,13 +470,11 @@ No lets you load values from a standalone XMP file."), MessageWindowType.Questio
 
 		public void Click_Process()
 		{
-            string labelstr = "";
 			if (CheckBusy()) return;
-            if (ProjectManager.CurrentProject.KeyframeCount == 0) { MsgBox.ShowMessage(MessageContent.KeyframecountLow, out labelstr); }
+            if (ProjectManager.CurrentProject.KeyframeCount == 0) { MsgBox.ShowMessage(MessageContent.KeyframecountLow); }
 			else if (ProjectManager.CurrentProject.IsBrightnessCalculated) { ProcessFiles(); }
-            else if (LSSettings.UsedProgram == ProjectType.LapseStudio) { MsgBox.ShowMessage(MessageContent.BrightnessNotCalculatedError, out labelstr); }
+            else if (LSSettings.UsedProgram == ProjectType.LapseStudio) { MsgBox.ShowMessage(MessageContent.BrightnessNotCalculatedError); }
 			else if (MsgBox.ShowMessage(MessageContent.BrightnessNotCalculatedWarning) == WindowResponse.Yes) { ProcessFiles(); }
-            if (!string.IsNullOrEmpty(labelstr) && InfoTextChanged != null) InfoTextChanged(labelstr);
 		}
 
 		public void Click_RefreshMetadata()
@@ -528,7 +512,7 @@ No lets you load values from a standalone XMP file."), MessageWindowType.Questio
 			{
 				for (int i = 1; i < ProjectManager.CurrentProject.Frames.Count; i++)
 				{
-					//TODO_L: make brightness scale working
+					//LTODO: make brightness scale working
 					double orig1 = ProjectManager.CurrentProject.Frames[i - 1].OriginalBrightness;
 					double orig2 = ProjectManager.CurrentProject.Frames[i].OriginalBrightness;
 					ProjectManager.CurrentProject.Frames[i].AlternativeBrightness = orig2 + ((orig2 - orig1) * Value / 100);

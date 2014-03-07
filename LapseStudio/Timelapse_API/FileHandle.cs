@@ -5,18 +5,17 @@ namespace Timelapse_API
 {
     internal static class FileHandle
     {
-		//TODO: check for upper and lower case file extension
-
         /// <summary>
         /// Deletes a file
         /// </summary>
-        /// <param name="Path">Path to the file</param>
-        public static void DeleteFile(string Path)
+        /// <param name="path">Path to the file</param>
+        public static void DeleteFile(string path)
         {
+            path = Path.ChangeExtension(path, Path.GetExtension(path).ToLower());
             int c = 0;
-            while (File.Exists(Path) && c < 5) { File.Delete(Path); Thread.Sleep(50); c++; }
+            while (File.Exists(path) && c < 5) { File.Delete(path); Thread.Sleep(50); c++; }
 
-            if (File.Exists(Path)) { throw new FileDeleteException(); }
+            if (File.Exists(path)) { throw new FileDeleteException("Couldn't delete file \"" + path + "\""); }
         }
 
         /// <summary>
@@ -28,7 +27,7 @@ namespace Timelapse_API
             int c = 0;
             while (Directory.Exists(directory) && c < 5) { Directory.Delete(directory); Thread.Sleep(50); c++; }
 
-            if (Directory.Exists(directory)) { throw new FileDeleteException(); }
+            if (Directory.Exists(directory)) { throw new FileDeleteException("Couldn't delete directory \"" + directory + "\""); }
         }
 
         /// <summary>
@@ -63,7 +62,7 @@ namespace Timelapse_API
             int c = 0;
 			while (!Directory.Exists(directory) && c < 5) { Directory.CreateDirectory(directory); Thread.Sleep(50); c++; }
 
-            if (!Directory.Exists(directory)) { throw new FileCreateException(); }
+            if (!Directory.Exists(directory)) { throw new FileCreateException("Couldn't create directory \"" + directory + "\""); }
         }
     }
 }

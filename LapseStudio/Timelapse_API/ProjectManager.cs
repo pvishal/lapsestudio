@@ -195,9 +195,9 @@ namespace Timelapse_API
         /// Add all frames from a certain directory to the project
         /// </summary>
         /// <param name="directory">The directory from where the frames will be loaded</param>
-        public static void AddFrame(string directory)
+        public static bool AddFrames(string directory)
         {
-            CurrentProject.AddFrames(directory);
+            return CurrentProject.AddFrames(directory);
         }
 
         /// <summary>
@@ -254,7 +254,6 @@ namespace Timelapse_API
         {
             if (CurrentProject.GetType() == typeof(ProjectACR)) { ((ProjectACR)CurrentProject).ReadXMP(); }
             else { throw new ProjectTypeException(); }
-        }
-                
+        }                
     }
 }

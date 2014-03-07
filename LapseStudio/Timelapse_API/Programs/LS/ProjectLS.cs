@@ -31,8 +31,16 @@ namespace Timelapse_API
 		/// <summary>
 		/// Image format in which the images will be saved
 		/// </summary>
-		public FileFormat SaveFormat;
+        public FileFormat SaveFormat;
+        /// <summary>
+        /// File extensions supported by the project. (e.g. ".jpg")
+        /// </summary>
+        public override string[] AllowedFileExtensions
+        {
+            get { return extensions; }
+        }
 
+        private static readonly string[] extensions = { ".jpg", ".jpeg", ".png", ".tif", ".tiff" };
         private const double ln2 = 0.69314718055994530941723212145818;
 
 
@@ -44,11 +52,9 @@ namespace Timelapse_API
         { }
 
 
-        protected override void AddFrame(string[] filepath)
+        protected override void AddFrames(string[] filepath)
         {
-			filepath = filepath.Where(t => !t.EndsWith(".DS_Store")).ToArray();
-			string[] ext = {".jpg",".jpeg",".png", ".tif", ".tiff"};
-            if (!filepath.All(t => ext.Any(k => k == Path.GetExtension(t).ToLower()))) { throw new FileFormatNotSupportedException(); }
+            if (filepath == null) { throw new ArgumentNullException(); }
             MainWorker.RunWorkerAsync(new KeyValuePair<Work, object>(Work.LoadFrames, filepath));
         }
 
@@ -159,7 +165,7 @@ namespace Timelapse_API
             {
                 if (MainWorker.CancellationPending) { return; }
 
-                Frames[i].Thumb = new UniversalImage(new Pixbuf(files[i]));
+                Frames[i].Thumb = new UniversalImage(files[i]);
                 Frames[i].Width = Frames[i].Thumb.Width;
                 Frames[i].Height = Frames[i].Thumb.Height;
                 double factor = (double)Frames[i].Thumb.Width / (double)Frames[i].Thumb.Height;

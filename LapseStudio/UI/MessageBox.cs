@@ -5,6 +5,14 @@ namespace Timelapse_UI
 {
     public abstract class MessageBox
     {
+        public delegate void StringUpdate(string Value);
+        public event StringUpdate InfoTextChanged;
+
+        private void SendInfoText(string text)
+        {
+            if (InfoTextChanged != null) InfoTextChanged(text);
+        }
+
 		public abstract WindowResponse Show(object parent, string message, string title, MessageWindowType type, MessageWindowButtons bType);
         
 		#region Show
@@ -59,26 +67,19 @@ namespace Timelapse_UI
         
 		#region Messages
 
-		public WindowResponse ShowMessage(MessageContent content, out string labelText)
-		{
-			return ShowMessage(content, null, out labelText);
-		}
-
 		public WindowResponse ShowMessage(MessageContent content)
 		{
-			string labelText;
-			return ShowMessage(content, null, out labelText);
+			return ShowMessage(content, null);
 		}
 
-		public WindowResponse ShowMessage(MessageContent content, object args, out string labelText)
+		public WindowResponse ShowMessage(MessageContent content, object args)
 		{
 			WindowResponse res = WindowResponse.None;
-			labelText = String.Empty;
 
 			switch (content)
 			{
 				case MessageContent.IsBusy:
-					labelText = Message.GetString("LapseStudio is currently busy");
+                    SendInfoText(Message.GetString("LapseStudio is currently busy"));
 					break;
 
 				case MessageContent.SaveQuestion:
@@ -86,7 +87,7 @@ namespace Timelapse_UI
 					break;
 
 				case MessageContent.FramesAlreadyAdded:
-					labelText = Message.GetString("Frames already added");
+                    SendInfoText(Message.GetString("Frames already added"));
 					break;
 
 				case MessageContent.BusyClose:
@@ -94,7 +95,7 @@ namespace Timelapse_UI
 					break;
 
 				case MessageContent.BrightnessNotCalculatedError:
-					labelText = Message.GetString("Brightness is not calculated yet");
+					SendInfoText(Message.GetString("Brightness is not calculated yet"));
 					break;
 
 				case MessageContent.BrightnessNotCalculatedWarning:
@@ -102,15 +103,15 @@ namespace Timelapse_UI
 					break;
 
 				case MessageContent.KeyframecountLow:
-					labelText = Message.GetString("Not enough keyframes added");
+					SendInfoText(Message.GetString("Not enough keyframes added"));
 					break;
 
 				case MessageContent.NotEnoughFrames:
-					labelText = Message.GetString("Not enough frames loaded");
+					SendInfoText(Message.GetString("Not enough frames loaded"));
 					break;
 
 				case MessageContent.ProjectSaved:
-					labelText = Message.GetString("Project saved");
+					SendInfoText(Message.GetString("Project saved"));
 					break;
 
 				case MessageContent.RemoveMetadataLink:
@@ -120,6 +121,10 @@ namespace Timelapse_UI
 				case MessageContent.UseReadXMP:
 					res = this.Show(Message.GetString("There is no XMP linked to this file.") + Environment.NewLine + Message.GetString("Do you want to try to exctract it from the file?"), Message.GetString("Search for XMP?"), MessageWindowType.Question, MessageWindowButtons.YesNo);
 					break;
+
+                case MessageContent.NotEnoughValidFiles:
+                    this.Show(Message.GetString("Not enough valid images found for this kind of project."), MessageWindowType.Warning);
+                    break;
 
 				default:
 					res = this.Show(Message.GetString("Something happened!") + Environment.NewLine + Message.GetString("(There is not more information available)"), MessageWindowType.Warning, MessageWindowButtons.Ok);

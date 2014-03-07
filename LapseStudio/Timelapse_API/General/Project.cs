@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.IO;
 using System.Linq;
+using System.Threading;
 using System.Threading.Tasks;
 using ColorManagment;
 using System.Globalization;
@@ -56,6 +57,17 @@ namespace Timelapse_API
         /// The area that will be used for the simple brightness calculation
         /// </summary>
         public Rectangle SimpleCalculationArea;
+        /// <summary>
+        /// File extensions supported by the project. (e.g. ".jpg")
+        /// </summary>
+        public abstract string[] AllowedFileExtensions
+        {
+            get;
+        }
+        /// <summary>
+        /// If the current project is busy, use this to wait for it to end
+        /// </summary>
+        public readonly AutoResetEvent IsWorkingWaitHandler = new AutoResetEvent(false);
         /// <summary>
         /// Path, where the rendered images will be saved to. null if not set
         /// </summary>
@@ -121,19 +133,24 @@ namespace Timelapse_API
             MainWorker.ProgressChanged += new ProgressChangedEventHandler(MainWorker_ProgressChanged);
         }
 
-        #region Methods
+        #region Internal Methods
 
         /// <summary>
         /// Add all frames from a certain directory to the project
         /// </summary>
         /// <param name="directory">The directory from where the frames will be loaded</param>
-        internal void AddFrames(string directory)
+        internal bool AddFrames(string directory)
         {
             if (Frames.Count == 0)
             {
                 if (!Directory.Exists(directory)) { throw new DirectoryNotFoundException(); }
-                AddFrame(Directory.GetFiles(directory));
+                string[] files = Directory.GetFiles(directory);
+                files = SortOutImages(files);
+                if (files.Length < 2) return false;
+                AddFrames(files);
+                return true;
             }
+            else return false;
         }
 
         /// <summary>
@@ -228,7 +245,9 @@ namespace Timelapse_API
             MainWorker.RunWorkerAsync(new KeyValuePair<Work, object>(Work.LoadProject, null));
         }
 
-        #region Protected
+        #endregion
+
+        #region Protected Methods
 
         protected void MainWorker_ProgressChanged(object sender, ProgressChangedEventArgs e)
         {
@@ -265,10 +284,13 @@ namespace Timelapse_API
                     OnWorkDone(this, eArgs);
                     break;
             }
+            IsWorkingWaitHandler.Set();
         }
 
         protected void MainWorker_DoWork(object sender, DoWorkEventArgs e)
         {
+            IsWorkingWaitHandler.Reset();
+
             KeyValuePair<Work, object> arg = (KeyValuePair<Work, object>)e.Argument;
             e.Result = arg;
 
@@ -304,15 +326,11 @@ namespace Timelapse_API
                     break;
             }
         }
-
-
+        
         #region Loading Frames, Thumbs and Metadata
 
-        protected virtual void AddFrame(string[] files)
+        protected virtual void AddFrames(string[] files)
         {
-            files = SortOutImages(files);
-            if (files == null) { throw new ArgumentNullException(); }
-            if (files.Length == 0) { return; }
             MainWorker.RunWorkerAsync(new KeyValuePair<Work, object>(Work.LoadFrames, files));
         }
 
@@ -413,7 +431,7 @@ namespace Timelapse_API
                         {
                             //string[] WBtmp = lines[i].Substring(lines[i].IndexOf(":") + 2).Split(' ');
                             //int[] WBvals = new int[4] { Convert.ToInt32(WBtmp[0]), Convert.ToInt32(WBtmp[1]), Convert.ToInt32(WBtmp[2]), Convert.ToInt32(WBtmp[3]) };
-                            //TODO_L: calc the resulting brightness steps and write to Frames[f].WB
+                            //LTODO: calc the resulting brightness steps and write to Frames[f].WB
                         }
                         else if (lines[i].ToLower().StartsWith("colorspace"))
                         {
@@ -456,8 +474,8 @@ namespace Timelapse_API
 
                 string Tpath = thumbs.First(t => Path.GetFileNameWithoutExtension(t) == Path.GetFileNameWithoutExtension(files[i]) + "_Thumb");
                 if (!File.Exists(Tpath)) { throw new FileNotFoundException("Thumbimage couldn't be found"); }
-                Frames[i].Thumb = new UniversalImage(new Pixbuf(Tpath));
-                Frames[i].ThumbEdited = new UniversalImage(Frames[i].Thumb.Pixbuf.Copy());
+                Frames[i].Thumb = new UniversalImage(Tpath);
+                Frames[i].ThumbEdited = Frames[i].Thumb.Clone();
             }
         }
 
@@ -684,7 +702,7 @@ namespace Timelapse_API
                 }
             }
 
-            //TODO_L: write statistic/BV-value check
+            //LTODO: write statistic/BV-value check
             #region Statistics/BV-Values Check
 
             /*Status = CalcState.Statistics;
@@ -850,7 +868,7 @@ namespace Timelapse_API
 
         protected void DoBrightnessCalculationExif()
         {
-            //TODO_L: write br calc exif
+            //LTODO: write br calc exif
         }
 
         #endregion
@@ -890,7 +908,7 @@ namespace Timelapse_API
                         {
                             index = y * thumbs[i].Rowstride + x;
 
-                            //TODO_L: doesn't calculate correctly
+                            //LTODO: doesn't calculate correctly
                             crgb.R = pix1[index] / 255d; crgb.G = pix1[index + 1] / 255d; crgb.B = pix1[index + 2] / 255d;
                             cl = Converter.ToLab(crgb);
                             if (exposure < 0) { cl.L = (cl.L < 0.94) ? cl.L : Math.Exp(exposure * ld) * cl.L; }
@@ -912,18 +930,14 @@ namespace Timelapse_API
 
         protected string[] SortOutImages(string[] AllFiles)
         {
-            string[] nf = new string[] { ".jpg", ".jpeg", ".png", ".tif", ".tiff" };
-            string[] rf = new string[] { ".dng", ".cr2", ".crw", ".x3f", ".nef", ".srw", ".srf", ".sr2", ".arw",
-                ".erf", ".pef", ".raf", ".3fr", ".fff", ".dcr", ".dcs", ".kdc", ".kdc", ".rwl", ".mrw", ".mdc", ".nrw",".orf", ".rw2" };
-
-            if (this.Type == ProjectType.LapseStudio) { return AllFiles.Where(t => nf.Any(k => k == Path.GetExtension(t).ToLower())).ToArray(); }
-            else { return AllFiles.Where(t => nf.Any(k => k == Path.GetExtension(t).ToLower()) || rf.Any(k => k == Path.GetExtension(t).ToLower())).ToArray(); }
+            return AllFiles.Where(t => AllowedFileExtensions.Any(k => k == Path.GetExtension(t).ToLower())).ToArray();
         }
 
-        protected virtual void readXMP() { }
-
-        #endregion
-
+        protected virtual void readXMP()
+        {
+            //Nothing to do here (only ProjectACR needs it)
+        }
+        
         #endregion
     }
 }

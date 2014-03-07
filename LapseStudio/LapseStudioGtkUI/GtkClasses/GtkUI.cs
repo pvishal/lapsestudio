@@ -20,7 +20,7 @@ namespace LapseStudioGtkUI
 			Init(Platform.Unix);
 
             this.TitleChanged += GtkUI_TitleChanged;
-            this.InfoTextChanged += GtkUI_InfoTextChanged;            
+            MsgBox.InfoTextChanged += MsgBox_InfoTextChanged;
 			mw.PublicFileTree.CursorChanged += FileTree_CursorChanged;
 
 			//mw.ThumbEventBox.ButtonPressEvent += new ButtonPressEventHandler(fixThumb_ButtonPressEvent);
@@ -409,7 +409,7 @@ namespace LapseStudioGtkUI
             catch (Exception ex) { Error.Report("Keyframecell toggled", ex); }
         }
 
-        private void GtkUI_InfoTextChanged(string Value)
+        private void MsgBox_InfoTextChanged(string Value)
         {
 			mw.PublicStatusLabel.Text = Value;
         }
