@@ -90,4 +90,14 @@ namespace LapseStudioMacUI
 			return true;
 		}
 	}
+
+	public class WindowDelegate : NSWindowDelegate
+	{
+		public WindowDelegate (){}
+
+		public override bool WindowShouldClose (NSObject sender)
+		{
+			return !((MainWindowController)((MainWindow)sender).WindowController).MainUI.Quit(ClosingReason.User);
+		}
+	} 
 }

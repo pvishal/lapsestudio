@@ -59,6 +59,7 @@ namespace LapseStudioMacUI
 				MainUI.MainGraph = new BrightnessGraph((int)MainGraph.FittingSize.Width, (int)MainGraph.FittingSize.Height);
 				((Graph)MainGraph).Init(MainUI.MainGraph);
 				MainUI.InitBaseUI();
+				Window.Delegate = new WindowDelegate();
 			}
 			catch(Exception ex) { Error.Report("Init", ex); }
 		}
@@ -165,8 +166,14 @@ namespace LapseStudioMacUI
 
 		public void FrameSelectChanged()
 		{
-			FrameSelectedLabel.StringValue = FrameSelectSlider.IntValue.ToString();
-			//TODO: show NSImage in graphviews
+			int val = FrameSelectSlider.IntValue;
+			FrameSelectedLabel.StringValue = val.ToString();
+
+			if (val >= 0 && val < ProjectManager.CurrentProject.Frames.Count)
+			{
+				ThumbEditView.Image = CocoaHelper.ToNSImage(ProjectManager.CurrentProject.Frames[val].ThumbEdited);
+				ThumbViewGraph.Image = CocoaHelper.ToNSImage(ProjectManager.CurrentProject.Frames[val].Thumb);
+			}
 		}
 
 		#region Controls as Public

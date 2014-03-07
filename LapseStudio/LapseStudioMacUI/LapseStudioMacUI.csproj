@@ -104,7 +104,7 @@
       <DependentUpon>SettingsWindow.cs</DependentUpon>
     </Compile>
     <Compile Include="CocoaClasses\CocoaGraphDrawer.cs" />
-    <Compile Include="CocoaClasses\TableClasses.cs" />
+    <Compile Include="CocoaClasses\HelperClasses.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="locale\de.dic">

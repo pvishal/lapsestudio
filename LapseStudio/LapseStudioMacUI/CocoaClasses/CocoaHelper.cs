@@ -1,5 +1,10 @@
 ﻿using Timelapse_UI;
+using Timelapse_API;
 using MonoMac.AppKit;
+using System.Drawing;
+using System.Drawing.Imaging;
+using System.IO;
+using MonoMac.CoreGraphics;
 
 namespace LapseStudioMacUI
 {
@@ -71,6 +76,16 @@ namespace LapseStudioMacUI
 				case 0:	return WindowResponse.Cancel;
 				case 1: return WindowResponse.Ok;
 				default: return WindowResponse.None;
+			}
+		}
+
+		public static NSImage ToNSImage(UniversalImage img)
+		{
+			using(MemoryStream str = new MemoryStream())
+			{
+				img.Bitmap.Save(str, ImageFormat.Png);
+				CGImage img2 = CGImage.FromPNG(new CGDataProvider(str.ToArray(), 0, (int)str.Length), null, false, CGColorRenderingIntent.Default);
+				return new NSImage(img2, new SizeF(img2.Width,img2.Height));
 			}
 		}
 	}

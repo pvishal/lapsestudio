@@ -17,6 +17,8 @@ namespace LapseStudioMacUI
 		{
 			mw = win;
 			Init(Platform.MacOSX);
+			MsgBox.InfoTextChanged += HandleInfoTextChanged;
+			this.TitleChanged += HandleTitleChanged;
 		}
 
 		#region Methods
@@ -108,11 +110,7 @@ namespace LapseStudioMacUI
 
 		private void HandleTableSelectionChanged()
 		{
-			try
-			{
-				//TODO: set NSImage instead of pixbuf
-				if (mw.PublicTabChangeButton.SelectedSegment == (int)TabLocation.Filelist) { mw.PublicThumbViewList.Image = new NSImage(new System.Drawing.SizeF(160,120));/*ProjectManager.CurrentProject.Frames[mw.PublicMainTable.SelectedRow].Thumb.Pixbuf;*/ }
-			}
+			try{if (mw.PublicTabChangeButton.SelectedSegment == (int)TabLocation.Filelist) { mw.PublicThumbViewList.Image = CocoaHelper.ToNSImage(ProjectManager.CurrentProject.Frames[mw.PublicMainTable.SelectedRow].Thumb); } }
 			catch (Exception ex) { Error.Report("HandleTableSelectionChanged", ex); }
 		}
 
@@ -219,6 +217,16 @@ namespace LapseStudioMacUI
 				});
 			}
 			catch (Exception ex) { Error.Report("Brightness calculation finished", ex); }
+		}
+
+		private void HandleInfoTextChanged (string Value)
+		{
+			mw.PublicStatuslabel.StringValue = Value;
+		}
+
+		private void HandleTitleChanged (string Value)
+		{
+			mw.Window.Title = Value;
 		}
 
 		#endregion

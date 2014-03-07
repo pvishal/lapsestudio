@@ -120,7 +120,7 @@ namespace Timelapse_UI
             PointD[] pout;
 
             //Drawing Brightness Curve
-            if (ProjectManager.CurrentProject.Frames.Count > 0)
+			if (ProjectManager.CurrentProject.Frames.Count > 0 && ProjectManager.CurrentProject.IsBrightnessCalculated)
             {
                 Drawer.SetCurveLinePen();
                 List<PointD> BrP = new List<PointD>();
