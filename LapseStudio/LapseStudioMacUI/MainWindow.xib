@@ -9,8 +9,8 @@
                 <outlet property="AlignXButton" destination="7Fh-jR-TBI" id="hW1-0z-lYY"/>
                 <outlet property="BrightnessColumn" destination="PlW-cF-aAx" id="avk-0E-nKQ"/>
                 <outlet property="BrightnessSlider" destination="jU9-na-ao9" id="5cs-B2-6Fw"/>
-                <outlet property="BrightnessToolItem" destination="FAr-O5-TGC" id="QKw-0f-wuz"/>
-                <outlet property="CancelToolItem" destination="yMp-s6-9NU" id="iUb-ki-gh3"/>
+                <outlet property="BrightnessToolItem" destination="TVN-0J-9nV" id="eQg-5E-5vI"/>
+                <outlet property="CancelToolItem" destination="W0M-NX-beJ" id="3lh-3q-t76"/>
                 <outlet property="EditThumbsButton" destination="MRO-hx-BVR" id="R6U-qa-9Z5"/>
                 <outlet property="FrameSelectSlider" destination="DNh-0n-JQH" id="e0w-LH-TU9"/>
                 <outlet property="FrameSelectedLabel" destination="h8g-In-J8m" id="zBd-mA-oDT"/>
@@ -20,9 +20,9 @@
                 <outlet property="MainProgressBar" destination="bOM-SO-ASd" id="Yxm-BR-PIQ"/>
                 <outlet property="MainTabView" destination="vJm-s2-PfO" id="c8U-n0-Bjw"/>
                 <outlet property="MainTable" destination="QF8-q7-ni9" id="2Ug-nA-LMV"/>
-                <outlet property="MetadataToolItem" destination="ubS-f9-LrS" id="RC0-TD-wac"/>
-                <outlet property="OpenFileToolItem" destination="knr-60-mMJ" id="x3J-0m-7mG"/>
-                <outlet property="ProcessToolItem" destination="tA3-g3-69r" id="CPt-mE-Foe"/>
+                <outlet property="MetadataToolItem" destination="A6E-we-v8q" id="5OO-mi-TL1"/>
+                <outlet property="OpenFileToolItem" destination="Qwg-6G-WMG" id="X76-Fi-Nfe"/>
+                <outlet property="ProcessToolItem" destination="TSR-cW-fNH" id="ELI-WD-zEj"/>
                 <outlet property="Statuslabel" destination="hW7-7g-hLI" id="9VN-hr-QVq"/>
                 <outlet property="TabChangeButton" destination="I2I-Gc-CeW" id="eYR-zS-G8o"/>
                 <outlet property="ThumbEditView" destination="HW0-bY-OjA" id="2Jw-X4-A0o"/>
@@ -347,49 +347,104 @@
                     </textField>
                 </subviews>
             </view>
-            <toolbar key="toolbar" implicitIdentifier="87BF7759-E307-4DE5-A0CC-6CAD0C6F8C9E" autosavesConfiguration="NO" allowsUserCustomization="NO" showsBaselineSeparator="NO" displayMode="iconOnly" sizeMode="small" id="Ouu-RU-Se1">
+            <toolbar key="toolbar" implicitIdentifier="87BF7759-E307-4DE5-A0CC-6CAD0C6F8C9E" autosavesConfiguration="NO" allowsUserCustomization="NO" showsBaselineSeparator="NO" displayMode="iconOnly" sizeMode="regular" id="Ouu-RU-Se1">
                 <allowedToolbarItems>
-                    <toolbarItem implicitItemIdentifier="9B4071E7-3553-431A-AC6D-C5FCFF6E3536" label="Open Files" paletteLabel="Open Files" tag="-1" image="NSFolder" id="knr-60-mMJ">
+                    <toolbarItem implicitItemIdentifier="FF3F5663-48C3-488F-841F-65EE7E98240F" label="Add Files" paletteLabel="Add Files" image="Add32" id="Qwg-6G-WMG">
+                        <nil key="toolTip"/>
+                        <size key="minSize" width="32" height="32"/>
+                        <size key="maxSize" width="48" height="48"/>
+                        <button key="view" id="2LP-mf-OAt">
+                            <rect key="frame" x="12" y="14" width="32" height="32"/>
+                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                            <buttonCell key="cell" type="square" bezelStyle="shadowlessSquare" image="Add32" imagePosition="overlaps" alignment="center" imageScaling="proportionallyUpOrDown" inset="2" id="i4j-6c-31i">
+                                <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
+                                <font key="font" metaFont="system"/>
+                            </buttonCell>
+                        </button>
                         <connections>
-                            <action selector="OpenFileToolItem_Clicked:" target="-2" id="ggU-MG-6gr"/>
+                            <action selector="OpenFileToolItem_Clicked:" target="-2" id="786-q4-7fW"/>
                         </connections>
                     </toolbarItem>
-                    <toolbarItem implicitItemIdentifier="CED007EE-6103-4153-BFA5-129FB15E5AF8" label="Calculate Brightness" paletteLabel="Calculate Brightness" tag="1" image="NSAdvanced" id="FAr-O5-TGC">
+                    <toolbarItem implicitItemIdentifier="2D0A00DB-DBD3-483D-98CB-4B20988952E4" label="Calculate Brightness" paletteLabel="Calculate Brightness" image="Calculate32" id="TVN-0J-9nV">
+                        <nil key="toolTip"/>
+                        <size key="minSize" width="32" height="32"/>
+                        <size key="maxSize" width="48" height="48"/>
+                        <button key="view" id="p3P-GH-i4M">
+                            <rect key="frame" x="42" y="14" width="32" height="32"/>
+                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                            <buttonCell key="cell" type="square" bezelStyle="shadowlessSquare" image="Calculate32" imagePosition="only" alignment="center" imageScaling="proportionallyDown" inset="2" id="HMN-2t-SOk">
+                                <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
+                                <font key="font" metaFont="system"/>
+                            </buttonCell>
+                        </button>
                         <connections>
-                            <action selector="BrightnessToolItem_Clicked:" target="-2" id="CQb-MR-vYL"/>
+                            <action selector="BrightnessToolItem_Clicked:" target="-2" id="WaJ-4q-f2z"/>
                         </connections>
                     </toolbarItem>
-                    <toolbarItem implicitItemIdentifier="F26B03B3-0FC5-451F-8D10-F5473020745E" label="Refresh Metadata" paletteLabel="Refresh Metadata" tag="2" image="NSRefreshFreestandingTemplate" id="ubS-f9-LrS">
+                    <toolbarItem implicitItemIdentifier="16814CC1-E67B-44BE-8FD8-2DC5F7D58F7D" label="Process Files" paletteLabel="Process Files" image="Save32" id="TSR-cW-fNH">
+                        <nil key="toolTip"/>
+                        <size key="minSize" width="32" height="32"/>
+                        <size key="maxSize" width="48" height="48"/>
+                        <button key="view" id="iD0-g6-UA9">
+                            <rect key="frame" x="21" y="14" width="32" height="32"/>
+                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                            <buttonCell key="cell" type="square" bezelStyle="shadowlessSquare" image="Save32" imagePosition="only" alignment="center" imageScaling="proportionallyDown" inset="2" id="G3N-Qe-5e5">
+                                <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
+                                <font key="font" metaFont="system"/>
+                            </buttonCell>
+                        </button>
                         <connections>
-                            <action selector="MetadataToolItem_Clicked:" target="-2" id="GZj-rd-PvJ"/>
+                            <action selector="ProcessToolItem_Clicked:" target="-2" id="Jy4-wt-aMV"/>
                         </connections>
                     </toolbarItem>
-                    <toolbarItem implicitItemIdentifier="AF3AF4E5-486F-4C30-8077-D9FBFB1198F6" label="Process Files" paletteLabel="Process Files" tag="3" image="NSComputer" id="tA3-g3-69r">
+                    <toolbarItem implicitItemIdentifier="88F166CE-F00B-4E9E-B58D-DFE154A943ED" label="Cancel" paletteLabel="Cancel" image="Cancel32" id="W0M-NX-beJ">
+                        <nil key="toolTip"/>
+                        <size key="minSize" width="32" height="32"/>
+                        <size key="maxSize" width="48" height="48"/>
+                        <button key="view" id="Sxu-Ow-tuw">
+                            <rect key="frame" x="6" y="14" width="32" height="32"/>
+                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                            <buttonCell key="cell" type="square" bezelStyle="shadowlessSquare" image="Cancel32" imagePosition="only" alignment="center" imageScaling="proportionallyDown" inset="2" id="3IO-d3-51b">
+                                <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
+                                <font key="font" metaFont="system"/>
+                            </buttonCell>
+                        </button>
                         <connections>
-                            <action selector="ProcessToolItem_Clicked:" target="-2" id="bpK-2R-UzT"/>
+                            <action selector="CancelToolItem_Clicked:" target="-2" id="lku-7o-rZC"/>
                         </connections>
                     </toolbarItem>
-                    <toolbarItem implicitItemIdentifier="CE96BA57-0453-44CC-99B5-E214FCDF8B7C" label="Cancel" paletteLabel="Cancel" tag="4" image="NSStopProgressFreestandingTemplate" id="yMp-s6-9NU">
+                    <toolbarItem implicitItemIdentifier="5F8C9962-ACFC-48D9-8147-8A133EC2472C" label="Refresh Metadata" paletteLabel="Refresh Metadata" image="Reload32" id="A6E-we-v8q">
+                        <nil key="toolTip"/>
+                        <size key="minSize" width="32" height="32"/>
+                        <size key="maxSize" width="48" height="48"/>
+                        <button key="view" id="f2X-88-XZh">
+                            <rect key="frame" x="34" y="14" width="32" height="32"/>
+                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                            <buttonCell key="cell" type="square" bezelStyle="shadowlessSquare" image="Reload32" imagePosition="overlaps" alignment="center" imageScaling="proportionallyDown" inset="2" id="tGf-YG-GtQ">
+                                <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
+                                <font key="font" metaFont="system"/>
+                            </buttonCell>
+                        </button>
                         <connections>
-                            <action selector="CancelToolItem_Clicked:" target="-2" id="eOv-xX-owU"/>
+                            <action selector="MetadataToolItem_Clicked:" target="-2" id="K0z-HI-qOU"/>
                         </connections>
                     </toolbarItem>
                 </allowedToolbarItems>
                 <defaultToolbarItems>
-                    <toolbarItem reference="knr-60-mMJ"/>
-                    <toolbarItem reference="FAr-O5-TGC"/>
-                    <toolbarItem reference="ubS-f9-LrS"/>
-                    <toolbarItem reference="tA3-g3-69r"/>
-                    <toolbarItem reference="yMp-s6-9NU"/>
+                    <toolbarItem reference="Qwg-6G-WMG"/>
+                    <toolbarItem reference="TVN-0J-9nV"/>
+                    <toolbarItem reference="A6E-we-v8q"/>
+                    <toolbarItem reference="TSR-cW-fNH"/>
+                    <toolbarItem reference="W0M-NX-beJ"/>
                 </defaultToolbarItems>
             </toolbar>
         </window>
     </objects>
     <resources>
-        <image name="NSAdvanced" width="32" height="32"/>
-        <image name="NSComputer" width="32" height="32"/>
-        <image name="NSFolder" width="32" height="32"/>
-        <image name="NSRefreshFreestandingTemplate" width="14" height="14"/>
-        <image name="NSStopProgressFreestandingTemplate" width="83" height="83"/>
+        <image name="Add32" width="74.322578430175781" height="74.322578430175781"/>
+        <image name="Calculate32" width="79.448272705078125" height="79.448272705078125"/>
+        <image name="Cancel32" width="74.322578430175781" height="74.322578430175781"/>
+        <image name="Reload32" width="76.800003051757812" height="76.800003051757812"/>
+        <image name="Save32" width="74.322578430175781" height="74.322578430175781"/>
     </resources>
 </document>

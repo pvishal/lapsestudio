@@ -110,7 +110,7 @@ namespace LapseStudioMacUI
 
 		private void HandleTableSelectionChanged()
 		{
-			try{if (mw.PublicTabChangeButton.SelectedSegment == (int)TabLocation.Filelist) { mw.PublicThumbViewList.Image = CocoaHelper.ToNSImage(ProjectManager.CurrentProject.Frames[mw.PublicMainTable.SelectedRow].Thumb); } }
+			try { if (mw.PublicMainTable.SelectedRow >= 0 && mw.PublicTabChangeButton.SelectedSegment == (int)TabLocation.Filelist) { mw.PublicThumbViewList.Image = CocoaHelper.ToNSImage(ProjectManager.CurrentProject.Frames[mw.PublicMainTable.SelectedRow].Thumb); } }
 			catch (Exception ex) { Error.Report("HandleTableSelectionChanged", ex); }
 		}
 
@@ -232,4 +232,3 @@ namespace LapseStudioMacUI
 		#endregion
 	}
 }
-

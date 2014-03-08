@@ -6,8 +6,9 @@
     <ProjectGuid>{FD96B06C-EDC3-4407-986B-122258B13BC1}</ProjectGuid>
     <OutputType>WinExe</OutputType>
     <RootNamespace>LapseStudioGtkUI</RootNamespace>
-    <AssemblyName>LapseStudio</AssemblyName>
     <UseMSBuildEngine>False</UseMSBuildEngine>
+    <ProductVersion>12.0.0</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -19,17 +20,14 @@
     <WarningLevel>4</WarningLevel>
     <ConsolePause>false</ConsolePause>
     <PlatformTarget>x86</PlatformTarget>
-    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+    <AssemblyName>LapseStudio</AssemblyName>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <Optimize>true</Optimize>
     <OutputPath>bin\Release</OutputPath>
-    <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
-    <ConsolePause>false</ConsolePause>
+    <AssemblyName>LapseStudioGtkUI</AssemblyName>
     <PlatformTarget>x86</PlatformTarget>
-    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
-    <DebugType>none</DebugType>
   </PropertyGroup>
   <PropertyGroup>
     <ApplicationIcon>Icon256.ico</ApplicationIcon>

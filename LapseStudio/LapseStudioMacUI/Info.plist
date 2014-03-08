@@ -35,5 +35,7 @@
 			<string></string>
 		</dict>
 	</array>
+	<key>CFBundleIconFile</key>
+	<string>Icon</string>
 </dict>
 </plist>
