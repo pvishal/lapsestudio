@@ -90,6 +90,16 @@
     </Compile>
     <Compile Include="CocoaClasses\CocoaGraphDrawer.cs" />
     <Compile Include="CocoaClasses\HelperClasses.cs" />
+    <Compile Include="GUI\AboutWindow.cs" />
+    <Compile Include="GUI\AboutWindowController.cs" />
+    <Compile Include="GUI\AboutWindow.designer.cs">
+      <DependentUpon>AboutWindow.cs</DependentUpon>
+    </Compile>
+    <Compile Include="GUI\HelpWindow.cs" />
+    <Compile Include="GUI\HelpWindowController.cs" />
+    <Compile Include="GUI\HelpWindow.designer.cs">
+      <DependentUpon>HelpWindow.cs</DependentUpon>
+    </Compile>
   </ItemGroup>
   <ItemGroup>
     <None Include="locale\de.dic">
@@ -134,5 +144,7 @@
     <InterfaceDefinition Include="MainWindow.xib" />
     <InterfaceDefinition Include="GUI\Graph.xib" />
     <InterfaceDefinition Include="GUI\SettingsWindow.xib" />
+    <InterfaceDefinition Include="GUI\AboutWindow.xib" />
+    <InterfaceDefinition Include="GUI\HelpWindow.xib" />
   </ItemGroup>
 </Project>

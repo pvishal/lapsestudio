@@ -10,7 +10,7 @@ LapseStudio uses Exiftool:
 	http://owl.phy.queensu.ca/~phil/exiftool/
 
 LapseStudio works in combination with:
-	Rawtherapee:			http://www.rawtherapee.com/
+	Rawtherapee:		http://www.rawtherapee.com/
 	Adobe CameraRaw:	http://www.adobe.com/
 
 Contact me here:

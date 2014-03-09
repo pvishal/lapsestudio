@@ -85,7 +85,7 @@ namespace Timelapse_API
         internal ProjectRT()
             : base()
         {
-            OutputWatcher.Created += OutputWatcher_Created;
+			OutputWatcher.Created += OutputWatcher_Created;
         }
 
         /// <summary>
@@ -238,7 +238,7 @@ namespace Timelapse_API
                     break;
                 case FileFormat.tiff:
                     saveformat = TiffCompression ? "-t1" : "-t";
-                    SaveFileType = "tiff";
+                    SaveFileType = "tif";
                     break;
                 case FileFormat.jpg:
                 default:
@@ -253,7 +253,7 @@ namespace Timelapse_API
 
             #endregion
 
-            OutputWatcher.Filter = "*." + SaveFileType;
+			OutputWatcher.Filter = "*." + SaveFileType;
             OutputWatcher.Path = ProjectManager.ImageSavePath;
             OutputWatcher.EnableRaisingEvents = true;
 
@@ -297,7 +297,8 @@ namespace Timelapse_API
         {
             if (e.ChangeType == WatcherChangeTypes.Created)
             {
-                int p = Directory.GetFiles(Path.GetDirectoryName(e.FullPath), "*" + Path.GetExtension(e.FullPath)).Length;
+				string[] fls = Directory.GetFiles(OutputWatcher.Path, OutputWatcher.Filter);
+				int p = fls.Count(t => Frames.Any(k => k.Filename == Path.GetFileNameWithoutExtension(t)));
                 MainWorker.ReportProgress(0, new ProgressChangeEventArgs(p * 100 / Frames.Count, ProgressType.ProcessingImages));
             }
         }

@@ -11,6 +11,8 @@ namespace LapseStudioMacUI
 	{
 		MainWindowController mainWindowController;
 		SettingsWindowController SettingsDialog;
+		AboutWindowController AboutDialog;
+		HelpWindowController HelpDialog;
 
 		public AppDelegate()
 		{
@@ -31,9 +33,22 @@ namespace LapseStudioMacUI
 		{
 			try
 			{
-				//TODO: show about window
+				AboutDialog = new AboutWindowController();
+				AboutDialog.LoadWindow();
+				AboutDialog.Window.WillClose += AboutDialog_WillClose;
+				NSApplication.SharedApplication.RunModalForWindow(AboutDialog.Window);
 			}
 			catch(Exception ex) { Error.Report("MenuAboutItem_Click", ex); }
+		}
+
+		private void AboutDialog_WillClose (object sender, EventArgs e)
+		{
+			try
+			{
+				NSApplication.SharedApplication.StopModal();
+				AboutDialog.Dispose();
+			}
+			catch(Exception ex) { Error.Report("AboutDialog_WillClose", ex); }
 		}
 
 		partial void MenuQuitItem_Click(NSObject sender)
@@ -74,8 +89,9 @@ namespace LapseStudioMacUI
 		partial void MenuHelpItem_Click(NSObject sender)
 		{
 			try
-			{ 
-				//TODO: show help
+			{
+				HelpDialog = new HelpWindowController();
+				HelpDialog.ShowWindow(this);
 			}
 			catch(Exception ex) { Error.Report("MenuHelpItem_Click", ex); }
 		}
