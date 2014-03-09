@@ -4,6 +4,7 @@ using System.Drawing.Imaging;
 using ColorManagment;
 using Gdk;
 using System.IO;
+using Image = System.Drawing.Image;
 
 namespace Timelapse_API
 {

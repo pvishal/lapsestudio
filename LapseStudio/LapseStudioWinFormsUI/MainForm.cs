@@ -101,7 +101,7 @@ namespace LapseStudioWinFormsUI
 
         internal void CalculateToolButton_Click(object sender, EventArgs e)
         {
-            try { MainUI.Click_Calculate(); }
+            try { MainUI.Click_Calculate((BrightnessCalcType)CalcTypeCoBox.SelectedIndex); }
 			catch (Exception ex) { Error.Report("CalculateToolButton_Click", ex); }
         }
 
@@ -203,7 +203,7 @@ namespace LapseStudioWinFormsUI
 
         internal void MainTable_SelectionChanged(object sender, EventArgs e)
         {
-            try { if (MainTable.SelectedRows.Count > 0) ThumbViewList.Image = ProjectManager.CurrentProject.Frames[MainTable.SelectedRows[0].Index].Thumb.Bitmap; }
+            try { if (MainTable.SelectedRows.Count > 0 && ProjectManager.CurrentProject.Frames[MainTable.SelectedRows[0].Index].Thumb != null) ThumbViewList.Image = ProjectManager.CurrentProject.Frames[MainTable.SelectedRows[0].Index].Thumb.Bitmap; }
 			catch (Exception ex) { Error.Report("MainTable_SelectionChanged", ex); }
         }
 
@@ -214,5 +214,30 @@ namespace LapseStudioWinFormsUI
         }
 
         #endregion
+
+        private void CalcTypeCoBox_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            CalcTypeExplanationLabel.Text = MainUI.Click_CalcTypeChanged((BrightnessCalcType)CalcTypeCoBox.SelectedIndex);
+        }
+
+        private void CalcSettingsPanel_Paint(object sender, PaintEventArgs e)
+        {
+
+        }
+
+        private void CalcSettingsPanel_MouseDown(object sender, MouseEventArgs e)
+        {
+
+        }
+
+        private void CalcSettingsPanel_MouseMove(object sender, MouseEventArgs e)
+        {
+
+        }
+
+        private void CalcSettingsPanel_MouseUp(object sender, MouseEventArgs e)
+        {
+
+        }
     }
 }

@@ -28,9 +28,13 @@
     <OutputPath>bin\Release</OutputPath>
     <WarningLevel>4</WarningLevel>
     <AssemblyName>LapseStudioWinFormsUI</AssemblyName>
+    <PlatformTarget>x86</PlatformTarget>
   </PropertyGroup>
   <PropertyGroup>
     <ApplicationIcon>Icon256.ico</ApplicationIcon>
+  </PropertyGroup>
+  <PropertyGroup>
+    <AssemblyName>LapseStudio</AssemblyName>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />

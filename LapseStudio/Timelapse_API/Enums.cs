@@ -26,8 +26,10 @@
     public enum BrightnessCalcType
     {
         Advanced,
+        AdvancedII,
         Simple,
         Exif,
+        Lab,
     }
 
     /// <summary>
@@ -38,8 +40,6 @@
         Unknown,
         LoadFrames,
         CalculateBrightness,
-        CalculateBrightnessSimple,
-        CalculateBrightnessExif,
         ProcessFiles,
         ProcessThumbs,
         ReadXMP,

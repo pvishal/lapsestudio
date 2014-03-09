@@ -13,6 +13,7 @@ namespace Timelapse_API
         internal bool IsBrightnessCalculated;
         internal Rectangle SimpleCalculationArea;
         internal string ImageSavePath;
+        internal BrightnessCalcType CalcType;
 
         public SavingStorage()
         {
@@ -21,6 +22,7 @@ namespace Timelapse_API
             IsBrightnessCalculated = ProjectManager.CurrentProject.IsBrightnessCalculated;
             SimpleCalculationArea = ProjectManager.CurrentProject.SimpleCalculationArea;
             ImageSavePath = ProjectManager.ImageSavePath;
+            CalcType = BrightnessCalcType.Advanced;
         }
     }
 }

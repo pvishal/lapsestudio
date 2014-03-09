@@ -137,7 +137,7 @@ namespace LapseStudioGtkUI
 
 		public void OnCalculateActionActivated(object sender, EventArgs e)
 		{
-			try { MainUI.Click_Calculate(); }
+			try { MainUI.Click_Calculate(BrightnessCalcType.Advanced); }    //TODO: replace that with actual user selection
 			catch (Exception ex) { Error.Report("OnCalculateActionActivated", ex); }
 		}
 

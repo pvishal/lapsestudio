@@ -49,7 +49,7 @@ namespace Timelapse_UI
         public static readonly float[] CustomCurvePenColor = { 0f, 0f, 0f };
         public static readonly float[] PointPenColor = { 0.8f, 0f, 0f };
         public static readonly float[] SelPointPenColor = { 0f, 0.8f, 0.8f };
-        private const float GridWidth = 10.5f;
+        private const float GridWidth = 10f;
         private const float PointRadius = 3f;
 
 		#endregion
@@ -279,8 +279,8 @@ namespace Timelapse_UI
 
 		public void Mouse_Up()
 		{
-			if (IsOnCurveArea) { IsMoving = false; }
-			else { RemovePoint(SelectedPoint); }
+            if (!IsOnCurveArea) { RemovePoint(SelectedPoint); }
+            IsMoving = false; 
 			RefreshGraph();
 		}
 

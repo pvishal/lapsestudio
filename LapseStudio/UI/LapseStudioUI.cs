@@ -483,10 +483,10 @@ No lets you load values from a standalone XMP file."), MessageWindowType.Questio
 			if (ProjectManager.CurrentProject.Type == ProjectType.CameraRaw) { ProjectManager.ReadXMP(); }
 		}
 
-		public void Click_Calculate()
+        public void Click_Calculate(BrightnessCalcType Type)
 		{
 			if (CheckBusy()) return;
-			if (ProjectManager.CurrentProject.Frames.Count > 1) { ProjectManager.CalculateBrightness(LSSettings.BrCalcType); }
+            if (ProjectManager.CurrentProject.Frames.Count > 1) { ProjectManager.CalculateBrightness(Type); }
 			else { MsgBox.ShowMessage(MessageContent.NotEnoughFrames); }
 		}
 
@@ -520,6 +520,20 @@ No lets you load values from a standalone XMP file."), MessageWindowType.Questio
 				MainGraph.RefreshGraph();
 			}
 		}
+
+        public string Click_CalcTypeChanged(BrightnessCalcType Type)
+        {
+            switch (Type)
+            {
+                case BrightnessCalcType.Advanced: return GeneralValues.BrCalc_Advanced_Ex;
+                case BrightnessCalcType.AdvancedII: return GeneralValues.BrCalc_AdvancedII_Ex;
+                case BrightnessCalcType.Exif: return GeneralValues.BrCalc_Exif_Ex;
+                case BrightnessCalcType.Lab: return GeneralValues.BrCalc_Lab_Ex;
+                case BrightnessCalcType.Simple: return GeneralValues.BrCalc_Simple_Ex;
+
+                default: return "";
+            }
+        }
 
 		#endregion
     }

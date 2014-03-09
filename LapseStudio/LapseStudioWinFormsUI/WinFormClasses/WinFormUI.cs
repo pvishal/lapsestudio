@@ -107,8 +107,10 @@ namespace LapseStudioWinFormsUI
 		public override void InitUI()
 		{
             mw.MetadataToolButton.Enabled = (LSSettings.UsedProgram != ProjectType.CameraRaw) ? false : true;
-			//mw.CalcTypeCoBox.Active = (int)LSSettings.BrCalcType;
             UpdateTable();
+            mw.CalcTypeCoBox.Items.Clear();
+            mw.CalcTypeCoBox.Items.AddRange(Enum.GetNames(typeof(BrightnessCalcType)));
+            mw.CalcTypeCoBox.SelectedIndex = 0;
 		}
 
         public override void ClearTable()
@@ -160,6 +162,7 @@ namespace LapseStudioWinFormsUI
                 mw.MainProgressBar.Value = e.ProgressPercentage;
                 mw.MainProgressBar.Text = e.ProgressPercentage + "%";
                 mw.StatusLabel.Text = Message.GetString(e.Topic.ToString());
+                if (e.Topic == ProgressType.LoadFrames) UpdateTable();
             }
             catch (Exception ex) { Error.Report("Progress changed", ex); }
 		}
@@ -204,4 +207,3 @@ namespace LapseStudioWinFormsUI
 		#endregion
 	}
 }
-

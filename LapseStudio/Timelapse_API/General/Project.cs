@@ -22,7 +22,6 @@ namespace Timelapse_API
 		/// Type of project
 		/// </summary>
 		public abstract ProjectType Type { get; }
-
         /// <summary>
         /// A list of all frames
         /// </summary>
@@ -180,19 +179,7 @@ namespace Timelapse_API
         /// </summary>
         internal void CalculateBrightness(BrightnessCalcType CalcType)
         {
-            switch (CalcType)
-            {
-                case BrightnessCalcType.Advanced:
-                    MainWorker.RunWorkerAsync(new KeyValuePair<Work, object>(Work.CalculateBrightness, null));
-                    break;
-                case BrightnessCalcType.Simple:
-                    if (SimpleCalculationArea.Width <= 0 || SimpleCalculationArea.Height <= 0) { throw new ArgumentNullException("Calculation area must be set for simple calculation"); }
-                    MainWorker.RunWorkerAsync(new KeyValuePair<Work, object>(Work.CalculateBrightnessSimple, null));
-                    break;
-                case BrightnessCalcType.Exif:
-                    MainWorker.RunWorkerAsync(new KeyValuePair<Work, object>(Work.CalculateBrightnessExif, null));
-                    break;
-            }
+            MainWorker.RunWorkerAsync(new KeyValuePair<Work, object>(Work.CalculateBrightness, CalcType));
         }
 
         /// <summary>
@@ -274,8 +261,6 @@ namespace Timelapse_API
                     OnFramesLoaded(this, eArgs);
                     break;
 
-                case Work.CalculateBrightnessExif:
-                case Work.CalculateBrightnessSimple:
                 case Work.CalculateBrightness:
                     IsBrightnessCalculated = !e.Cancelled;
                     OnBrightnessCalculated(this, eArgs);
@@ -302,13 +287,7 @@ namespace Timelapse_API
                     LoadFrames((string[])arg.Value);
                     break;
                 case Work.CalculateBrightness:
-                    DoBrightnessCalculation();
-                    break;
-                case Work.CalculateBrightnessSimple:
-                    DoBrightnessCalculationSimple();
-                    break;
-                case Work.CalculateBrightnessExif:
-                    DoBrightnessCalculationExif();
+                    CalculateBrightnessWork((BrightnessCalcType)arg.Value);
                     break;
                 case Work.ProcessFiles:
                     WriteFiles();
@@ -481,9 +460,35 @@ namespace Timelapse_API
 
         #endregion
 
-        #region Brightness calculation
+        #region Brightness Calculation
 
-        protected void DoBrightnessCalculation()
+        private void CalculateBrightnessWork(BrightnessCalcType CalculationType)
+        {
+            switch (CalculationType)
+            {
+                case BrightnessCalcType.Advanced:
+                    BrCalc_Advanced();
+                    break;
+                case BrightnessCalcType.Exif:
+                    BrCalc_Exif();
+                    break;
+                case BrightnessCalcType.Simple:
+                    BrCalc_Simple();
+                    break;
+                case BrightnessCalcType.AdvancedII:
+                    BrCalc_AdvancedII();
+                    break;
+                case BrightnessCalcType.Lab:
+                    BrCalc_Lab();
+                    break;
+
+                default:
+                    BrCalc_Advanced();
+                    break;
+            }
+        }
+
+        private void BrCalc_Advanced()
         {
             #region Variables
 
@@ -554,13 +559,13 @@ namespace Timelapse_API
                         {
                             index = y * rowstride + x;
 
-                            c = new ColorRGB(RGBSpaceName.sRGB, pix1[index + 2], pix1[index + 1], pix1[index], false);
+                            c = new ColorRGB(RGBSpaceName.sRGB, pix1[index], pix1[index + 1], pix1[index + 2], false);
                             c = c.ToLinear();
                             br1 = (c.R + c.G + c.B) * 255d / 3d;
-                            c = new ColorRGB(RGBSpaceName.sRGB, pix2[index + 2], pix2[index + 1], pix2[index], false);
+                            c = new ColorRGB(RGBSpaceName.sRGB, pix2[index], pix2[index + 1], pix2[index + 2], false);
                             c = c.ToLinear();
                             br2 = (c.R + c.G + c.B) * 255d / 3d;
-                            c = new ColorRGB(RGBSpaceName.sRGB, pix3[index + 2], pix3[index + 1], pix3[index], false);
+                            c = new ColorRGB(RGBSpaceName.sRGB, pix3[index], pix3[index + 1], pix3[index + 2], false);
                             c = c.ToLinear();
                             br3 = (c.R + c.G + c.B) * 255d / 3d;
 
@@ -594,13 +599,13 @@ namespace Timelapse_API
                                                 {
                                                     index = (y + yS) * rowstride + x + xS;
 
-                                                    c = new ColorRGB(RGBSpaceName.sRGB, pix1[index + 2], pix1[index + 1], pix1[index], false);
+                                                    c = new ColorRGB(RGBSpaceName.sRGB, pix1[index], pix1[index + 1], pix1[index + 2], false);
                                                     c = c.ToLinear();
                                                     br1 = (c.R + c.G + c.B) * 255d / 3d;
-                                                    c = new ColorRGB(RGBSpaceName.sRGB, pix2[index + 2], pix2[index + 1], pix2[index], false);
+                                                    c = new ColorRGB(RGBSpaceName.sRGB, pix2[index], pix2[index + 1], pix2[index + 2], false);
                                                     c = c.ToLinear();
                                                     br2 = (c.R + c.G + c.B) * 255d / 3d;
-                                                    c = new ColorRGB(RGBSpaceName.sRGB, pix3[index + 2], pix3[index + 1], pix3[index], false);
+                                                    c = new ColorRGB(RGBSpaceName.sRGB, pix3[index], pix3[index + 1], pix3[index + 2], false);
                                                     c = c.ToLinear();
                                                     br3 = (c.R + c.G + c.B) * 255d / 3d;
 
@@ -662,14 +667,13 @@ namespace Timelapse_API
                         for (int x = 0; x < rowstride; x += n)
                         {
                             index = y * rowstride + x;
-
-                            c = new ColorRGB(RGBSpaceName.sRGB, pix1[index + 2], pix1[index + 1], pix1[index], false);
+                            c = new ColorRGB(RGBSpaceName.sRGB, pix1[index], pix1[index + 1], pix1[index + 2], false);
                             c = c.ToLinear();
                             br1 = (c.R + c.G + c.B) * 255d / 3d;
-                            c = new ColorRGB(RGBSpaceName.sRGB, pix2[index + 2], pix2[index + 1], pix2[index], false);
+                            c = new ColorRGB(RGBSpaceName.sRGB, pix2[index], pix2[index + 1], pix2[index + 2], false);
                             c = c.ToLinear();
                             br2 = (c.R + c.G + c.B) * 255d / 3d;
-                            c = new ColorRGB(RGBSpaceName.sRGB, pix3[index + 2], pix3[index + 1], pix3[index], false);
+                            c = new ColorRGB(RGBSpaceName.sRGB, pix3[index], pix3[index + 1], pix3[index + 2], false);
                             c = c.ToLinear();
                             br3 = (c.R + c.G + c.B) * 255d / 3d;
 
@@ -731,7 +735,7 @@ namespace Timelapse_API
             #endregion Statistics/BV-Values Check
         }
 
-        protected void DoBrightnessCalculationAdvanced()
+        private void BrCalc_AdvancedII()
         {
             //Check whole image for changes
             //split changes in 4(5) groups: dark, light dark, (mid), light bright, bright
@@ -739,7 +743,7 @@ namespace Timelapse_API
         }
 
         //Doesn't work sufficient enough
-        protected void DoLabBrightnessCalculation()
+        private void BrCalc_Lab()
         {
             int filecount = Frames.Count;
             int ThumbWidth = Frames[0].Thumb.Width;
@@ -837,8 +841,12 @@ namespace Timelapse_API
             }
         }
 
-        protected void DoBrightnessCalculationSimple()
+        private void BrCalc_Simple()
         {
+            if (SimpleCalculationArea.Height < 0 || SimpleCalculationArea.Width < 0 || SimpleCalculationArea.X < 0 || SimpleCalculationArea.Y < 0 ||
+                       SimpleCalculationArea.Height > Frames[0].Height || SimpleCalculationArea.Width > Frames[0].Width)
+                throw new ArgumentException("Calculation area must be on thumb image");
+
             for (int f = 0; f < Frames.Count; f++)
             {
                 double Brightness = 0;
@@ -866,7 +874,7 @@ namespace Timelapse_API
             }
         }
 
-        protected void DoBrightnessCalculationExif()
+        private void BrCalc_Exif()
         {
             //LTODO: write br calc exif
         }

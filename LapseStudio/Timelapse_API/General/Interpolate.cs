@@ -190,7 +190,7 @@ namespace Timelapse_API
         internal static PP3Curve[] Do(List<KeyValuePair<int, object>> Input)
         {
             Type CurType = Input[0].Value.GetType();
-            int Pointcount;
+            int Pointcount, step = 1;
 
             if (CurType == typeof(PP3Curve_Array))
             {
@@ -204,8 +204,9 @@ namespace Timelapse_API
             }
             else if (CurType == typeof(PP3Curve_Custom))
             {
-                Pointcount = ((PP3Curve_Custom)Input[0].Value).DataPoints.Count;
-                if (Input.Any(t => ((PP3Curve_Custom)t.Value).DataPoints.Count != Pointcount)) { throw new InterpolationNotPossibleException("Pointcount of curve is not consistet!"); }
+                step = 2;
+                Pointcount = ((PP3Curve_Custom)Input[0].Value).DataPoints.Count * 2;
+                if (Input.Any(t => ((PP3Curve_Custom)t.Value).DataPoints.Count * 2 != Pointcount)) { throw new InterpolationNotPossibleException("Pointcount of curve is not consistet!"); }
             }
             else if (CurType == typeof(PP3Curve_Parametric)) { Pointcount = 7; }
             else { throw new InterpolationNotPossibleException(); }
@@ -217,7 +218,7 @@ namespace Timelapse_API
             PointD[][] InPoints = new PointD[Pointcount][];
 
             //Curves to points
-            for (int i = 0; i < Pointcount; i++)
+            for (int i = 0; i < Pointcount; i += step)
             {
                 if (InPoints[i] == null) { InPoints[i] = new PointD[Input.Count]; }
 
@@ -225,7 +226,12 @@ namespace Timelapse_API
                 {
                     if (CurType == typeof(PP3Curve_Array)) { InPoints[i][j] = new PointD(Input[j].Key, ((PP3Curve_Array)Input[j].Value).DataPoints[i]); }
                     else if (CurType == typeof(PP3Curve_ControlCage)) { InPoints[i][j] = ((PP3Curve_ControlCage)Input[j].Value).DataPoints[i]; }
-                    else if (CurType == typeof(PP3Curve_Custom)) { InPoints[i][j] = ((PP3Curve_Custom)Input[j].Value).DataPoints[i]; }
+                    else if (CurType == typeof(PP3Curve_Custom))
+                    {
+                        if (InPoints[i + 1] == null) { InPoints[i + 1] = new PointD[Input.Count]; }
+                        InPoints[i][j] = new PointD(j, ((PP3Curve_Custom)Input[j].Value).DataPoints[i / 2].X);
+                        InPoints[i + 1][j] = new PointD(j, ((PP3Curve_Custom)Input[j].Value).DataPoints[i / 2].Y);
+                    }
                     else if (CurType == typeof(PP3Curve_Parametric))
                     {
                         InPoints[i][0] = new PointD(Input[j].Key, (float)((PP3Curve_Parametric)Input[0].Value).Zones[0]);
@@ -249,7 +255,7 @@ namespace Timelapse_API
             //points back to curves
             for (int i = 0; i < ProjectManager.CurrentProject.Frames.Count; i++)
             {
-                for (int j = 0; j < Pointcount; j++)
+                for (int j = 0; j < Pointcount; j += step)
                 {
                     if (CurType == typeof(PP3Curve_Array))
                     {
@@ -264,7 +270,7 @@ namespace Timelapse_API
                     else if (CurType == typeof(PP3Curve_Custom))
                     {
                         if (Output[i] == null) { Output[i] = new PP3Curve_Custom(); }
-                        ((PP3Curve_Custom)Output[i]).DataPoints.Add(OutPoints[j][i]);
+                        ((PP3Curve_Custom)Output[i]).DataPoints.Add(new PointD(OutPoints[j][i].Y, OutPoints[j + 1][i].Y));
                     }
                     else if (CurType == typeof(PP3Curve_Parametric))
                     {
@@ -280,7 +286,7 @@ namespace Timelapse_API
                     }
                     else if (CurType == typeof(PP3Curve_HSV))
                     {
-
+                        //TODO: check for HSV curve type (also in PP3Curve.cs); handling is the same as custom curve
                     }
                 }
             }
