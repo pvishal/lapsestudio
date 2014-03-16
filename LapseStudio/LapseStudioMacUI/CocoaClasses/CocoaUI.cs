@@ -23,8 +23,9 @@ namespace LapseStudioMacUI
 
 		#region Methods
 
-		public override void Dispose()
+		public override void ReleaseUIData()
 		{
+			ResetPictureBoxes();
 		}
 
 		public override void ResetMovement()
@@ -90,11 +91,9 @@ namespace LapseStudioMacUI
 
 		public override void ResetPictureBoxes()
 		{
-			//mw.alignThumb.Pixbuf = null;
-			//mw.fixThumb.Pixbuf = null;
-			mw.PublicThumbEditView.Image = null;
-			mw.PublicThumbViewList.Image = null;
-			mw.PublicThumbViewGraph.Image = null;
+			if (mw.PublicThumbEditView.Image != null) { mw.PublicThumbEditView.Image.Dispose(); }
+			if (mw.PublicThumbViewList.Image != null) { mw.PublicThumbViewList.Image.Dispose(); }
+			if (mw.PublicThumbViewGraph.Image != null) { mw.PublicThumbViewGraph.Image.Dispose(); }
 		}
 
 		public override void InitUI()
@@ -110,7 +109,7 @@ namespace LapseStudioMacUI
 
 		private void HandleTableSelectionChanged()
 		{
-			try { if (mw.PublicMainTable.SelectedRow >= 0 && mw.PublicTabChangeButton.SelectedSegment == (int)TabLocation.Filelist) { mw.PublicThumbViewList.Image = CocoaHelper.ToNSImage(ProjectManager.CurrentProject.Frames[mw.PublicMainTable.SelectedRow].Thumb); } }
+			try { if (mw.PublicMainTable.SelectedRow >= 0 && mw.PublicTabChangeButton.SelectedSegment == (int)TabLocation.Filelist) { mw.PublicThumbViewList.Image = CocoaHelper.ToNSImage(ProjectManager.CurrentProject.GetThumb(mw.PublicMainTable.SelectedRow)); } }
 			catch (Exception ex) { Error.Report("HandleTableSelectionChanged", ex); }
 		}
 

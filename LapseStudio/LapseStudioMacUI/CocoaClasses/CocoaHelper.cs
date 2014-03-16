@@ -1,9 +1,8 @@
-﻿using Timelapse_UI;
+﻿using System;
+using System.Drawing;
+using Timelapse_UI;
 using Timelapse_API;
 using MonoMac.AppKit;
-using System.Drawing;
-using System.Drawing.Imaging;
-using System.IO;
 using MonoMac.CoreGraphics;
 
 namespace LapseStudioMacUI
@@ -79,14 +78,66 @@ namespace LapseStudioMacUI
 			}
 		}
 
-		public static NSImage ToNSImage(UniversalImage img)
+		public static NSImage ToNSImage(BitmapEx bmpEx)
 		{
-			using(MemoryStream str = new MemoryStream())
+			bmpEx.LockBits();
+			long bufferLength = bmpEx.Width * bmpEx.Height;
+			CGDataProvider provider = new CGDataProvider(bmpEx.Scan0, (int)bufferLength);
+			int bitsPerComponent, bitsPerPixel, bytesPerRow = (int)bmpEx.Stride;
+			CGColorSpace colorSpaceRef = CGColorSpace.CreateDeviceRGB();
+
+			switch (bmpEx.BitDepth)
 			{
-				img.Bitmap.Save(str, ImageFormat.Png);
-				CGImage img2 = CGImage.FromPNG(new CGDataProvider(str.ToArray(), 0, (int)str.Length), null, false, CGColorRenderingIntent.Default);
-				return new NSImage(img2, new SizeF(img2.Width,img2.Height));
+				case ImageType.RGB16:
+					bitsPerComponent = 16;
+					bitsPerPixel = 48;
+					bufferLength *= 3;
+					break;
+				case ImageType.RGBA16:
+					bitsPerComponent = 16;
+					bitsPerPixel = 64;
+					bufferLength *= 4;
+					break;
+				case ImageType.RGB8:
+					bitsPerComponent = 8;
+					bitsPerPixel = 24;
+					bufferLength *= 3;
+					break;
+				case ImageType.RGBA8:
+					bitsPerComponent = 8;
+					bitsPerPixel = 32;
+					bufferLength *= 4;
+					break;
+				case ImageType.RGB32:
+					bitsPerComponent = 32;
+					bitsPerPixel = 96;
+					bufferLength *= 3;
+					break;
+				case ImageType.RGBA32:
+					bitsPerComponent = 32;
+					bitsPerPixel = 128;
+					bufferLength *= 4;
+					break;
+				case ImageType.RGB64:
+					bitsPerComponent = 64;
+					bitsPerPixel = 192;
+					bufferLength *= 3;
+					break;
+				case ImageType.RGBA64:
+					bitsPerComponent = 64;
+					bitsPerPixel = 256;
+					bufferLength *= 4;
+					break;
+
+				default:
+					throw new ArgumentException("Bitdepth not supported");
 			}
+
+			CGImage img = new CGImage((int)bmpEx.Width, (int)bmpEx.Height, bitsPerComponent, bitsPerPixel, bytesPerRow, colorSpaceRef, CGBitmapFlags.ByteOrderDefault, provider, null, true, CGColorRenderingIntent.Default);
+
+			bmpEx.UnlockBits();
+
+			return new NSImage(img, new SizeF(img.Width, img.Height));
 		}
 	}
 }

@@ -94,7 +94,7 @@ namespace LapseStudioMacUI
 
 		partial void BrightnessToolItem_Clicked(NSObject sender)
 		{
-			try { MainUI.Click_Calculate(); }
+			try { MainUI.Click_Calculate(BrightnessCalcType.Advanced); }
 			catch (Exception ex) { Error.Report("BrightnessToolItem_Clicked", ex); }
 		}
 
@@ -171,8 +171,8 @@ namespace LapseStudioMacUI
 
 			if (val >= 0 && val < ProjectManager.CurrentProject.Frames.Count)
 			{
-				ThumbEditView.Image = CocoaHelper.ToNSImage(ProjectManager.CurrentProject.Frames[val].ThumbEdited);
-				ThumbViewGraph.Image = CocoaHelper.ToNSImage(ProjectManager.CurrentProject.Frames[val].Thumb);
+				ThumbEditView.Image = CocoaHelper.ToNSImage(ProjectManager.CurrentProject.GetThumbEdited(val));
+				ThumbViewGraph.Image = CocoaHelper.ToNSImage(ProjectManager.CurrentProject.GetThumb(val));
 			}
 		}
 

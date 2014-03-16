@@ -12,9 +12,11 @@ WINDOWS:
 
  Mac OSX:
   -exiftool (get Mac OSX Package from: http://www.sno.phy.queensu.ca/~phil/exiftool/)
+  -Mono framework (get it here: http://www.go-mono.com/mono-downloads/download.html)
 
 LINUX:
   -exiftool (libimage-exiftool-perl)
   -Mono framwork with Gtk#
+  	-generally: http://www.go-mono.com/mono-downloads/download.html
     -Gentoo: dev-lang/mono and dev-dotnet/gtk-sharp
 	-Ubuntu: mono-runtime and gtk-sharp2
