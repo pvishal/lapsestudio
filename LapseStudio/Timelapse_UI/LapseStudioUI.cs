@@ -10,7 +10,7 @@ using System.Runtime.Serialization.Formatters.Binary;
 
 namespace Timelapse_UI
 {
-	public abstract class LapseStudioUI : IDisposable
+	public abstract class LapseStudioUI
     {
 		#region Events
 
@@ -72,7 +72,7 @@ namespace Timelapse_UI
 
 		protected abstract void CurrentProject_BrightnessCalculated(object sender, WorkFinishedEventArgs e);
 
-        public abstract void Dispose();
+        public abstract void ReleaseUIData();
 
         public abstract void ResetMovement();
 
@@ -119,14 +119,15 @@ namespace Timelapse_UI
 
 			LSSettings.Save();
 
-			this.Dispose();
-
 			ProjectManager.BrightnessCalculated -= CurrentProject_BrightnessCalculated;
 			ProjectManager.FramesLoaded -= CurrentProject_FramesLoaded;
 			ProjectManager.ProgressChanged -= CurrentProject_ProgressChanged;
 			ProjectManager.WorkDone -= CurrentProject_WorkDone;
 
             if (ProjectManager.CurrentProject.IsWorking) { ProjectManager.CurrentProject.IsWorkingWaitHandler.WaitOne(10000); }
+            
+            ReleaseUIData();
+            ProjectManager.Close();
 
 			QuitApplication();
 			return false;
@@ -486,6 +487,7 @@ No lets you load values from a standalone XMP file."), MessageWindowType.Questio
         public void Click_Calculate(BrightnessCalcType Type)
 		{
 			if (CheckBusy()) return;
+            if (ProjectManager.CurrentProject.IsBrightnessCalculated && MsgBox.ShowMessage(MessageContent.BrightnessNotCalculatedError) == WindowResponse.No) return;
             if (ProjectManager.CurrentProject.Frames.Count > 1) { ProjectManager.CalculateBrightness(Type); }
 			else { MsgBox.ShowMessage(MessageContent.NotEnoughFrames); }
 		}

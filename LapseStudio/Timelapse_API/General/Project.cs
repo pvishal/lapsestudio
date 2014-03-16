@@ -4,17 +4,15 @@ using System.ComponentModel;
 using System.IO;
 using System.Linq;
 using System.Threading;
-using System.Threading.Tasks;
 using ColorManagment;
 using System.Globalization;
-using Gdk;
 
 namespace Timelapse_API
 {
     /// <summary>
     /// Stores and handles all data for a project
     /// </summary>
-    public abstract class Project
+    public abstract class Project : IDisposable
     {
         #region Variables
 
@@ -71,8 +69,9 @@ namespace Timelapse_API
         /// Path, where the rendered images will be saved to. null if not set
         /// </summary>
         internal string ImageSavePath;
-
+        
         internal BackgroundWorker MainWorker;
+        internal ThumbHandler ThumbsStorage;
         private List<Frame> _Frames;
         private bool _IsBrightnessCalculated;
 
@@ -123,6 +122,7 @@ namespace Timelapse_API
         {
             _Frames = new List<Frame>();
             IsBrightnessCalculated = false;
+            ThumbsStorage = new ThumbHandler(10);
 
             MainWorker = new BackgroundWorker();
             MainWorker.WorkerReportsProgress = true;
@@ -132,7 +132,47 @@ namespace Timelapse_API
             MainWorker.ProgressChanged += new ProgressChangedEventHandler(MainWorker_ProgressChanged);
         }
 
+        #region Public Methods
+
+        public void Dispose()
+        {
+            MainWorker.Dispose();
+            Frames.Clear();
+            ThumbsStorage.Dispose();
+        }
+        
+        public BitmapEx GetThumb(int index, bool UseBuffer = true)
+        {
+            return ThumbsStorage[index * 2, UseBuffer];
+        }
+
+        public void SetThumb(int index, BitmapEx thumb)
+        {
+            ThumbsStorage[index * 2] = thumb;
+        }
+
+        public BitmapEx GetThumbEdited(int index, bool UseBuffer = true)
+        {
+            return ThumbsStorage[index * 2 +1, UseBuffer];
+        }
+
+        public void SetThumbEdited(int index, BitmapEx thumb)
+        {
+            ThumbsStorage[index * 2 + 1] = thumb;
+        }
+
+        #endregion
+
         #region Internal Methods
+
+        /// <summary>
+        /// Adds a thumb to the thumb storage
+        /// </summary>
+        /// <param name="thumb">The thumbnail</param>
+        internal void AddThumb(BitmapEx thumb)
+        {
+            ThumbsStorage.AddThumb(thumb);
+        }
 
         /// <summary>
         /// Add all frames from a certain directory to the project
@@ -232,6 +272,24 @@ namespace Timelapse_API
             MainWorker.RunWorkerAsync(new KeyValuePair<Work, object>(Work.LoadProject, null));
         }
 
+        /// <summary>
+        /// Report progress from outside the Project class
+        /// </summary>
+        /// <param name="percent">Percent of finished work (0-100)</param>
+        /// <param name="type">Type of work</param>
+        internal void ReportWorkProgress(int percent, ProgressType type)
+        {
+            switch (type)
+            {
+                case ProgressType.LoadThumbnails:
+                    MainWorker.ReportProgress(0, new ProgressChangeEventArgs(66 + (int)(33 * percent / 100f), ProgressType.LoadThumbnails));
+                    break;
+                case ProgressType.LoadFrames:
+                    MainWorker.ReportProgress(0, new ProgressChangeEventArgs((int)(33 * percent / 100f), ProgressType.LoadFrames));
+                    break;
+            }
+        }
+
         #endregion
 
         #region Protected Methods
@@ -299,9 +357,7 @@ namespace Timelapse_API
                     readXMP();
                     break;
                 case Work.LoadProject:
-                    string[] files = Frames.Select(t => t.FilePath).ToArray();
-                    ExtractThumbnails(Path.GetDirectoryName(files[0]));
-                    LoadThumbnails(files);
+                    LoadThumbnails(Frames.Select(t => t.FilePath).ToArray());
                     break;
             }
         }
@@ -318,25 +374,38 @@ namespace Timelapse_API
             string directory = Path.GetDirectoryName(files[0]);
 
             SetFrames(files);
-            MainWorker.ReportProgress(0, new ProgressChangeEventArgs(25, ProgressType.LoadFrames));
+            MainWorker.ReportProgress(0, new ProgressChangeEventArgs(33, ProgressType.LoadFrames));
 
             LoadMetadata(directory);
-            MainWorker.ReportProgress(0, new ProgressChangeEventArgs(50, ProgressType.LoadMetadata));
-
-            ExtractThumbnails(directory);
-            MainWorker.ReportProgress(0, new ProgressChangeEventArgs(75, ProgressType.ExtractThumbnails));
+            MainWorker.ReportProgress(0, new ProgressChangeEventArgs(66, ProgressType.LoadMetadata));
 
             LoadThumbnails(files);
             MainWorker.ReportProgress(0, new ProgressChangeEventArgs(100, ProgressType.LoadThumbnails));
         }
 
-        protected abstract void SetFrames(string[] files);
+        protected virtual void SetFrames(string[] files)
+        {
+            for (int i = 0; i < files.Length; i++)
+            {
+                switch (Type)
+                {
+                    case ProjectType.CameraRaw:
+                        Frames.Add(new FrameACR(files[i]));
+                        break;
+                    case ProjectType.LapseStudio:
+                        Frames.Add(new FrameLS(files[i]));
+                        break;
+                    case ProjectType.RawTherapee:
+                        Frames.Add(new FrameRT(files[i]));
+                        break;
+                }
+                MainWorker.ReportProgress(0, new ProgressChangeEventArgs((int)(33f * i / files.Length), ProgressType.LoadFrames));
+            }
+        }
 
         protected void LoadMetadata(string directory)
         {
             string[] lines = Exiftool.GetExifMetadata(directory);
-
-            MainWorker.ReportProgress(0, new ProgressChangeEventArgs(0, ProgressType.AnalyseMetadata));
             CultureInfo culture = new CultureInfo("en-US");
 
             if (lines != null)
@@ -438,24 +507,9 @@ namespace Timelapse_API
             }
         }
 
-        protected virtual void ExtractThumbnails(string directory)
-        {
-            Exiftool.ExtractThumbnails(directory);
-        }
-
         protected virtual void LoadThumbnails(string[] files)
         {
-            string[] thumbs = Directory.GetFiles(ProjectManager.ThumbPath);
-            
-            for (int i = 0; i < files.Length; i++)
-            {
-                if (MainWorker.CancellationPending) { return; }
-
-                string Tpath = thumbs.First(t => Path.GetFileNameWithoutExtension(t) == Path.GetFileNameWithoutExtension(files[i]) + "_Thumb");
-                if (!File.Exists(Tpath)) { throw new FileNotFoundException("Thumbimage couldn't be found"); }
-                Frames[i].Thumb = new UniversalImage(Tpath);
-                Frames[i].ThumbEdited = Frames[i].Thumb.Clone();
-            }
+            Exiftool.ExtractThumbnails(files);
         }
 
         #endregion
@@ -490,20 +544,10 @@ namespace Timelapse_API
 
         private void BrCalc_Advanced()
         {
-            #region Variables
-
-            int filecount = Frames.Count;
-            int ThumbWidth = Frames[0].Thumb.Width;
-            int ThumbHeight = Frames[0].Thumb.Height;
-            int rowstride = Frames[0].Thumb.Pixbuf.Rowstride;
-            int n = Frames[0].Thumb.Pixbuf.NChannels;
-
-            #endregion
-
             #region Thumbscale
 
             //To make things faster, scale thumbs down
-            if (ProjectManager.UsedProgram != ProjectType.LapseStudio)
+            /*if (ProjectManager.UsedProgram != ProjectType.LapseStudio)
             {
                 double factor = (double)ThumbWidth / (double)ThumbHeight;
                 Parallel.For(0, Frames.Count, i =>
@@ -514,50 +558,70 @@ namespace Timelapse_API
                 ThumbWidth = Frames[0].Thumb.Width;
                 ThumbHeight = Frames[0].Thumb.Height;
                 rowstride = Frames[0].Thumb.Pixbuf.Rowstride;
-            }
+            }*/
 
             #endregion
 
+            #region Variables
+
+            BitmapEx bmp1, bmp2, bmp3;
+            const int min = 5;
+            const int max = 250;
+
+            bmp1 = GetThumb(0, true);
+
+            int isdark, count, n = bmp1.ChannelCount;
+            uint ThumbWidth = bmp1.Width;
+            uint ThumbHeight = bmp1.Height;
+            long index;
+            double br1, br2, br3, newBr, maxiBrDiff;
+
             double[,] BrightChangeMask = new double[ThumbWidth, ThumbHeight];
             bool[,] NonUseMask = new bool[ThumbWidth, ThumbHeight];
+            double[][] PixelBrightness = new double[ThumbWidth * ThumbHeight][];
 
-            for (int f = 0; f < filecount; f += 2)
+            ColorRGB c;
+
+            #endregion
+
+            //TODO: make calculation parallel
+
+            for (int f = 0; f < Frames.Count; f += 2)
             {
                 if (MainWorker.CancellationPending) { return; }
-
+                
                 #region Variables
 
                 if (f == 0) { f++; }
-                if (f + 2 >= filecount) { f = filecount - 2; }
+                if (f + 2 >= Frames.Count) { f = Frames.Count - 2; }
 
-                double maxiBrDiff = 0;
-                double[][] PixelBrightness = new double[ThumbWidth * ThumbHeight][];
-                int index = 0;
-                int count = 0;
+                bmp1 = GetThumb(f - 1, false);
+                bmp2 = GetThumb(f, false);
+                bmp3 = GetThumb(f + 1, false);
 
-                int min = 5;
-                int max = 250;
-
-                double br1;
-                double br2;
-                double br3;
-
+                n = bmp1.ChannelCount;
+                index = count = isdark = 0;
+                br1 = br2 = br3 = newBr =maxiBrDiff = 0;
+                
                 #endregion
 
                 unsafe
                 {
+                    bmp1.LockBits();
+                    bmp2.LockBits();
+                    bmp3.LockBits();
+
+                    byte* pix1 = (byte*)bmp1.Scan0;
+                    byte* pix2 = (byte*)bmp2.Scan0;
+                    byte* pix3 = (byte*)bmp3.Scan0;
+
                     #region Mask
-
-                    byte* pix1 = (byte*)Frames[f - 1].Thumb.Pixbuf.Pixels;
-                    byte* pix2 = (byte*)Frames[f].Thumb.Pixbuf.Pixels;
-                    byte* pix3 = (byte*)Frames[f + 1].Thumb.Pixbuf.Pixels;
-                    ColorRGB c;
-
+                    
                     for (int y = 0; y < ThumbHeight; y++)
                     {
-                        for (int x = 0; x < rowstride; x += n)
+                        for (int x = 0; x < bmp1.Stride; x += n)
                         {
-                            index = y * rowstride + x;
+                            index = y * bmp1.Stride + x;
 
                             c = new ColorRGB(RGBSpaceName.sRGB, pix1[index], pix1[index + 1], pix1[index + 2], false);
                             c = c.ToLinear();
@@ -579,7 +643,7 @@ namespace Timelapse_API
 
                     for (int y = 0; y < ThumbHeight; y++)
                     {
-                        for (int x = 0; x < rowstride; x += n)
+                        for (int x = 0; x < bmp1.Stride; x += n)
                         {
                             if (NonUseMask[x / n, y] == false)
                             {
@@ -593,11 +657,11 @@ namespace Timelapse_API
                                     {
                                         for (int xS = -1; xS <= 1; xS++)
                                         {
-                                            if (x + xS < rowstride && x + xS >= 0)
+                                            if (x + xS < bmp1.Stride && x + xS >= 0)
                                             {
                                                 if (NonUseMask[(x + xS) / n, y + yS] == false)
                                                 {
-                                                    index = (y + yS) * rowstride + x + xS;
+                                                    index = (y + yS) * bmp1.Stride + x + xS;
 
                                                     c = new ColorRGB(RGBSpaceName.sRGB, pix1[index], pix1[index + 1], pix1[index + 2], false);
                                                     c = c.ToLinear();
@@ -627,10 +691,10 @@ namespace Timelapse_API
                             else { BrightChangeMask[x / n, y] = 0; }
                         }
                     }
-
-                    double newBr = 0;
-                    int isdark = 0;
-
+                    bmp1.UnlockBits();
+                    bmp2.UnlockBits();
+                    bmp3.UnlockBits();
+                    
                     for (int y = 0; y < ThumbHeight; y++)
                     {
                         for (int x = 0; x < ThumbWidth; x++)
@@ -664,9 +728,9 @@ namespace Timelapse_API
 
                     for (int y = 0; y < ThumbHeight; y++)
                     {
-                        for (int x = 0; x < rowstride; x += n)
+                        for (int x = 0; x < bmp1.Stride; x += n)
                         {
-                            index = y * rowstride + x;
+                            index = y * bmp1.Stride + x;
                             c = new ColorRGB(RGBSpaceName.sRGB, pix1[index], pix1[index + 1], pix1[index + 2], false);
                             c = c.ToLinear();
                             br1 = (c.R + c.G + c.B) * 255d / 3d;
@@ -745,7 +809,7 @@ namespace Timelapse_API
         //Doesn't work sufficient enough
         private void BrCalc_Lab()
         {
-            int filecount = Frames.Count;
+            /*int filecount = Frames.Count;
             int ThumbWidth = Frames[0].Thumb.Width;
             int ThumbHeight = Frames[0].Thumb.Height;
             int rowstride = Frames[0].Thumb.Pixbuf.Rowstride;
@@ -838,7 +902,7 @@ namespace Timelapse_API
                 }
 
                 MainWorker.ReportProgress(0, new ProgressChangeEventArgs(f * 100 / (Frames.Count - 1), ProgressType.CalculateBrightness));
-            }
+            }*/
         }
 
         private void BrCalc_Simple()
@@ -850,22 +914,26 @@ namespace Timelapse_API
             for (int f = 0; f < Frames.Count; f++)
             {
                 double Brightness = 0;
-                int index, pixcount = 0;
+                long index = 0;
+                int pixcount = 0;
+                BitmapEx bmp = GetThumb(f, false);
 
                 unsafe
                 {
-                    byte* pix = (byte*)Frames[f].Thumb.Pixbuf.Pixels;
+                    bmp.LockBits();
+                    byte* pix = (byte*)bmp.Scan0;
 
                     for (int y = SimpleCalculationArea.X; y < SimpleCalculationArea.Height; y++)
                     {
                         for (int x = SimpleCalculationArea.Y; x < SimpleCalculationArea.Width; x++)
                         {
-                            index = y * Frames[f].Thumb.Pixbuf.Rowstride + x * Frames[f].Thumb.Pixbuf.NChannels;
+                            index = y * bmp.Stride + x * bmp.ChannelCount;
 
                             Brightness += Math.Sqrt(Math.Pow(pix[index], 2) * 0.241 + Math.Pow(pix[index + 1], 2) * 0.691 + Math.Pow(pix[index + 2], 2) * 0.068);
                             pixcount++;
                         }
                     }
+                    bmp.UnlockBits();
                 }
 
                 Frames[f].OriginalBrightness = Brightness / pixcount;
@@ -886,35 +954,30 @@ namespace Timelapse_API
         protected virtual void ThumbProcessing()
         {
             double ld = Math.Log(2);
-            int index = 0;
+            long index = 0;
             ColorRGB crgb = new ColorRGB(RGBSpaceName.sRGB, false);
             ColorLab cl = new ColorLab();
             ColorConverter Converter = new ColorConverter();
-
-            Pixbuf[] thumbs = new Pixbuf[Frames.Count];
-            Pixbuf[] thumbsE = new Pixbuf[Frames.Count];
-
-            double factor = (double)Frames[0].Thumb.Width / (double)Frames[0].Thumb.Height;
-            for (int i = 0; i < Frames.Count; i++)
-            {
-                thumbs[i] = Frames[i].Thumb.Pixbuf.Copy().ScaleSimple(160, (int)(160 / factor), Gdk.InterpType.Bilinear);
-                thumbsE[i] = Frames[i].ThumbEdited.Pixbuf.Copy().ScaleSimple(160, (int)(160 / factor), Gdk.InterpType.Bilinear);
-            }
+            BitmapEx bmp, bmpE;
 
             for (int i = 0; i < Frames.Count; i++)
             {
                 double exposure = Math.Log(Frames[i].NewBrightness / Frames[i].AlternativeBrightness, 2);
-
+                bmp = GetThumb(i, false);
+                bmpE = GetThumbEdited(i, false);
+                
                 unsafe
                 {
-                    byte* pix1 = (byte*)thumbs[i].Pixels;
-                    byte* pix2 = (byte*)thumbsE[i].Pixels;
+                    bmp.LockBits();
+                    bmpE.LockBits();
+                    byte* pix1 = (byte*)bmp.Scan0;
+                    byte* pix2 = (byte*)bmpE.Scan0;
 
-                    for (int y = 0; y < thumbs[i].Height; y++)
+                    for (uint y = 0; y < bmp.Height; y++)
                     {
-                        for (int x = 0; x < thumbs[i].Rowstride; x += thumbs[i].NChannels)
+                        for (uint x = 0; x < bmp.Stride; x += bmp.ChannelCount)
                         {
-                            index = y * thumbs[i].Rowstride + x;
+                            index = y * bmp.Stride + x;
 
                             //LTODO: doesn't calculate correctly
                             crgb.R = pix1[index] / 255d; crgb.G = pix1[index + 1] / 255d; crgb.B = pix1[index + 2] / 255d;
@@ -929,9 +992,11 @@ namespace Timelapse_API
                             pix2[index + 2] = (byte)(crgb.B * byte.MaxValue);
                         }
                     }
+                    bmp.UnlockBits();
+                    bmpE.UnlockBits();
                 }
 
-                Frames[i].ThumbEdited.Pixbuf = thumbsE[i].Copy();
+                SetThumbEdited(i, bmpE);
                 MainWorker.ReportProgress(0, new ProgressChangeEventArgs(i * 100 / (Frames.Count - 1), ProgressType.ProcessingThumbs));
             }
         }
@@ -947,5 +1012,5 @@ namespace Timelapse_API
         }
         
         #endregion
-    }
+    }    
 }

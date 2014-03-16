@@ -126,6 +126,10 @@ namespace Timelapse_UI
                     this.Show(Message.GetString("Not enough valid images found for this kind of project."), MessageWindowType.Warning);
                     break;
 
+                case MessageContent.BrightnessAlreadyCalculated:
+                    res = this.Show(Message.GetString("Brightness is already calculated. Do you want to calculate again?"), Message.GetString("Calculate Again?"), MessageWindowType.Question, MessageWindowButtons.YesNo);
+                    break;
+
 				default:
 					res = this.Show(Message.GetString("Something happened!") + Environment.NewLine + Message.GetString("(There is not more information available)"), MessageWindowType.Warning, MessageWindowButtons.Ok);
 					break;

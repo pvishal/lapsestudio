@@ -22,6 +22,9 @@ namespace LapseStudioWinFormsUI
                 MainUI.MainGraph = new BrightnessGraph(MainGraph.Width, MainGraph.Height);
                 MainGraph.Init(MainUI.MainGraph);
                 MainUI.InitBaseUI();
+
+                BitmapEx bmp = new BitmapEx(@"C:\Users\Johannes\Desktop\Stitch\Example.jpg");
+
             }
             catch (Exception ex) { Error.Report("Init", ex); }
         }
@@ -161,10 +164,11 @@ namespace LapseStudioWinFormsUI
         {
 			try
 			{
-	            if (FrameSelectScale.Value >= 0 && FrameSelectScale.Value < ProjectManager.CurrentProject.Frames.Count)
+	            if (FrameSelectScale.Value >= 0 && FrameSelectScale.Value < ProjectManager.CurrentProject.Frames.Count
+                    && ProjectManager.CurrentProject.GetThumb(FrameSelectScale.Value) != null)
 	            {
-	                ThumbEditView.Image = ProjectManager.CurrentProject.Frames[(int)FrameSelectScale.Value].ThumbEdited.Bitmap;
-	                ThumbViewGraph.Image = ProjectManager.CurrentProject.Frames[(int)FrameSelectScale.Value].Thumb.Bitmap;
+                    ThumbEditView.Image = WinFormHelper.ConvertToBitmap(ProjectManager.CurrentProject.GetThumbEdited((int)FrameSelectScale.Value));
+                    ThumbViewGraph.Image = WinFormHelper.ConvertToBitmap(ProjectManager.CurrentProject.GetThumb((int)FrameSelectScale.Value));
 	                FrameSelectLabel.Text = FrameSelectScale.Value.ToString();
 				}
 			}
@@ -203,8 +207,15 @@ namespace LapseStudioWinFormsUI
 
         internal void MainTable_SelectionChanged(object sender, EventArgs e)
         {
-            try { if (MainTable.SelectedRows.Count > 0 && ProjectManager.CurrentProject.Frames[MainTable.SelectedRows[0].Index].Thumb != null) ThumbViewList.Image = ProjectManager.CurrentProject.Frames[MainTable.SelectedRows[0].Index].Thumb.Bitmap; }
-			catch (Exception ex) { Error.Report("MainTable_SelectionChanged", ex); }
+            try
+            {
+                if (MainTable.SelectedRows.Count > 0)
+                {
+                    BitmapEx tmpBmp = ProjectManager.CurrentProject.GetThumb(MainTable.SelectedRows[0].Index);
+                    if (tmpBmp != null) ThumbViewList.Image = WinFormHelper.ConvertToBitmap(tmpBmp);
+                }
+            }
+            catch (Exception ex) { Error.Report("MainTable_SelectionChanged", ex); }
         }
 
         internal void MainForm_FormClosing(object sender, FormClosingEventArgs e)

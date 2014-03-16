@@ -80,13 +80,9 @@ namespace LapseStudioGtkUI
 
 		#region Methods
 
-		public override void Dispose()
-		{
-			//if (mw.fixThumb.Pixbuf != null) mw.fixThumb.Pixbuf.Dispose();
-			//if (mw.alignThumb.Pixbuf != null) mw.alignThumb.Pixbuf.Dispose();
-			if (mw.PublicThumbEditView.Pixbuf != null) mw.PublicThumbEditView.Pixbuf.Dispose();
-			if (mw.PublicThumbViewList.Pixbuf != null) mw.PublicThumbViewList.Pixbuf.Dispose();
-			if (mw.PublicThumbViewGraph.Pixbuf != null) mw.PublicThumbViewGraph.Pixbuf.Dispose();
+		public override void ReleaseUIData()
+        {
+            ResetPictureBoxes();
 		}
 
 		public override void ResetMovement()
@@ -154,12 +150,10 @@ namespace LapseStudioGtkUI
 		}
 
 		public override void ResetPictureBoxes()
-		{
-			//mw.alignThumb.Pixbuf = null;
-			//mw.fixThumb.Pixbuf = null;
-			mw.PublicThumbEditView.Pixbuf = null;
-			mw.PublicThumbViewList.Pixbuf = null;
-			mw.PublicThumbViewGraph.Pixbuf = null;
+        {
+            if (mw.PublicThumbEditView.Pixbuf != null) mw.PublicThumbEditView.Pixbuf.Dispose();
+            if (mw.PublicThumbViewList.Pixbuf != null) mw.PublicThumbViewList.Pixbuf.Dispose();
+            if (mw.PublicThumbViewGraph.Pixbuf != null) mw.PublicThumbViewGraph.Pixbuf.Dispose();
 		}
 
 		public override void InitUI()
@@ -328,7 +322,7 @@ namespace LapseStudioGtkUI
 			try
 			{
 				if (mw.PublicFileTree.Selection.GetSelectedRows().Length > 0) UpdateRow(mw.PublicFileTree.Selection.GetSelectedRows()[0]);
-				if (mw.PublicMainNotebook.CurrentPage == (int)TabLocation.Filelist) { mw.PublicThumbViewList.Pixbuf = ProjectManager.CurrentProject.Frames[SelectedRow].Thumb.Pixbuf.ScaleSimple(160, 120, Gdk.InterpType.Bilinear); }
+				if (mw.PublicMainNotebook.CurrentPage == (int)TabLocation.Filelist) { mw.PublicThumbViewList.Pixbuf = GtkHelper.ConvertToPixbuf(ProjectManager.CurrentProject.GetThumb(SelectedRow)).ScaleSimple(160, 120, Gdk.InterpType.Bilinear); }
 			}
 			catch (Exception ex) { Error.Report("FileTree CursorChanged", ex); }
 		}

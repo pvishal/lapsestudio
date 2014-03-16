@@ -46,10 +46,6 @@ namespace Timelapse_API
 			}
 		}
         /// <summary>
-        /// Path to the folder where the thumb images are stored
-        /// </summary>
-		public static string ThumbPath { get { return Path.Combine(ApplicationPath, "Thumbs"); } }
-        /// <summary>
         /// The number of threads the API should use
         /// </summary>
         public static int Threadcount;
@@ -96,11 +92,21 @@ namespace Timelapse_API
         {
             ProjectManager.RunningPlatform = RunningPlatform;
             NewProject(ProjectType.LapseStudio);
-			FileHandle.CreateDirectory(ThumbPath);
-			FileHandle.ClearDirectory(ThumbPath, true);
         }
         
+        /// <summary>
+        /// Closes the current project and releases all data associated with it
+        /// </summary>
+        public static void Close()
+        {
+            if (CurrentProject != null)
+            {
+                CurrentProject.Dispose();
+                CurrentProject = null;
+            }
+        }
         
+
         /// <summary>
         /// Loads the project from disk
         /// </summary>
@@ -117,6 +123,7 @@ namespace Timelapse_API
         /// <param name="type">The type of the project</param>
         public static void NewProject(ProjectType type)
         {
+            Close();
             UsedProgram = type;
             switch (type)
             {

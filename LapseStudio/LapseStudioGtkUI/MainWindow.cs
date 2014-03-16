@@ -231,8 +231,8 @@ namespace LapseStudioGtkUI
 			{
 				if (FrameSelectScale.Value >= 0 && FrameSelectScale.Value < ProjectManager.CurrentProject.Frames.Count)
 				{
-					ThumbEditView.Pixbuf = ProjectManager.CurrentProject.Frames[(int)FrameSelectScale.Value].ThumbEdited.Pixbuf.Copy();
-					ThumbViewGraph.Pixbuf = ProjectManager.CurrentProject.Frames[(int)FrameSelectScale.Value].Thumb.Pixbuf.Copy();
+					ThumbEditView.Pixbuf = GtkHelper.ConvertToPixbuf(ProjectManager.CurrentProject.GetThumbEdited((int)FrameSelectScale.Value));
+                    ThumbViewGraph.Pixbuf = GtkHelper.ConvertToPixbuf(ProjectManager.CurrentProject.GetThumb((int)FrameSelectScale.Value));
 
 					double factor = (double)ThumbViewGraph.Pixbuf.Width / (double)ThumbViewGraph.Pixbuf.Height;
 					ThumbEditView.Pixbuf = ThumbEditView.Pixbuf.ScaleSimple(160, (int)(160 / factor), Gdk.InterpType.Bilinear);
@@ -271,4 +271,3 @@ namespace LapseStudioGtkUI
 		#endregion
 	}
 }
-

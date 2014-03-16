@@ -155,10 +155,5 @@ namespace Timelapse_API
                 MainWorker.ReportProgress(0, new ProgressChangeEventArgs(i * 100 / (nxmp.Length - 1), ProgressType.WriteXMP));
             }
         }
-
-        protected override void SetFrames(string[] files)
-        {
-            for (int i = 0; i < files.Length; i++) { Frames.Add(new FrameACR(files[i])); }
-        }
     }
 }

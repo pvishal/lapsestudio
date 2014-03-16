@@ -55,7 +55,7 @@
       <Project>{520BF17D-2712-4A53-8612-CC2BA57EC1C2}</Project>
       <Name>Timelapse_API</Name>
     </ProjectReference>
-    <ProjectReference Include="..\UI\Timelapse_UI.csproj">
+    <ProjectReference Include="..\Timelapse_UI\Timelapse_UI.csproj">
       <Project>{3B68D43B-7477-41FD-948E-3ACD77C5C337}</Project>
       <Name>Timelapse_UI</Name>
     </ProjectReference>

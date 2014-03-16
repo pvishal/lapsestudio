@@ -31,10 +31,10 @@ namespace LapseStudioWinFormsUI
 
 		#region Methods
 
-		public override void Dispose()
-		{
-
-		}
+        public override void ReleaseUIData()
+        {
+            ResetPictureBoxes();
+        }
 
 		public override void ResetMovement()
 		{
@@ -95,14 +95,12 @@ namespace LapseStudioWinFormsUI
             mw.MainProgressBar.Text = String.Empty;
         }
 
-		public override void ResetPictureBoxes()
-		{
-			//mw.alignThumb.Pixbuf = null;
-			//mw.fixThumb.Pixbuf = null;
-			mw.ThumbEditView.Image = null;
-            mw.ThumbViewList.Image = null;
-            mw.ThumbViewGraph.Image = null;
-		}
+        public override void ResetPictureBoxes()
+        {
+            if (mw.ThumbEditView.Image != null) mw.ThumbEditView.Image.Dispose();
+            if (mw.ThumbViewList.Image != null) mw.ThumbViewList.Image.Dispose();
+            if (mw.ThumbViewGraph.Image != null) mw.ThumbViewGraph.Image.Dispose();
+        }
 
 		public override void InitUI()
 		{

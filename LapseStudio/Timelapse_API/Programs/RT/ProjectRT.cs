@@ -65,6 +65,10 @@ namespace Timelapse_API
         /// </summary>
         public int JpgQuality;
         /// <summary>
+        /// Jpg compression quality
+        /// </summary>
+        public int JpgCompression;
+        /// <summary>
         /// File extensions supported by the project. (e.g. ".jpg")
         /// </summary>
         public override string[] AllowedFileExtensions
@@ -224,6 +228,9 @@ namespace Timelapse_API
 
             RTStartInfo.UseShellExecute = false;
             RTStartInfo.CreateNoWindow = true;
+            RTStartInfo.WindowStyle = ProcessWindowStyle.Hidden;
+            RTStartInfo.RedirectStandardInput = true;
+            RTStartInfo.RedirectStandardOutput = true;
             RT.StartInfo = RTStartInfo;
 
             #region Build command
@@ -252,7 +259,7 @@ namespace Timelapse_API
             bool startRT = false;
 
             #endregion
-
+            
 			OutputWatcher.Filter = "*." + SaveFileType;
             OutputWatcher.Path = ProjectManager.ImageSavePath;
             OutputWatcher.EnableRaisingEvents = true;
@@ -261,6 +268,12 @@ namespace Timelapse_API
 
             #region Run RawTherapee
 
+            RT.StartInfo.Arguments = basecmd + " " + Path.GetDirectoryName(Frames[0].FilePath);
+            RT.Start();
+            RT.WaitForExit();
+
+            /* Old code, needed if each file is listed in the command line (e.g. for different directories)
+             * 
             //Add all the files to the command and start Rawtherapee
             for (int i = 0; i < Frames.Count; i++)
             {
@@ -275,19 +288,20 @@ namespace Timelapse_API
                     //Start RT
                     RT.StartInfo.Arguments = command;
                     RT.Start();
-                    RT.WaitForExit();   //TODO: newer versions of RT wait for a response when finished->handle that
+
+                    RT.WaitForExit();
 
                     //when finished, set back the command:
                     command = basecmd;
                     startRT = false;
                 }
-            }
+            }*/
 
             #endregion
 
             OutputWatcher.EnableRaisingEvents = false;
         }
-
+        
         private void DeletePP3()
         {
             for (int i = 0; i < Frames.Count; i++) { FileHandle.DeleteFile(Frames[i].FilePath + ".pp3"); }
@@ -301,11 +315,6 @@ namespace Timelapse_API
 				int p = fls.Count(t => Frames.Any(k => k.Filename == Path.GetFileNameWithoutExtension(t)));
                 MainWorker.ReportProgress(0, new ProgressChangeEventArgs(p * 100 / Frames.Count, ProgressType.ProcessingImages));
             }
-        }
-
-        protected override void SetFrames(string[] files)
-        {
-            for (int i = 0; i < files.Length; i++) { Frames.Add(new FrameRT(files[i])); }
         }
     }
 }

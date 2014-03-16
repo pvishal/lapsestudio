@@ -3,7 +3,7 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 2012
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Timelapse_API", "Timelapse_API\Timelapse_API.csproj", "{520BF17D-2712-4A53-8612-CC2BA57EC1C2}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Timelapse_UI", "UI\Timelapse_UI.csproj", "{3B68D43B-7477-41FD-948E-3ACD77C5C337}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Timelapse_UI", "Timelapse_UI\Timelapse_UI.csproj", "{3B68D43B-7477-41FD-948E-3ACD77C5C337}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LapseStudioGtkUI", "LapseStudioGtkUI\LapseStudioGtkUI.csproj", "{FD96B06C-EDC3-4407-986B-122258B13BC1}"
 EndProject

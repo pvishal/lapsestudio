@@ -61,12 +61,11 @@ namespace Timelapse_UI
         BusyClose,
         BrightnessNotCalculatedWarning,
         BrightnessNotCalculatedError,
+        BrightnessAlreadyCalculated,
         KeyframecountLow,
         NotEnoughFrames,
         ProjectSaved,
         NotEnoughValidFiles,
-
-        //Static:
         RemoveMetadataLink,
         UseReadXMP,
 	}
@@ -105,5 +104,15 @@ namespace Timelapse_UI
     {
         English,
         German,
+    }
+
+    /// <summary>
+    /// For newer RT versions (not implemented in LS yet)
+    /// </summary>
+    public enum JpgCompression
+    {
+        Compression4x1x1 = 1,
+        Normal4x2x2 = 2,
+        Quality4x4x4 = 3,
     }
 }

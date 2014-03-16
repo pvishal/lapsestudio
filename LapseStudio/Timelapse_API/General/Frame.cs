@@ -10,28 +10,6 @@ namespace Timelapse_API
     public abstract class Frame
     {
         /// <summary>
-        /// A thumb image
-        /// </summary>
-        public UniversalImage Thumb
-        {
-            get { return _Thumb; }
-            internal set { _Thumb = value; }
-        }
-        /// <summary>
-        /// The thumb image edited with the current project settings. It's kind of a preview
-        /// </summary>
-        public UniversalImage ThumbEdited
-        {
-            get { return _ThumbEdited; }
-            internal set { _ThumbEdited = value; }
-        }
-
-        [NonSerialized]
-        private UniversalImage _Thumb;
-        [NonSerialized]
-        private UniversalImage _ThumbEdited;
-
-        /// <summary>
         /// The calculated brightness of this frame
         /// </summary>
         public double OriginalBrightness { get; internal set; }

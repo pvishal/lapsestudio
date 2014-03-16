@@ -1,8 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.IO;
-using Gdk;
 using ColorManagment;
 using System.Drawing;
 using System.Drawing.Imaging;
@@ -20,14 +18,6 @@ namespace Timelapse_API
 		/// </summary>
 		public override ProjectType Type { get { return ProjectType.LapseStudio; } }
 
-        /// <summary>
-        /// The maximum width of the thumb
-        /// </summary>
-        public const int ThumbMaxWidth = 1000;
-        /// <summary>
-        /// The maximum height of the thumb
-        /// </summary>
-        public const int ThumbMaxHeight = 1000;
 		/// <summary>
 		/// Image format in which the images will be saved
 		/// </summary>
@@ -161,27 +151,18 @@ namespace Timelapse_API
 
         protected override void LoadThumbnails(string[] files)
         {
-            for (int i = 0; i < files.Length; i++)
+            BitmapEx bmpTmp = null;
+            for (int i = 0; i < Frames.Count; i++)
             {
                 if (MainWorker.CancellationPending) { return; }
 
-                Frames[i].Thumb = new UniversalImage(files[i]);
-                Frames[i].Width = Frames[i].Thumb.Width;
-                Frames[i].Height = Frames[i].Thumb.Height;
-                double factor = (double)Frames[i].Thumb.Width / (double)Frames[i].Thumb.Height;
-                Frames[i].Thumb.Pixbuf = Frames[i].Thumb.Pixbuf.ScaleSimple(ThumbMaxWidth, (int)(ThumbMaxHeight / factor), InterpType.Bilinear);
-                Frames[i].ThumbEdited = Frames[i].Thumb;
+                bmpTmp = new BitmapEx(Frames[i].FilePath);
+                SetThumb(i, bmpTmp);
+                Frames[i].Width = (int)bmpTmp.Width;
+                Frames[i].Height = (int)bmpTmp.Height;
+                ReportWorkProgress(i * 100 / Frames.Count, ProgressType.LoadThumbnails);
             }
-        }
-
-        protected override void ExtractThumbnails(string directory)
-        {
-            //Do nothing because it's not needed for LapseStudio
-        }
-
-        protected override void SetFrames(string[] files)
-        {
-            for (int i = 0; i < files.Length; i++) { Frames.Add(new FrameLS(files[i])); }
+            if (bmpTmp != null) bmpTmp.Dispose();
         }
     }
 }

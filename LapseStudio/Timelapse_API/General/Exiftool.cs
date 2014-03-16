@@ -4,12 +4,21 @@ using System.Diagnostics;
 using System.IO;
 using System.Globalization;
 using System.Linq;
+using System.Text;
+
+using System.Drawing;
 
 namespace Timelapse_API
 {
-    internal static class Exiftool
+    public static class Exiftool
     {
         internal static Process exiftool;
+        private const ushort JpgMarker = (ushort)0xFFD8;
+        private enum ExifArgument
+        {
+            Metadata,
+            Thumbnails,
+        }
 
         /// <summary>
         /// Reads aperture, shutterspeed, WB levels, colorspace and imagesize of all files within a directory
@@ -18,7 +27,7 @@ namespace Timelapse_API
         /// <returns>a string array with all values</returns>
         public static string[] GetExifMetadata(string directory)
         {
-            SetProcess("-s -ApertureValue -ShutterSpeedValue -ISO -WB_RGGBLevelsAsShot -ColorSpace -ImageSize " + directory, true);
+            SetProcess("-s -ApertureValue -ShutterSpeedValue -ISO -WB_RGGBLevelsAsShot -ColorSpace -ImageSize " + directory, ExifArgument.Metadata);
             exiftool.Start();
             string CameraData = exiftool.StandardOutput.ReadToEnd();
             exiftool.StandardOutput.Close();
@@ -32,11 +41,46 @@ namespace Timelapse_API
         /// Extracts thumbnails from metadata and saves them to thumb directory
         /// </summary>
         /// <param name="directory">The directory which will be scanned</param>
-        public static void ExtractThumbnails(string directory)
+        public static void ExtractThumbnails(string[] files)
         {
-            if (directory.EndsWith("\\")) { directory = directory.Substring(0, directory.Length - 1); }
-            SetProcess("-thumbnailimage -previewImage -b -w " + "\"" + Path.Combine(ProjectManager.ThumbPath, "%f_Thumb.jpg") + "\" " + "\"" + directory + "\"", true);
+            SetProcess("-q -q -previewImage -b -@ -", ExifArgument.Thumbnails);
             exiftool.Start();
+
+            byte[] data = Encoding.UTF8.GetBytes(String.Join("\r\n", files));
+            exiftool.StandardInput.BaseStream.Write(data, 0, data.Length);
+            exiftool.StandardInput.BaseStream.Close();
+
+            using (MemoryStream str = new MemoryStream())
+            {
+                exiftool.StandardOutput.BaseStream.CopyTo(str);
+                str.Position = 0;
+                List<long> idx = new List<long>();
+                byte[] tmp = new byte[2];
+                for (long ct = 0; ct < str.Length; ct++)
+                {
+                    str.Position = ct;
+                    str.Read(tmp, 0, 2);
+                    if (BitConverter.IsLittleEndian) Array.Reverse(tmp);
+                    if (BitConverter.ToUInt16(tmp, 0) == JpgMarker) idx.Add(ct);
+                }
+
+                if (idx.Count != ProjectManager.CurrentProject.Frames.Count) throw new Exception("Not all images have a thumbnail");
+
+                Bitmap tmpBmp;
+                for (int i = 0; i < idx.Count; i++)
+                {
+                    str.Position = idx[i];
+                    using (MemoryStream str2 = new MemoryStream())
+                    {
+                        str.CopyTo(str2);
+                        tmpBmp = new Bitmap(str2);
+                        ProjectManager.CurrentProject.AddThumb(new BitmapEx(tmpBmp));   //Normal Thumb
+                        ProjectManager.CurrentProject.AddThumb(new BitmapEx(tmpBmp));   //Edit Thumb
+                        ProjectManager.CurrentProject.ReportWorkProgress(i * 100 / idx.Count, ProgressType.LoadThumbnails);
+                    }
+                }
+            }
+
             exiftool.WaitForExit();
         }
         
@@ -47,7 +91,8 @@ namespace Timelapse_API
         /// <param name="values">XMP values to be written</param>
         public static void WriteXMPMetadata(string filepath, XMP xmp)
         {
-            SetProcess("", false);
+            //TODO: make XMP write faster (like thumbnail read)
+            SetProcess("", ExifArgument.Metadata);
             string command = String.Empty;
             bool run = false;
             Dictionary<string, XMP.XMPentry> values = xmp.Values;
@@ -85,7 +130,7 @@ namespace Timelapse_API
         /// <returns>a string array with all data</returns>
         public static string[] GetXMPMetadata(string filepath)
         {
-            SetProcess("-s -XMP-crs:all -xmp:ColorTemperature " + filepath, true);
+            SetProcess("-s -XMP-crs:all -xmp:ColorTemperature " + filepath, ExifArgument.Metadata);
             exiftool.Start();
             string data = exiftool.StandardOutput.ReadToEnd();
             exiftool.StandardOutput.Close();
@@ -96,7 +141,7 @@ namespace Timelapse_API
             return lines;
         }
         
-        private static void SetProcess(string command, bool redirect)
+        private static void SetProcess(string command, ExifArgument arg)
         {
             exiftool = new Process();
             string ExiftoolName = "";
@@ -106,9 +151,23 @@ namespace Timelapse_API
             else { throw new PlatformNotSupportedException(); }
 
             ProcessStartInfo exiftoolStartInfo = new ProcessStartInfo(ExiftoolName, command);
+            exiftool.EnableRaisingEvents = false;
             exiftoolStartInfo.UseShellExecute = false;
             exiftoolStartInfo.CreateNoWindow = true;
-            exiftoolStartInfo.RedirectStandardOutput = redirect;
+            exiftoolStartInfo.RedirectStandardError = false;
+            exiftoolStartInfo.WindowStyle = ProcessWindowStyle.Hidden;
+
+            switch (arg)
+            {
+                case ExifArgument.Metadata:
+                    exiftoolStartInfo.RedirectStandardOutput = true;
+                    break;
+                case ExifArgument.Thumbnails:
+                    exiftoolStartInfo.RedirectStandardOutput = true;
+                    exiftoolStartInfo.RedirectStandardInput = true;
+                    exiftoolStartInfo.StandardOutputEncoding = Encoding.UTF8;
+                    break;
+            }
             exiftool.StartInfo = exiftoolStartInfo;
         }
     }

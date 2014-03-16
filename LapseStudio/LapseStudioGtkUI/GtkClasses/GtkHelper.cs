@@ -1,5 +1,9 @@
-﻿using Timelapse_UI;
+﻿using System;
+using Timelapse_UI;
+using Timelapse_API;
 using Gtk;
+using Gdk;
+using ImageType = Timelapse_API.ImageType;
 
 namespace LapseStudioGtkUI
 {
@@ -66,6 +70,25 @@ namespace LapseStudioGtkUI
 					return WindowResponse.None;
 			}
 		}
+
+        public static Pixbuf ConvertToPixbuf(BitmapEx bmpEx)
+        {
+            int bitspersample;
+            bool HasAlpha;
+
+            if (bmpEx.BitDepth == ImageType.RGB8) { bitspersample = 8; HasAlpha = false; }
+            else if (bmpEx.BitDepth == ImageType.RGBA8) { bitspersample = 8; HasAlpha = true; }
+            else if (bmpEx.BitDepth == ImageType.RGB16) { bitspersample = 16; HasAlpha = false; }
+            else if (bmpEx.BitDepth == ImageType.RGBA16) { bitspersample = 16; HasAlpha = true; }
+            else throw new ArgumentException("Bitdepth not supported");
+
+            byte[] data = new byte[bmpEx.Height * bmpEx.Stride];
+            bmpEx.LockBits();
+            unsafe { System.Runtime.InteropServices.Marshal.Copy(bmpEx.Scan0, data, 0, data.Length); }
+            bmpEx.UnlockBits();
+
+            return new Pixbuf(data, HasAlpha, bitspersample, (int)bmpEx.Width, (int)bmpEx.Height, (int)bmpEx.Stride);
+        }
 	}
 }
 

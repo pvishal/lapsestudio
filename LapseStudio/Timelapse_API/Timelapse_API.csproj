@@ -21,13 +21,14 @@
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
     <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+    <PlatformTarget>x86</PlatformTarget>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <Optimize>true</Optimize>
     <OutputPath>bin\Release</OutputPath>
     <WarningLevel>4</WarningLevel>
     <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
-    <PlatformTarget>x86</PlatformTarget>
+    <PlatformTarget>AnyCPU</PlatformTarget>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="gdk-sharp, Version=2.12.0.0, Culture=neutral, PublicKeyToken=35e10195dab3c99f, processorArchitecture=MSIL" />
@@ -42,6 +43,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="General\BitmapEx.cs" />
     <Compile Include="General\Frame.cs" />
     <Compile Include="EventHandler.cs" />
     <Compile Include="Exceptions.cs" />
@@ -51,6 +53,7 @@
     <Compile Include="General\Exiftool.cs" />
     <Compile Include="General\Interpolate.cs" />
     <Compile Include="General\PointD.cs" />
+    <Compile Include="General\ThumbHandler.cs" />
     <Compile Include="General\TriDiagonalMatrix.cs" />
     <Compile Include="General\UniversalImage.cs" />
     <Compile Include="HelperClasses.cs" />

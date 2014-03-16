@@ -55,7 +55,6 @@
         StartingWork,
         //Frame loading
         LoadFrames,
-        ExtractThumbnails,
         LoadThumbnails,
         LoadMetadata,
         AnalyseMetadata,
@@ -97,5 +96,7 @@
         RGBA16,
         RGB32,
         RGBA32,
+        RGB64,
+        RGBA64,
     }
 }

@@ -66,6 +66,19 @@
             this.splitContainer2 = new System.Windows.Forms.SplitContainer();
             this.ThumbViewList = new System.Windows.Forms.PictureBox();
             this.CalculationTab = new System.Windows.Forms.TabPage();
+            this.CalcSettingsGroupBox = new System.Windows.Forms.GroupBox();
+            this.label2 = new System.Windows.Forms.Label();
+            this.label4 = new System.Windows.Forms.Label();
+            this.label3 = new System.Windows.Forms.Label();
+            this.label1 = new System.Windows.Forms.Label();
+            this.CalcSettingsXUpDo = new System.Windows.Forms.NumericUpDown();
+            this.CalcSettingsYUpDo = new System.Windows.Forms.NumericUpDown();
+            this.CalcSettingsHeightUpDo = new System.Windows.Forms.NumericUpDown();
+            this.CalcSettingsWidthUpDo = new System.Windows.Forms.NumericUpDown();
+            this.CalcSettingsPanel = new System.Windows.Forms.Panel();
+            this.CalcTypeExplanationLabel = new System.Windows.Forms.Label();
+            this.CalcTypeLabel = new System.Windows.Forms.Label();
+            this.CalcTypeCoBox = new System.Windows.Forms.ComboBox();
             this.GraphTab = new System.Windows.Forms.TabPage();
             this.splitContainer3 = new System.Windows.Forms.SplitContainer();
             this.FrameSelectLabel = new System.Windows.Forms.Label();
@@ -78,19 +91,6 @@
             this.YToStartButton = new System.Windows.Forms.Button();
             this.AlignXButtton = new System.Windows.Forms.Button();
             this.YToEndButton = new System.Windows.Forms.Button();
-            this.CalcTypeCoBox = new System.Windows.Forms.ComboBox();
-            this.CalcTypeLabel = new System.Windows.Forms.Label();
-            this.CalcTypeExplanationLabel = new System.Windows.Forms.Label();
-            this.CalcSettingsPanel = new System.Windows.Forms.Panel();
-            this.CalcSettingsGroupBox = new System.Windows.Forms.GroupBox();
-            this.CalcSettingsWidthUpDo = new System.Windows.Forms.NumericUpDown();
-            this.CalcSettingsHeightUpDo = new System.Windows.Forms.NumericUpDown();
-            this.CalcSettingsYUpDo = new System.Windows.Forms.NumericUpDown();
-            this.CalcSettingsXUpDo = new System.Windows.Forms.NumericUpDown();
-            this.label1 = new System.Windows.Forms.Label();
-            this.label2 = new System.Windows.Forms.Label();
-            this.label3 = new System.Windows.Forms.Label();
-            this.label4 = new System.Windows.Forms.Label();
             this.MainGraph = new LapseStudioWinFormsUI.Graph();
             this.MainStatusStrip.SuspendLayout();
             this.MyMainMenuStrip.SuspendLayout();
@@ -107,6 +107,11 @@
             this.splitContainer2.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.ThumbViewList)).BeginInit();
             this.CalculationTab.SuspendLayout();
+            this.CalcSettingsGroupBox.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.CalcSettingsXUpDo)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.CalcSettingsYUpDo)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.CalcSettingsHeightUpDo)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.CalcSettingsWidthUpDo)).BeginInit();
             this.GraphTab.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer3)).BeginInit();
             this.splitContainer3.Panel1.SuspendLayout();
@@ -116,11 +121,6 @@
             ((System.ComponentModel.ISupportInitialize)(this.FrameSelectScale)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.ThumbEditView)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.ThumbViewGraph)).BeginInit();
-            this.CalcSettingsGroupBox.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.CalcSettingsWidthUpDo)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.CalcSettingsHeightUpDo)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.CalcSettingsYUpDo)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.CalcSettingsXUpDo)).BeginInit();
             this.SuspendLayout();
             // 
             // MainStatusStrip
@@ -496,6 +496,127 @@
             this.CalculationTab.Text = "Calculation";
             this.CalculationTab.UseVisualStyleBackColor = true;
             // 
+            // CalcSettingsGroupBox
+            // 
+            this.CalcSettingsGroupBox.Controls.Add(this.label2);
+            this.CalcSettingsGroupBox.Controls.Add(this.label4);
+            this.CalcSettingsGroupBox.Controls.Add(this.label3);
+            this.CalcSettingsGroupBox.Controls.Add(this.label1);
+            this.CalcSettingsGroupBox.Controls.Add(this.CalcSettingsXUpDo);
+            this.CalcSettingsGroupBox.Controls.Add(this.CalcSettingsYUpDo);
+            this.CalcSettingsGroupBox.Controls.Add(this.CalcSettingsHeightUpDo);
+            this.CalcSettingsGroupBox.Controls.Add(this.CalcSettingsWidthUpDo);
+            this.CalcSettingsGroupBox.Location = new System.Drawing.Point(254, 6);
+            this.CalcSettingsGroupBox.Name = "CalcSettingsGroupBox";
+            this.CalcSettingsGroupBox.Size = new System.Drawing.Size(204, 100);
+            this.CalcSettingsGroupBox.TabIndex = 4;
+            this.CalcSettingsGroupBox.TabStop = false;
+            this.CalcSettingsGroupBox.Text = "Settings";
+            // 
+            // label2
+            // 
+            this.label2.AutoSize = true;
+            this.label2.Location = new System.Drawing.Point(6, 52);
+            this.label2.Name = "label2";
+            this.label2.Size = new System.Drawing.Size(17, 13);
+            this.label2.TabIndex = 5;
+            this.label2.Text = "Y:";
+            // 
+            // label4
+            // 
+            this.label4.AutoSize = true;
+            this.label4.Location = new System.Drawing.Point(92, 52);
+            this.label4.Name = "label4";
+            this.label4.Size = new System.Drawing.Size(41, 13);
+            this.label4.TabIndex = 5;
+            this.label4.Text = "Height:";
+            // 
+            // label3
+            // 
+            this.label3.AutoSize = true;
+            this.label3.Location = new System.Drawing.Point(92, 26);
+            this.label3.Name = "label3";
+            this.label3.Size = new System.Drawing.Size(38, 13);
+            this.label3.TabIndex = 5;
+            this.label3.Text = "Width:";
+            // 
+            // label1
+            // 
+            this.label1.AutoSize = true;
+            this.label1.Location = new System.Drawing.Point(6, 26);
+            this.label1.Name = "label1";
+            this.label1.Size = new System.Drawing.Size(17, 13);
+            this.label1.TabIndex = 5;
+            this.label1.Text = "X:";
+            // 
+            // CalcSettingsXUpDo
+            // 
+            this.CalcSettingsXUpDo.Location = new System.Drawing.Point(29, 24);
+            this.CalcSettingsXUpDo.Name = "CalcSettingsXUpDo";
+            this.CalcSettingsXUpDo.Size = new System.Drawing.Size(57, 20);
+            this.CalcSettingsXUpDo.TabIndex = 5;
+            // 
+            // CalcSettingsYUpDo
+            // 
+            this.CalcSettingsYUpDo.Location = new System.Drawing.Point(29, 50);
+            this.CalcSettingsYUpDo.Name = "CalcSettingsYUpDo";
+            this.CalcSettingsYUpDo.Size = new System.Drawing.Size(57, 20);
+            this.CalcSettingsYUpDo.TabIndex = 5;
+            // 
+            // CalcSettingsHeightUpDo
+            // 
+            this.CalcSettingsHeightUpDo.Location = new System.Drawing.Point(136, 50);
+            this.CalcSettingsHeightUpDo.Name = "CalcSettingsHeightUpDo";
+            this.CalcSettingsHeightUpDo.Size = new System.Drawing.Size(57, 20);
+            this.CalcSettingsHeightUpDo.TabIndex = 5;
+            // 
+            // CalcSettingsWidthUpDo
+            // 
+            this.CalcSettingsWidthUpDo.Location = new System.Drawing.Point(136, 24);
+            this.CalcSettingsWidthUpDo.Name = "CalcSettingsWidthUpDo";
+            this.CalcSettingsWidthUpDo.Size = new System.Drawing.Size(57, 20);
+            this.CalcSettingsWidthUpDo.TabIndex = 5;
+            // 
+            // CalcSettingsPanel
+            // 
+            this.CalcSettingsPanel.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.CalcSettingsPanel.Location = new System.Drawing.Point(8, 112);
+            this.CalcSettingsPanel.Name = "CalcSettingsPanel";
+            this.CalcSettingsPanel.Size = new System.Drawing.Size(450, 300);
+            this.CalcSettingsPanel.TabIndex = 3;
+            this.CalcSettingsPanel.Paint += new System.Windows.Forms.PaintEventHandler(this.CalcSettingsPanel_Paint);
+            this.CalcSettingsPanel.MouseDown += new System.Windows.Forms.MouseEventHandler(this.CalcSettingsPanel_MouseDown);
+            this.CalcSettingsPanel.MouseMove += new System.Windows.Forms.MouseEventHandler(this.CalcSettingsPanel_MouseMove);
+            this.CalcSettingsPanel.MouseUp += new System.Windows.Forms.MouseEventHandler(this.CalcSettingsPanel_MouseUp);
+            // 
+            // CalcTypeExplanationLabel
+            // 
+            this.CalcTypeExplanationLabel.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.CalcTypeExplanationLabel.Location = new System.Drawing.Point(8, 31);
+            this.CalcTypeExplanationLabel.Name = "CalcTypeExplanationLabel";
+            this.CalcTypeExplanationLabel.Size = new System.Drawing.Size(240, 75);
+            this.CalcTypeExplanationLabel.TabIndex = 2;
+            this.CalcTypeExplanationLabel.Text = "Calculation method explanation\r\n";
+            // 
+            // CalcTypeLabel
+            // 
+            this.CalcTypeLabel.AutoSize = true;
+            this.CalcTypeLabel.Location = new System.Drawing.Point(8, 9);
+            this.CalcTypeLabel.Name = "CalcTypeLabel";
+            this.CalcTypeLabel.Size = new System.Drawing.Size(101, 13);
+            this.CalcTypeLabel.TabIndex = 1;
+            this.CalcTypeLabel.Text = "Calculation Method:";
+            // 
+            // CalcTypeCoBox
+            // 
+            this.CalcTypeCoBox.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.CalcTypeCoBox.FormattingEnabled = true;
+            this.CalcTypeCoBox.Location = new System.Drawing.Point(115, 6);
+            this.CalcTypeCoBox.Name = "CalcTypeCoBox";
+            this.CalcTypeCoBox.Size = new System.Drawing.Size(133, 21);
+            this.CalcTypeCoBox.TabIndex = 0;
+            this.CalcTypeCoBox.SelectedIndexChanged += new System.EventHandler(this.CalcTypeCoBox_SelectedIndexChanged);
+            // 
             // GraphTab
             // 
             this.GraphTab.Controls.Add(this.splitContainer3);
@@ -634,127 +755,6 @@
             this.YToEndButton.UseVisualStyleBackColor = true;
             this.YToEndButton.Click += new System.EventHandler(this.YToEndButton_Click);
             // 
-            // CalcTypeCoBox
-            // 
-            this.CalcTypeCoBox.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.CalcTypeCoBox.FormattingEnabled = true;
-            this.CalcTypeCoBox.Location = new System.Drawing.Point(115, 6);
-            this.CalcTypeCoBox.Name = "CalcTypeCoBox";
-            this.CalcTypeCoBox.Size = new System.Drawing.Size(133, 21);
-            this.CalcTypeCoBox.TabIndex = 0;
-            this.CalcTypeCoBox.SelectedIndexChanged += new System.EventHandler(this.CalcTypeCoBox_SelectedIndexChanged);
-            // 
-            // CalcTypeLabel
-            // 
-            this.CalcTypeLabel.AutoSize = true;
-            this.CalcTypeLabel.Location = new System.Drawing.Point(8, 9);
-            this.CalcTypeLabel.Name = "CalcTypeLabel";
-            this.CalcTypeLabel.Size = new System.Drawing.Size(101, 13);
-            this.CalcTypeLabel.TabIndex = 1;
-            this.CalcTypeLabel.Text = "Calculation Method:";
-            // 
-            // CalcTypeExplanationLabel
-            // 
-            this.CalcTypeExplanationLabel.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.CalcTypeExplanationLabel.Location = new System.Drawing.Point(8, 31);
-            this.CalcTypeExplanationLabel.Name = "CalcTypeExplanationLabel";
-            this.CalcTypeExplanationLabel.Size = new System.Drawing.Size(240, 75);
-            this.CalcTypeExplanationLabel.TabIndex = 2;
-            this.CalcTypeExplanationLabel.Text = "Calculation method explanation\r\n";
-            // 
-            // CalcSettingsPanel
-            // 
-            this.CalcSettingsPanel.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.CalcSettingsPanel.Location = new System.Drawing.Point(8, 112);
-            this.CalcSettingsPanel.Name = "CalcSettingsPanel";
-            this.CalcSettingsPanel.Size = new System.Drawing.Size(450, 300);
-            this.CalcSettingsPanel.TabIndex = 3;
-            this.CalcSettingsPanel.Paint += new System.Windows.Forms.PaintEventHandler(this.CalcSettingsPanel_Paint);
-            this.CalcSettingsPanel.MouseDown += new System.Windows.Forms.MouseEventHandler(this.CalcSettingsPanel_MouseDown);
-            this.CalcSettingsPanel.MouseMove += new System.Windows.Forms.MouseEventHandler(this.CalcSettingsPanel_MouseMove);
-            this.CalcSettingsPanel.MouseUp += new System.Windows.Forms.MouseEventHandler(this.CalcSettingsPanel_MouseUp);
-            // 
-            // CalcSettingsGroupBox
-            // 
-            this.CalcSettingsGroupBox.Controls.Add(this.label2);
-            this.CalcSettingsGroupBox.Controls.Add(this.label4);
-            this.CalcSettingsGroupBox.Controls.Add(this.label3);
-            this.CalcSettingsGroupBox.Controls.Add(this.label1);
-            this.CalcSettingsGroupBox.Controls.Add(this.CalcSettingsXUpDo);
-            this.CalcSettingsGroupBox.Controls.Add(this.CalcSettingsYUpDo);
-            this.CalcSettingsGroupBox.Controls.Add(this.CalcSettingsHeightUpDo);
-            this.CalcSettingsGroupBox.Controls.Add(this.CalcSettingsWidthUpDo);
-            this.CalcSettingsGroupBox.Location = new System.Drawing.Point(254, 6);
-            this.CalcSettingsGroupBox.Name = "CalcSettingsGroupBox";
-            this.CalcSettingsGroupBox.Size = new System.Drawing.Size(204, 100);
-            this.CalcSettingsGroupBox.TabIndex = 4;
-            this.CalcSettingsGroupBox.TabStop = false;
-            this.CalcSettingsGroupBox.Text = "Settings";
-            // 
-            // CalcSettingsWidthUpDo
-            // 
-            this.CalcSettingsWidthUpDo.Location = new System.Drawing.Point(136, 24);
-            this.CalcSettingsWidthUpDo.Name = "CalcSettingsWidthUpDo";
-            this.CalcSettingsWidthUpDo.Size = new System.Drawing.Size(57, 20);
-            this.CalcSettingsWidthUpDo.TabIndex = 5;
-            // 
-            // CalcSettingsHeightUpDo
-            // 
-            this.CalcSettingsHeightUpDo.Location = new System.Drawing.Point(136, 50);
-            this.CalcSettingsHeightUpDo.Name = "CalcSettingsHeightUpDo";
-            this.CalcSettingsHeightUpDo.Size = new System.Drawing.Size(57, 20);
-            this.CalcSettingsHeightUpDo.TabIndex = 5;
-            // 
-            // CalcSettingsYUpDo
-            // 
-            this.CalcSettingsYUpDo.Location = new System.Drawing.Point(29, 50);
-            this.CalcSettingsYUpDo.Name = "CalcSettingsYUpDo";
-            this.CalcSettingsYUpDo.Size = new System.Drawing.Size(57, 20);
-            this.CalcSettingsYUpDo.TabIndex = 5;
-            // 
-            // CalcSettingsXUpDo
-            // 
-            this.CalcSettingsXUpDo.Location = new System.Drawing.Point(29, 24);
-            this.CalcSettingsXUpDo.Name = "CalcSettingsXUpDo";
-            this.CalcSettingsXUpDo.Size = new System.Drawing.Size(57, 20);
-            this.CalcSettingsXUpDo.TabIndex = 5;
-            // 
-            // label1
-            // 
-            this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(6, 26);
-            this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(17, 13);
-            this.label1.TabIndex = 5;
-            this.label1.Text = "X:";
-            // 
-            // label2
-            // 
-            this.label2.AutoSize = true;
-            this.label2.Location = new System.Drawing.Point(6, 52);
-            this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(17, 13);
-            this.label2.TabIndex = 5;
-            this.label2.Text = "Y:";
-            // 
-            // label3
-            // 
-            this.label3.AutoSize = true;
-            this.label3.Location = new System.Drawing.Point(92, 26);
-            this.label3.Name = "label3";
-            this.label3.Size = new System.Drawing.Size(38, 13);
-            this.label3.TabIndex = 5;
-            this.label3.Text = "Width:";
-            // 
-            // label4
-            // 
-            this.label4.AutoSize = true;
-            this.label4.Location = new System.Drawing.Point(92, 52);
-            this.label4.Name = "label4";
-            this.label4.Size = new System.Drawing.Size(41, 13);
-            this.label4.TabIndex = 5;
-            this.label4.Text = "Height:";
-            // 
             // MainGraph
             // 
             this.MainGraph.BackColor = System.Drawing.Color.DarkGray;
@@ -797,6 +797,12 @@
             ((System.ComponentModel.ISupportInitialize)(this.ThumbViewList)).EndInit();
             this.CalculationTab.ResumeLayout(false);
             this.CalculationTab.PerformLayout();
+            this.CalcSettingsGroupBox.ResumeLayout(false);
+            this.CalcSettingsGroupBox.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.CalcSettingsXUpDo)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.CalcSettingsYUpDo)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.CalcSettingsHeightUpDo)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.CalcSettingsWidthUpDo)).EndInit();
             this.GraphTab.ResumeLayout(false);
             this.splitContainer3.Panel1.ResumeLayout(false);
             this.splitContainer3.Panel1.PerformLayout();
@@ -807,12 +813,6 @@
             ((System.ComponentModel.ISupportInitialize)(this.FrameSelectScale)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.ThumbEditView)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.ThumbViewGraph)).EndInit();
-            this.CalcSettingsGroupBox.ResumeLayout(false);
-            this.CalcSettingsGroupBox.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.CalcSettingsWidthUpDo)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.CalcSettingsHeightUpDo)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.CalcSettingsYUpDo)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.CalcSettingsXUpDo)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
