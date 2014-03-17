@@ -94,8 +94,7 @@ namespace LapseStudioWinFormsUI
 
         public static Bitmap ConvertToBitmap(BitmapEx bmpEx)
         {
-            uint index, depth = 0;
-            int y, x;
+            int depth = 0;
             bool HasAlpha;
             PixelFormat format;
             if (bmpEx.BitDepth == ImageType.RGB8) { format = PixelFormat.Format24bppRgb; depth = 3; HasAlpha = false; }
@@ -103,27 +102,22 @@ namespace LapseStudioWinFormsUI
             else if (bmpEx.BitDepth == ImageType.RGB16) { format = PixelFormat.Format48bppRgb; depth = 6; HasAlpha = false; }
             else if (bmpEx.BitDepth == ImageType.RGBA16) { format = PixelFormat.Format64bppArgb; depth = 8; HasAlpha = true; }
             else throw new ArgumentException("Bitdepth not supported");
-
+            
             Bitmap outBmp = new Bitmap((int)bmpEx.Width, (int)bmpEx.Height, format);
             BitmapData bmd = outBmp.LockBits(new System.Drawing.Rectangle(0, 0, outBmp.Width, outBmp.Height), ImageLockMode.WriteOnly, outBmp.PixelFormat);
-            bmpEx.LockBits();          
+            bmpEx.LockBits();
   
             unsafe
             {
-                byte* rowIn;
-                byte* rowOut;
-                for (y = 0; y < outBmp.Height; y++)
+                byte* pixIn = (byte*)bmpEx.Scan0;
+                byte* pixOut = (byte*)bmd.Scan0;
+                long length = bmpEx.Stride * bmpEx.Height;
+                for (long i = 0; i < length; i += depth)
                 {
-                    rowOut = (byte*)bmd.Scan0 + y * bmd.Stride;
-                    rowIn = (byte*)bmpEx.Scan0 + y * bmpEx.Stride;
-                    for (x = 0; x < outBmp.Width; x++)
-                    {
-                        index = (uint)(x * depth);
-                        rowOut[index + 2] = rowIn[index];
-                        rowOut[index + 1] = rowIn[index + 1];
-                        rowOut[index] = rowIn[index + 2];
-                        if (HasAlpha) rowOut[index + 3] = rowIn[index + 3];
-                    }
+                    pixOut[i + 2] = pixIn[i];
+                    pixOut[i + 1] = pixIn[i + 1];
+                    pixOut[i] = pixIn[i + 2];
+                    if (HasAlpha) pixOut[i + 3] = pixIn[i + 3];
                 }
             }
             outBmp.UnlockBits(bmd);

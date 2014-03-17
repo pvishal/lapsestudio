@@ -42,6 +42,8 @@ namespace Timelapse_UI
 
 		#endregion
 
+        //TODO: refreshing of big tables take a long time and completely block UI
+
 		public LapseStudioUI(MessageBox MsgBox, FileDialog FDialog)
 		{
 			this.MsgBox = MsgBox;
@@ -487,7 +489,7 @@ No lets you load values from a standalone XMP file."), MessageWindowType.Questio
         public void Click_Calculate(BrightnessCalcType Type)
 		{
 			if (CheckBusy()) return;
-            if (ProjectManager.CurrentProject.IsBrightnessCalculated && MsgBox.ShowMessage(MessageContent.BrightnessNotCalculatedError) == WindowResponse.No) return;
+            if (ProjectManager.CurrentProject.IsBrightnessCalculated && MsgBox.ShowMessage(MessageContent.BrightnessAlreadyCalculated) == WindowResponse.No) return;
             if (ProjectManager.CurrentProject.Frames.Count > 1) { ProjectManager.CalculateBrightness(Type); }
 			else { MsgBox.ShowMessage(MessageContent.NotEnoughFrames); }
 		}

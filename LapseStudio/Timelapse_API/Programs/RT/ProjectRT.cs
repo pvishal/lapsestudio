@@ -229,8 +229,8 @@ namespace Timelapse_API
             RTStartInfo.UseShellExecute = false;
             RTStartInfo.CreateNoWindow = true;
             RTStartInfo.WindowStyle = ProcessWindowStyle.Hidden;
-            RTStartInfo.RedirectStandardInput = true;
-            RTStartInfo.RedirectStandardOutput = true;
+            RTStartInfo.RedirectStandardInput = false;
+            RTStartInfo.RedirectStandardOutput = false;
             RT.StartInfo = RTStartInfo;
 
             #region Build command
@@ -268,12 +268,12 @@ namespace Timelapse_API
 
             #region Run RawTherapee
 
-            RT.StartInfo.Arguments = basecmd + " " + Path.GetDirectoryName(Frames[0].FilePath);
+           /* RT.StartInfo.Arguments = basecmd + " " + Path.GetDirectoryName(Frames[0].FilePath);
             RT.Start();
             RT.WaitForExit();
 
-            /* Old code, needed if each file is listed in the command line (e.g. for different directories)
-             * 
+             Old code, needed if each file is listed in the command line (e.g. for different directories)
+             * */
             //Add all the files to the command and start Rawtherapee
             for (int i = 0; i < Frames.Count; i++)
             {
@@ -295,7 +295,7 @@ namespace Timelapse_API
                     command = basecmd;
                     startRT = false;
                 }
-            }*/
+            }
 
             #endregion
 

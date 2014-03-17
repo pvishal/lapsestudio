@@ -22,13 +22,10 @@ namespace LapseStudioWinFormsUI
                 MainUI.MainGraph = new BrightnessGraph(MainGraph.Width, MainGraph.Height);
                 MainGraph.Init(MainUI.MainGraph);
                 MainUI.InitBaseUI();
-
-                BitmapEx bmp = new BitmapEx(@"C:\Users\Johannes\Desktop\Stitch\Example.jpg");
-
             }
             catch (Exception ex) { Error.Report("Init", ex); }
         }
-        
+
         #region Menu
 
         internal void newProjectToolStripMenuItem_Click(object sender, EventArgs e)

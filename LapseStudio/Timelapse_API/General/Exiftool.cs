@@ -5,7 +5,6 @@ using System.IO;
 using System.Globalization;
 using System.Linq;
 using System.Text;
-
 using System.Drawing;
 
 namespace Timelapse_API
@@ -32,6 +31,7 @@ namespace Timelapse_API
             string CameraData = exiftool.StandardOutput.ReadToEnd();
             exiftool.StandardOutput.Close();
             exiftool.WaitForExit();
+            exiftool.Dispose();
 
             if (!String.IsNullOrWhiteSpace(CameraData)) { return CameraData.Split(new string[] { Environment.NewLine }, StringSplitOptions.RemoveEmptyEntries); }
             else { return null; }
@@ -63,25 +63,30 @@ namespace Timelapse_API
                     if (BitConverter.IsLittleEndian) Array.Reverse(tmp);
                     if (BitConverter.ToUInt16(tmp, 0) == JpgMarker) idx.Add(ct);
                 }
-
+                
                 if (idx.Count != ProjectManager.CurrentProject.Frames.Count) throw new Exception("Not all images have a thumbnail");
 
-                Bitmap tmpBmp;
+                int LastProg = -1;
                 for (int i = 0; i < idx.Count; i++)
                 {
+                    if (ProjectManager.CurrentProject.MainWorker.CancellationPending) break;
                     str.Position = idx[i];
                     using (MemoryStream str2 = new MemoryStream())
                     {
                         str.CopyTo(str2);
-                        tmpBmp = new Bitmap(str2);
-                        ProjectManager.CurrentProject.AddThumb(new BitmapEx(tmpBmp));   //Normal Thumb
-                        ProjectManager.CurrentProject.AddThumb(new BitmapEx(tmpBmp));   //Edit Thumb
-                        ProjectManager.CurrentProject.ReportWorkProgress(i * 100 / idx.Count, ProgressType.LoadThumbnails);
+                        ProjectManager.CurrentProject.AddThumb(new BitmapEx(str2).ScaleW(300));   //Normal Thumb
+                        ProjectManager.CurrentProject.AddThumb(new BitmapEx(str2).ScaleW(300));   //Edit Thumb
+                        int prog = i * 100 / (idx.Count - 1);
+                        if (LastProg != prog)
+                        {
+                            ProjectManager.CurrentProject.ReportWorkProgress(prog, ProgressType.LoadThumbnails);
+                            LastProg = prog;
+                        }
                     }
                 }
             }
-
             exiftool.WaitForExit();
+            exiftool.Dispose();
         }
         
         /// <summary>
@@ -121,6 +126,7 @@ namespace Timelapse_API
                     run = false;
                 }
             }
+            exiftool.Dispose();
         }
         
         /// <summary>
@@ -135,6 +141,7 @@ namespace Timelapse_API
             string data = exiftool.StandardOutput.ReadToEnd();
             exiftool.StandardOutput.Close();
             exiftool.WaitForExit();
+            exiftool.Dispose();
 
             if (String.IsNullOrWhiteSpace(data)) { return null; }
             string[] lines = data.Split(new string[] { Environment.NewLine, "\n", "\r" }, StringSplitOptions.RemoveEmptyEntries);

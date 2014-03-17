@@ -97,9 +97,9 @@ namespace LapseStudioWinFormsUI
 
         public override void ResetPictureBoxes()
         {
-            if (mw.ThumbEditView.Image != null) mw.ThumbEditView.Image.Dispose();
-            if (mw.ThumbViewList.Image != null) mw.ThumbViewList.Image.Dispose();
-            if (mw.ThumbViewGraph.Image != null) mw.ThumbViewGraph.Image.Dispose();
+            mw.ThumbEditView.Image = null;
+            mw.ThumbViewList.Image = null;
+            mw.ThumbViewGraph.Image = null;
         }
 
 		public override void InitUI()

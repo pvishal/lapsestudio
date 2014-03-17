@@ -83,6 +83,8 @@
 		jpg,
 		png,
 		tiff,
+        bmp,
+        wdp,
 	}
 
 	/// <summary>

@@ -67,12 +67,18 @@ namespace Timelapse_API
         /// </summary>
         public static event WorkFinishedHandler WorkDone;
 
+        /// <summary>
+        /// If user cancels loading of frames everything has to be reset (data might be missing otherwise)
+        /// </summary>
+        private static bool HasInit = false;
+
         internal static void OnProgressChanged(object sender, ProgressChangeEventArgs e)
         {
             if (ProgressChanged != null) { ProgressChanged(sender, e); }
         }
         internal static void OnFramesLoaded(object sender, WorkFinishedEventArgs e)
         {
+            HasInit = true;
             if (FramesLoaded != null) { FramesLoaded(sender, e); }
         }
         internal static void OnBrightnessCalculated(object sender, WorkFinishedEventArgs e)
@@ -124,6 +130,7 @@ namespace Timelapse_API
         public static void NewProject(ProjectType type)
         {
             Close();
+            HasInit = false;
             UsedProgram = type;
             switch (type)
             {
@@ -196,6 +203,7 @@ namespace Timelapse_API
         public static void Cancel()
         {
             CurrentProject.Cancel();
+            if (!HasInit) NewProject(UsedProgram);
         }
 
         /// <summary>

@@ -29,6 +29,40 @@ namespace Timelapse_API
         }
 
         /// <summary>
+        /// Gets a thumb from the list
+        /// </summary>
+        /// <param name="index">Index of the thumb</param>
+        /// <param name="UseBuffer">If true, it will add the file to the buffer</param>
+        /// <returns>The thumb or null if not found</returns>
+        public BitmapEx this[int index, bool UseBuffer = true]
+        {
+            get
+            {
+                if (index < 0 || index >= Entries.Count || !MainStream.CanRead) return null;
+
+                tmpBuff = Buffer.FirstOrDefault(t => t.Index == index);
+                if (tmpBuff != null) return tmpBuff.Value;
+
+                MainStream.Position = Entries[index].Begin;
+                if (UseBuffer)
+                {
+                    tmpBmp = (BitmapEx)formatter.Deserialize(MainStream);
+                    Buffer.Enqueue(new BufferEntry(index, tmpBmp));
+                    return tmpBmp;
+                }
+                else return (BitmapEx)formatter.Deserialize(MainStream);
+            }
+            set
+            {
+                if (index >= 0 && index < Entries.Count && MainStream.CanWrite)
+                {
+                    MainStream.Position = Entries[index].Begin;
+                    formatter.Serialize(MainStream, value);
+                }
+            }
+        }
+
+        /// <summary>
         /// Closes all open streams and removes all data
         /// </summary>
         public void Dispose()
@@ -49,45 +83,13 @@ namespace Timelapse_API
         /// <param name="thumb">The thumb to be added</param>
         public void AddThumb(BitmapEx thumb)
         {
-            if (thumb.IsPinned) thumb.UnlockBits();
-            MainStream.Position = MainStream.Length;
-            long begin = MainStream.Length;
-            formatter.Serialize(MainStream, thumb);
-            Entries.Add(new DataEntry(begin, MainStream.Length));
-        }
-
-        /// <summary>
-        /// Gets a thumb from the list
-        /// </summary>
-        /// <param name="index">Index of the thumb</param>
-        /// <param name="UseBuffer">If true, it will add the file to the buffer</param>
-        /// <returns>The thumb or null if not found</returns>
-        public BitmapEx this[int index, bool UseBuffer = true]
-        {
-            get
+            if (MainStream.CanWrite)
             {
-                if (index < 0 || index >= Entries.Count) return null;
-
-                tmpBuff = Buffer.FirstOrDefault(t => t.Index == index);
-                if (tmpBuff != null) return tmpBuff.Value;
-
-                MainStream.Position = Entries[index].Begin;
-                if (UseBuffer)
-                {
-                    tmpBmp = (BitmapEx)formatter.Deserialize(MainStream);
-                    Buffer.Enqueue(new BufferEntry(index, tmpBmp));
-                    return tmpBmp;
-                }
-                else return (BitmapEx)formatter.Deserialize(MainStream);
-            }
-
-            set
-            {
-                if (index >= 0 && index < Entries.Count)
-                {
-                    MainStream.Position = Entries[index].Begin;
-                    formatter.Serialize(MainStream, value);
-                }
+                if (thumb.IsPinned) thumb.UnlockBits();
+                MainStream.Position = MainStream.Length;
+                long begin = MainStream.Length;
+                formatter.Serialize(MainStream, thumb);
+                Entries.Add(new DataEntry(begin, MainStream.Length));
             }
         }
 

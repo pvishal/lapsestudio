@@ -477,7 +477,7 @@
             this.ThumbViewList.Location = new System.Drawing.Point(0, 0);
             this.ThumbViewList.Name = "ThumbViewList";
             this.ThumbViewList.Size = new System.Drawing.Size(160, 120);
-            this.ThumbViewList.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
+            this.ThumbViewList.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
             this.ThumbViewList.TabIndex = 0;
             this.ThumbViewList.TabStop = false;
             // 
@@ -702,7 +702,7 @@
             this.ThumbEditView.Location = new System.Drawing.Point(0, 267);
             this.ThumbEditView.Name = "ThumbEditView";
             this.ThumbEditView.Size = new System.Drawing.Size(160, 120);
-            this.ThumbEditView.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
+            this.ThumbEditView.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
             this.ThumbEditView.TabIndex = 1;
             this.ThumbEditView.TabStop = false;
             // 
@@ -711,7 +711,7 @@
             this.ThumbViewGraph.Location = new System.Drawing.Point(0, 61);
             this.ThumbViewGraph.Name = "ThumbViewGraph";
             this.ThumbViewGraph.Size = new System.Drawing.Size(160, 120);
-            this.ThumbViewGraph.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
+            this.ThumbViewGraph.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
             this.ThumbViewGraph.TabIndex = 1;
             this.ThumbViewGraph.TabStop = false;
             // 
