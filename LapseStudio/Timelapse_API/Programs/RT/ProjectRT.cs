@@ -2,6 +2,7 @@
 using System.Linq;
 using System.Diagnostics;
 using System.IO;
+using System.Threading;
 
 namespace Timelapse_API
 {
@@ -89,7 +90,7 @@ namespace Timelapse_API
         internal ProjectRT()
             : base()
         {
-			OutputWatcher.Created += OutputWatcher_Created;
+            OutputWatcher.Created += OutputWatcher_Created;
         }
 
         /// <summary>
@@ -216,6 +217,7 @@ namespace Timelapse_API
             }
         }
 
+        //TODO: rework StartRT so it works with newer and older versions properly
         private void StartRT()
         {
 			string ExecPath = RTPath;
@@ -229,8 +231,8 @@ namespace Timelapse_API
             RTStartInfo.UseShellExecute = false;
             RTStartInfo.CreateNoWindow = true;
             RTStartInfo.WindowStyle = ProcessWindowStyle.Hidden;
-            RTStartInfo.RedirectStandardInput = false;
-            RTStartInfo.RedirectStandardOutput = false;
+            RTStartInfo.RedirectStandardInput = true;
+            RTStartInfo.RedirectStandardOutput = true;
             RT.StartInfo = RTStartInfo;
 
             #region Build command
@@ -301,7 +303,7 @@ namespace Timelapse_API
 
             OutputWatcher.EnableRaisingEvents = false;
         }
-        
+                
         private void DeletePP3()
         {
             for (int i = 0; i < Frames.Count; i++) { FileHandle.DeleteFile(Frames[i].FilePath + ".pp3"); }

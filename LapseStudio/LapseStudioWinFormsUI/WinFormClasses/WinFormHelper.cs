@@ -94,7 +94,7 @@ namespace LapseStudioWinFormsUI
 
         public static Bitmap ConvertToBitmap(BitmapEx bmpEx)
         {
-            int depth = 0;
+            uint depth = 0;
             bool HasAlpha;
             PixelFormat format;
             if (bmpEx.BitDepth == ImageType.RGB8) { format = PixelFormat.Format24bppRgb; depth = 3; HasAlpha = false; }
@@ -111,13 +111,22 @@ namespace LapseStudioWinFormsUI
             {
                 byte* pixIn = (byte*)bmpEx.Scan0;
                 byte* pixOut = (byte*)bmd.Scan0;
-                long length = bmpEx.Stride * bmpEx.Height;
-                for (long i = 0; i < length; i += depth)
+                long length = bmpEx.Width * bmpEx.Height * depth;
+                long idx;
+                uint x, y;
+                int resV = (int)(bmd.Stride - bmpEx.Stride);
+                int res = 0;
+                for (y = 0; y < bmd.Height; y++)
                 {
-                    pixOut[i + 2] = pixIn[i];
-                    pixOut[i + 1] = pixIn[i + 1];
-                    pixOut[i] = pixIn[i + 2];
-                    if (HasAlpha) pixOut[i + 3] = pixIn[i + 3];
+                    for (x = 0; x < bmd.Stride; x+=depth)
+                    {
+                        idx = y * bmd.Stride + x;
+                        pixOut[idx + 2] = pixIn[idx - res];
+                        pixOut[idx + 1] = pixIn[idx + 1 - res];
+                        pixOut[idx] = pixIn[idx + 2 - res];
+                        if (HasAlpha) pixOut[idx + 3] = pixIn[idx + 3 - res];
+                    }
+                    res += resV;
                 }
             }
             outBmp.UnlockBits(bmd);

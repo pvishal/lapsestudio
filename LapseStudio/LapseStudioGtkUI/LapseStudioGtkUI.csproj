@@ -73,7 +73,6 @@
     <Compile Include="GtkClasses\GtkSettingsUI.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="GtkClasses\GtkMessageBox.cs" />
-    <Compile Include="GtkClasses\GtkUI.cs" />
     <Compile Include="GtkClasses\GtkFileDialog.cs" />
     <Compile Include="GtkClasses\GtkHelper.cs" />
     <Compile Include="gtk-gui\generated.cs" />

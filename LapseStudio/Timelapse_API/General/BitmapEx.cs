@@ -151,17 +151,12 @@ namespace Timelapse_API
                 pixFormat = PixelFormats.Bgra32;
                 SwitchChannels = true;
             }
-            else if (this.BitDepth == ImageType.RGB8)
-            {
-                pixFormat = PixelFormats.Rgb24;
-                SwitchChannels = false;
-            }
             else if (this.BitDepth == ImageType.RGB16)
             {
                 pixFormat = PixelFormats.Rgb48;
                 SwitchChannels = false;
             }
-            else if (this.BitDepth == ImageType.RGB16)
+            else if (this.BitDepth == ImageType.RGB32)
             {
                 pixFormat = PixelFormats.Rgb128Float;
                 SwitchChannels = false;
@@ -398,11 +393,12 @@ namespace Timelapse_API
             bool SwitchChannels;
             PixelFormat pixFormat = GetPixelFormat(this.BitDepth, out SwitchChannels);
 
-            byte[] imgData = new byte[this.ImageData.Length];
+            byte[] imgData;
             int bpc = this.BytePerChannel;
 
             if (SwitchChannels)
             {
+                imgData = new byte[this.ImageData.Length];
                 //Make BGR from RGB
                 unsafe
                 {
@@ -415,30 +411,25 @@ namespace Timelapse_API
                         {
                             for (j = 0; j < bpc; j++)
                             {
-                                pixOut[i + j] = pixIn[i + j + bpc2];
-                                pixOut[i + j + bpc2] = pixIn[i + j];
+                                pixOut[i + j] = pixIn[i + j + bpc2];    //set R to B
+                                pixOut[i + j + 1] = pixIn[i + j + 1];   //set G to G
+                                pixOut[i + j + bpc2] = pixIn[i + j];    //set B to R
                             }
                         }
                     }
                 }
             }
-            else
-            {
-                this.LockBits();
-                Marshal.Copy(this.Scan0, imgData, 0, imgData.Length);
-                this.UnlockBits();
-            }
+            else imgData = ImageData;
 
             BitmapSource src = BitmapSource.Create((int)this.Width, (int)this.Height, 96, 96, pixFormat, null, imgData, (int)(this.Width * bpc * this.ChannelCount));
             enc.Frames.Add(BitmapFrame.Create(src));
+            enc.Save(str);
         }
 
         #endregion
 
         #region Scaling
-
-        //TODO: when breaking aspect ratio in Height, interpolation breaks
-
+        
         /// <summary>
         /// Scales image to desired width. Preserves aspect ratio.
         /// </summary>
@@ -649,9 +640,9 @@ namespace Timelapse_API
                         }
                     }
 
-                    dst[0] = (ushort)Math.Max(0, Math.Min(65565, r));
-                    dst[1] = (ushort)Math.Max(0, Math.Min(65565, g));
-                    dst[2] = (ushort)Math.Max(0, Math.Min(65565, b));
+                    dst[0] = (ushort)Math.Max(0, Math.Min(65535, r));
+                    dst[1] = (ushort)Math.Max(0, Math.Min(65535, g));
+                    dst[2] = (ushort)Math.Max(0, Math.Min(65535, b));
                 }
                 dst += dstOffset;
             }

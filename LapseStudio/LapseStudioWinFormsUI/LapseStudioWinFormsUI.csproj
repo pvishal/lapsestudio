@@ -40,11 +40,13 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />
+    <Reference Include="System.Data" />
     <Reference Include="System.Drawing" />
     <Reference Include="System.Windows.Forms" />
     <Reference Include="MessageTranslation">
       <HintPath>..\Lib\MessageTranslation.dll</HintPath>
     </Reference>
+    <Reference Include="System.XML" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="GUI\Graph.cs">
@@ -77,7 +79,6 @@
     <Compile Include="WinFormClasses\WinFormHelper.cs" />
     <Compile Include="WinFormClasses\WinFormMessageBox.cs" />
     <Compile Include="WinFormClasses\WinFormSettingsUI.cs" />
-    <Compile Include="WinFormClasses\WinFormUI.cs" />
     <Compile Include="GUI\TrackBarEx.cs">
       <SubType>UserControl</SubType>
     </Compile>

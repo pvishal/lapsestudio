@@ -10,97 +10,117 @@ using System.Runtime.Serialization.Formatters.Binary;
 
 namespace Timelapse_UI
 {
-	public abstract class LapseStudioUI
+	public class LapseStudioUI
     {
-		#region Events
-
-		public delegate void StringUpdate(string Value);
-		public event StringUpdate TitleChanged;
-
-		#endregion
-
 		#region Variables
         
-		public string Title
-		{
-			get { return _Title; }
-			set
-			{
-				if(_Title != value && TitleChanged != null) TitleChanged(value);
-				_Title = value;
-			}
-		}
-		private string _Title;
-
 		public MessageBox MsgBox;
         public FileDialog FDialog;
 		private bool ProjectSaved = true;
         private bool IsTableUpdate = false;
 		private string ProjectSavePath;
+        private IUIHandler UIHandler;
 
 		public BrightnessGraph MainGraph;
 
 		#endregion
-
-        //TODO: refreshing of big tables take a long time and completely block UI
-
-		public LapseStudioUI(MessageBox MsgBox, FileDialog FDialog)
+        
+		public LapseStudioUI(Platform RunningPlatform, IUIHandler UIHandler, MessageBox MsgBox, FileDialog FDialog)
 		{
+            this.UIHandler = UIHandler;
 			this.MsgBox = MsgBox;
 			this.FDialog = FDialog;
-			Error.Init(MsgBox);
+            Error.Init(MsgBox);
+
+            Init(RunningPlatform);
 
 			AppDomain currentDomain = AppDomain.CurrentDomain;
 			currentDomain.UnhandledException += HandleUnhandledException;
 
-			ProjectManager.BrightnessCalculated += CurrentProject_BrightnessCalculated;
-			ProjectManager.FramesLoaded += CurrentProject_FramesLoaded;
-			ProjectManager.ProgressChanged += CurrentProject_ProgressChanged;
-			ProjectManager.WorkDone += CurrentProject_WorkDone;
+            ProjectManager.BrightnessCalculated += CurrentProject_BrightnessCalculated;
+            ProjectManager.FramesLoaded += CurrentProject_FramesLoaded;
+            ProjectManager.ProgressChanged += CurrentProject_ProgressChanged;
+            ProjectManager.WorkDone += CurrentProject_WorkDone;
+            MsgBox.InfoTextChanged += MsgBox_InfoTextChanged;
 		}
+        
+        #region Event handling
 
-		private void HandleUnhandledException (object sender, UnhandledExceptionEventArgs e)
+        private void HandleUnhandledException (object sender, UnhandledExceptionEventArgs e)
 		{
 			Error.Report("Unhandled Exception", (Exception)e.ExceptionObject);
 		}
+        
+        private void CurrentProject_WorkDone(object sender, WorkFinishedEventArgs e)
+        {
+            try
+            {
+                if (!e.Cancelled)
+                {
+                    switch (e.Topic)
+                    {
+                        case Work.ProcessThumbs:
+                            UIHandler.RefreshImages();
+                            break;
+                        case Work.LoadProject:
+                            UIHandler.InitOpenedProject();
+                            break;
+                    }
 
-		#region Abstract Methods
+                    UIHandler.SetStatusLabel(Message.GetString(e.Topic.ToString()) + " " + Message.GetString("is done"));
+                }
+                else { UIHandler.SetStatusLabel(Message.GetString(e.Topic.ToString()) + " " + Message.GetString("got cancelled")); }
+                UIHandler.SetProgress(0);
+            }
+            catch (Exception ex) { Error.Report("Work finished", ex); }
+        }
 
-		protected abstract void CurrentProject_WorkDone(object sender, WorkFinishedEventArgs e);
+        private void CurrentProject_ProgressChanged(object sender, ProgressChangeEventArgs e)
+        {
+            try
+            {
+                UIHandler.SetProgress(e.ProgressPercentage);
+                UIHandler.SetStatusLabel(Message.GetString(e.Topic.ToString()));
+            }
+            catch (Exception ex) { Error.Report("Progress changed", ex); }
+        }
 
-		protected abstract void CurrentProject_ProgressChanged(object sender, ProgressChangeEventArgs e);
+        private void CurrentProject_FramesLoaded(object sender, WorkFinishedEventArgs e)
+        {
+            try
+            {
+                UIHandler.SetStatusLabel(Message.GetString("Frames loaded"));
+                UpdateTable(true);
+                UIHandler.RefreshImages();
+                UIHandler.SetProgress(0);
+                UIHandler.InitAfterFrameLoad();
+                UIHandler.SelectTableRow(0);
+            }
+            catch (Exception ex) { Error.Report("Frames loading finished", ex); }
+        }
 
-		protected abstract void CurrentProject_FramesLoaded(object sender, WorkFinishedEventArgs e);
+        private void CurrentProject_BrightnessCalculated(object sender, WorkFinishedEventArgs e)
+        {
+            try
+            {
+                UIHandler.SetStatusLabel(Message.GetString("Brightness calculated"));
+                UIHandler.SetProgress(0);
+                UpdateTable(false);
+                MainGraph.RefreshGraph();
+            }
+            catch (Exception ex) { Error.Report("Brightness calculation finished", ex); }
+        }
 
-		protected abstract void CurrentProject_BrightnessCalculated(object sender, WorkFinishedEventArgs e);
+        private void MsgBox_InfoTextChanged(string Value)
+        {
+            UIHandler.SetStatusLabel(Value);
+        }
 
-        public abstract void ReleaseUIData();
+        #endregion
 
-        public abstract void ResetMovement();
+        #region Shared Methods
 
-		public abstract void InitMovement();
-
-		public abstract void InvokeUI(Action action);
-
-		public abstract void QuitApplication();
-
-		public abstract void InitOpenedProject();
-
-		public abstract void ResetProgress();
-
-		public abstract void ResetPictureBoxes();
-
-		public abstract void InitUI();
-
-        public abstract void ClearTable();
-
-        public abstract void SetTableRow(int Index, ArrayList Values);
-
-		#endregion
-
-		#region Shared Methods
-
-		public bool Quit(ClosingReason reason)
+        public bool Quit(ClosingReason reason)
 		{
 			//the return value defines if the quiting should get canceled or not
 			if (reason != ClosingReason.Error)
@@ -121,17 +141,17 @@ namespace Timelapse_UI
 
 			LSSettings.Save();
 
-			ProjectManager.BrightnessCalculated -= CurrentProject_BrightnessCalculated;
-			ProjectManager.FramesLoaded -= CurrentProject_FramesLoaded;
-			ProjectManager.ProgressChanged -= CurrentProject_ProgressChanged;
-			ProjectManager.WorkDone -= CurrentProject_WorkDone;
+            ProjectManager.BrightnessCalculated -= CurrentProject_BrightnessCalculated;
+            ProjectManager.FramesLoaded -= CurrentProject_FramesLoaded;
+            ProjectManager.ProgressChanged -= CurrentProject_ProgressChanged;
+            ProjectManager.WorkDone -= CurrentProject_WorkDone;
 
             if (ProjectManager.CurrentProject.IsWorking) { ProjectManager.CurrentProject.IsWorkingWaitHandler.WaitOne(10000); }
-            
-            ReleaseUIData();
+
+            UIHandler.ReleaseUIData();
             ProjectManager.Close();
 
-			QuitApplication();
+            UIHandler.QuitApplication();
 			return false;
 		}
 
@@ -155,7 +175,7 @@ namespace Timelapse_UI
 			else if (String.IsNullOrEmpty(ProjectSavePath) && isSaved) { t += " - " + Message.GetString("NewProject"); }
 			else if (String.IsNullOrEmpty(ProjectSavePath) && !isSaved) { t +=" - " + Message.GetString("NewProject") + "*"; }
 			else { t += " - " + Path.GetFileNameWithoutExtension(ProjectSavePath) + "*"; }
-			Title = t;
+            UIHandler.SetWindowTitle(t);
 		}
 
 		public void SavingProject()
@@ -256,10 +276,11 @@ namespace Timelapse_UI
 				((ProjectRT)ProjectManager.CurrentProject).JpgQuality = LSSettings.JpgQuality;
 				((ProjectRT)ProjectManager.CurrentProject).TiffCompression = LSSettings.TiffCompression != TiffCompressionFormat.None;
 			}
-			ResetMovement();
 			MainGraph.Init();
 			ProjectManager.Threadcount = LSSettings.Threadcount;
-			InitUI();
+            UIHandler.InitUI();
+            UIHandler.InitTable();
+            UIHandler.RefreshImages();
 		}
 
 		public bool CheckBusy()
@@ -275,11 +296,10 @@ namespace Timelapse_UI
             ProjectManager.Threadcount = LSSettings.Threadcount;
         }
 
-        public void UpdateTable()
+        public void UpdateTable(bool fill)
         {
             IsTableUpdate = true;
             List<Frame> Framelist = ProjectManager.CurrentProject.Frames;
-            ClearTable();
             
             ArrayList LScontent = new ArrayList();
             int index;
@@ -314,7 +334,7 @@ namespace Timelapse_UI
                 else { LScontent[index] = false; }
 
                 //filling the table
-                SetTableRow(i, LScontent);
+                UIHandler.SetTableRow(i, LScontent, fill);
             }
             IsTableUpdate = false;
         }
@@ -363,6 +383,9 @@ No lets you load values from a standalone XMP file."), MessageWindowType.Questio
                 }
             }
             else { ProjectManager.AddKeyframe(index); }
+
+            if (ProjectManager.CurrentProject.Frames[index].IsKeyframe) MsgBox.ShowMessage(MessageContent.KeyframeAdded);
+            else MsgBox.ShowMessage(MessageContent.KeyframeNotAdded);
         }
 
         public void UpdateBrightness(int Row, string CurrentValue)
@@ -389,7 +412,7 @@ No lets you load values from a standalone XMP file."), MessageWindowType.Questio
                 change += min + 5;
             }
 
-            if (!IsTableUpdate) UpdateTable();
+            if (!IsTableUpdate) UpdateTable(false);
         }
         
 		#endregion
@@ -465,8 +488,6 @@ No lets you load values from a standalone XMP file."), MessageWindowType.Questio
 			{
 				InitBaseUI();
 				SetSaveStatus(true);
-				ResetMovement();
-				ResetPictureBoxes();
 			}
 			return res;
 		}
@@ -507,7 +528,7 @@ No lets you load values from a standalone XMP file."), MessageWindowType.Questio
         {
             if (!Toggled) OpenMetaData(Row);
             else ProjectManager.RemoveKeyframe(Row, false);
-            UpdateTable();
+            UpdateTable(false);
         }
 
 		public void Click_BrightnessSlider(double Value)

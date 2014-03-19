@@ -68,6 +68,8 @@ namespace Timelapse_UI
         NotEnoughValidFiles,
         RemoveMetadataLink,
         UseReadXMP,
+        KeyframeAdded,
+        KeyframeNotAdded,
 	}
 
     public enum TableLocation

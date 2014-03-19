@@ -50,6 +50,7 @@
     </Compile>
     <Compile Include="Settings.cs" />
     <Compile Include="SettingsUI.cs" />
+    <Compile Include="UIHandler.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Timelapse_API\Timelapse_API.csproj">

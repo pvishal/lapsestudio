@@ -56,13 +56,6 @@
             this.FileTab = new System.Windows.Forms.TabPage();
             this.splitContainer1 = new System.Windows.Forms.SplitContainer();
             this.MainTable = new System.Windows.Forms.DataGridView();
-            this.Number = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.Keyframe = new System.Windows.Forms.DataGridViewCheckBoxColumn();
-            this.Filename = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.Brightness = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.AV = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.TV = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.ISO = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.splitContainer2 = new System.Windows.Forms.SplitContainer();
             this.ThumbViewList = new System.Windows.Forms.PictureBox();
             this.CalculationTab = new System.Windows.Forms.TabPage();
@@ -374,14 +367,6 @@
             this.MainTable.AllowUserToResizeRows = false;
             this.MainTable.ColumnHeadersBorderStyle = System.Windows.Forms.DataGridViewHeaderBorderStyle.None;
             this.MainTable.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.MainTable.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
-            this.Number,
-            this.Keyframe,
-            this.Filename,
-            this.Brightness,
-            this.AV,
-            this.TV,
-            this.ISO});
             this.MainTable.Dock = System.Windows.Forms.DockStyle.Fill;
             this.MainTable.Location = new System.Drawing.Point(0, 0);
             this.MainTable.MultiSelect = false;
@@ -394,65 +379,6 @@
             this.MainTable.CellMouseClick += new System.Windows.Forms.DataGridViewCellMouseEventHandler(this.MainTable_CellMouseClick);
             this.MainTable.CellValueChanged += new System.Windows.Forms.DataGridViewCellEventHandler(this.MainTable_CellValueChanged);
             this.MainTable.SelectionChanged += new System.EventHandler(this.MainTable_SelectionChanged);
-            // 
-            // Number
-            // 
-            this.Number.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.AllCells;
-            this.Number.Frozen = true;
-            this.Number.HeaderText = "Nr";
-            this.Number.Name = "Number";
-            this.Number.ReadOnly = true;
-            this.Number.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable;
-            this.Number.Width = 24;
-            // 
-            // Keyframe
-            // 
-            this.Keyframe.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.AllCells;
-            this.Keyframe.Frozen = true;
-            this.Keyframe.HeaderText = "KF";
-            this.Keyframe.Name = "Keyframe";
-            this.Keyframe.ReadOnly = true;
-            this.Keyframe.Width = 26;
-            // 
-            // Filename
-            // 
-            this.Filename.HeaderText = "Filename";
-            this.Filename.Name = "Filename";
-            this.Filename.ReadOnly = true;
-            this.Filename.Resizable = System.Windows.Forms.DataGridViewTriState.True;
-            this.Filename.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable;
-            this.Filename.Width = 120;
-            // 
-            // Brightness
-            // 
-            this.Brightness.HeaderText = "Brightness";
-            this.Brightness.Name = "Brightness";
-            this.Brightness.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable;
-            this.Brightness.Width = 62;
-            // 
-            // AV
-            // 
-            this.AV.HeaderText = "AV";
-            this.AV.Name = "AV";
-            this.AV.ReadOnly = true;
-            this.AV.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable;
-            this.AV.Width = 50;
-            // 
-            // TV
-            // 
-            this.TV.HeaderText = "TV";
-            this.TV.Name = "TV";
-            this.TV.ReadOnly = true;
-            this.TV.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable;
-            this.TV.Width = 50;
-            // 
-            // ISO
-            // 
-            this.ISO.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
-            this.ISO.HeaderText = "ISO";
-            this.ISO.Name = "ISO";
-            this.ISO.ReadOnly = true;
-            this.ISO.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable;
             // 
             // splitContainer2
             // 
@@ -862,13 +788,6 @@
         internal System.Windows.Forms.ToolStripButton ProcessToolButton;
         internal System.Windows.Forms.ToolStripButton CancelToolButton;
         internal System.Windows.Forms.TrackBar BrightnessScale;
-        private System.Windows.Forms.DataGridViewTextBoxColumn Number;
-        private System.Windows.Forms.DataGridViewCheckBoxColumn Keyframe;
-        private System.Windows.Forms.DataGridViewTextBoxColumn Filename;
-        private System.Windows.Forms.DataGridViewTextBoxColumn Brightness;
-        private System.Windows.Forms.DataGridViewTextBoxColumn AV;
-        private System.Windows.Forms.DataGridViewTextBoxColumn TV;
-        private System.Windows.Forms.DataGridViewTextBoxColumn ISO;
         private Graph MainGraph;
         private System.Windows.Forms.Label label2;
         private System.Windows.Forms.Label label4;

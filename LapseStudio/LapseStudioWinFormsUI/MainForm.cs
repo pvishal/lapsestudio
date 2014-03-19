@@ -1,15 +1,19 @@
 ﻿using System;
+using System.Collections;
 using System.Windows.Forms;
 using Timelapse_UI;
 using Timelapse_API;
+using System.Data;
+using Message = MessageTranslation.Message;
 
 namespace LapseStudioWinFormsUI
 {
-    public partial class MainForm : Form
+    public partial class MainForm : Form, IUIHandler
     {
-        WinFormUI MainUI;
         WinFormMessageBox MsgBox;
         WinFormFileDialog FDialog;
+        LapseStudioUI MainUI;
+        DataTable TableData = new DataTable();
 
         public MainForm()
         {
@@ -18,7 +22,15 @@ namespace LapseStudioWinFormsUI
                 InitializeComponent();
                 MsgBox = new WinFormMessageBox();
                 FDialog = new WinFormFileDialog();
-                MainUI = new WinFormUI(this, MsgBox, FDialog);
+                MainUI = new LapseStudioUI(Platform.Windows, this, MsgBox, FDialog);
+
+                WinFormFileDialog.InitOpenFolderDialog(this);
+                AddFileToolButton.Image = Timelapse_UI.Properties.Resources.Add32;
+                CalculateToolButton.Image = Timelapse_UI.Properties.Resources.Calculate32;
+                MetadataToolButton.Image = Timelapse_UI.Properties.Resources.Reload32;
+                ProcessToolButton.Image = Timelapse_UI.Properties.Resources.Save32;
+                CancelToolButton.Image = Timelapse_UI.Properties.Resources.Cancel32;
+
                 MainUI.MainGraph = new BrightnessGraph(MainGraph.Width, MainGraph.Height);
                 MainGraph.Init(MainUI.MainGraph);
                 MainUI.InitBaseUI();
@@ -159,17 +171,8 @@ namespace LapseStudioWinFormsUI
 
         internal void FrameSelectScale_Scroll(object sender, EventArgs e)
         {
-			try
-			{
-	            if (FrameSelectScale.Value >= 0 && FrameSelectScale.Value < ProjectManager.CurrentProject.Frames.Count
-                    && ProjectManager.CurrentProject.GetThumb(FrameSelectScale.Value) != null)
-	            {
-                    ThumbEditView.Image = WinFormHelper.ConvertToBitmap(ProjectManager.CurrentProject.GetThumbEdited((int)FrameSelectScale.Value));
-                    ThumbViewGraph.Image = WinFormHelper.ConvertToBitmap(ProjectManager.CurrentProject.GetThumb((int)FrameSelectScale.Value));
-	                FrameSelectLabel.Text = FrameSelectScale.Value.ToString();
-				}
-			}
-			catch (Exception ex) { Error.Report("FrameSelectScale_Scroll", ex); }
+            try { RefreshImages(); }
+            catch (Exception ex) { Error.Report("FrameSelectScale_Scroll", ex); }
         }
 
         internal void BrightnessScale_Scroll(object sender, EventArgs e)
@@ -221,6 +224,169 @@ namespace LapseStudioWinFormsUI
 			catch (Exception ex) { Error.Report("MainForm_FormClosing", ex); }
         }
 
+        #endregion
+        
+        #region UI Methods
+
+        public void ReleaseUIData()
+        {
+            ResetPictureBoxes();
+        }
+        
+        public void InvokeUI(Action action)
+        {
+            Invoke((MethodInvoker)delegate { action(); });
+        }
+
+        public void QuitApplication()
+        {
+            Application.Exit();
+        }
+
+        public void InitOpenedProject()
+        {
+            MainUI.UpdateTable(false);
+            SelectTableRow(0);
+            RefreshImages();
+            FrameSelectScale.SetRange(0, ProjectManager.CurrentProject.Frames.Count - 1);
+
+            //MainGraph.SetFromLoading(Storage.Points, Storage.SelectedPoint);
+            MainNotebook.SelectedIndex = (int)TabLocation.Filelist;
+
+            //mw.CalcTypeCoBox.Active = Storage.CalcTypeCoBoxValue;
+            //mw.BrightnessScale.Value = Storage.BrightnessScaleValue;
+        }
+
+        public void SetProgress(int percent)
+        {
+            MainProgressBar.Value = percent;
+        }
+
+        public void ResetPictureBoxes()
+        {
+            ThumbEditView.Image = null;
+            ThumbViewList.Image = null;
+            ThumbViewGraph.Image = null;
+        }
+
+        public void RefreshImages()
+        {
+            if (ProjectManager.CurrentProject.Frames.Count > 0)
+            {
+                if (FrameSelectScale.Value >= 0 && FrameSelectScale.Value < ProjectManager.CurrentProject.Frames.Count
+                    && ProjectManager.CurrentProject.GetThumb(FrameSelectScale.Value) != null)
+                {
+                    ThumbEditView.Image = WinFormHelper.ConvertToBitmap(ProjectManager.CurrentProject.GetThumbEdited((int)FrameSelectScale.Value));
+                    ThumbViewGraph.Image = WinFormHelper.ConvertToBitmap(ProjectManager.CurrentProject.GetThumb((int)FrameSelectScale.Value));
+                    FrameSelectLabel.Text = FrameSelectScale.Value.ToString();
+                }
+            }
+            else
+            {
+                ThumbEditView.Image = null;
+                ThumbViewGraph.Image = null;
+                ThumbViewList.Image = null;
+            }
+        }
+
+        public void InitUI()
+        {
+            MetadataToolButton.Enabled = (LSSettings.UsedProgram != ProjectType.CameraRaw) ? false : true;
+            TableData = new DataTable();
+            CalcTypeCoBox.Items.Clear();
+            CalcTypeCoBox.Items.AddRange(Enum.GetNames(typeof(BrightnessCalcType)));
+            CalcTypeCoBox.SelectedIndex = 0;
+        }
+        
+        public void InitAfterFrameLoad()
+        {
+            FrameSelectScale.SetRange(0, ProjectManager.CurrentProject.Frames.Count - 1);
+        }
+
+        public void SetStatusLabel(string Text)
+        {
+            StatusLabel.Text = Text;
+        }
+
+        public void SetWindowTitle(string Text)
+        {
+            this.Text = Text;
+        }
+        
+        //TODO: the checkbox is only set correctly after a second update
+        public void SetTableRow(int Index, ArrayList Values, bool fill)
+        {
+            if (fill) TableData.Rows.Add(Values.ToArray());
+            else
+            {
+                TableData.Rows[Index].ItemArray = Values.ToArray();
+                MainTable.Rows[Index].Cells[(int)TableLocation.Keyframe].Value = Values[(int)TableLocation.Keyframe];
+            }
+        }
+
+        public void SelectTableRow(int index)
+        {
+            MainTable.Rows[index].Selected = true;
+        }
+
+        public void InitTable()
+        {
+            TableData.Columns.Add("Nr", typeof(string));
+            TableData.Columns[0].DefaultValue = "0";
+            TableData.Columns.Add("KF", typeof(bool));
+            TableData.Columns[1].DefaultValue = false;
+            TableData.Columns.Add("Filename", typeof(string));
+            TableData.Columns[2].DefaultValue = "N/A";
+            TableData.Columns.Add("Brightness", typeof(string));
+            TableData.Columns[3].DefaultValue = "0.000";
+            TableData.Columns.Add("AV", typeof(string));
+            TableData.Columns[4].DefaultValue = "N/A";
+            TableData.Columns.Add("TV", typeof(string));
+            TableData.Columns[5].DefaultValue = "N/A";
+            TableData.Columns.Add("ISO", typeof(string));
+            TableData.Columns[6].DefaultValue = "N/A";
+            MainTable.DataSource = TableData;
+
+            MainTable.Columns[(int)TableLocation.Nr].ReadOnly = true;
+            MainTable.Columns[(int)TableLocation.Nr].Width = 30;
+            MainTable.Columns[(int)TableLocation.Nr].SortMode = DataGridViewColumnSortMode.NotSortable;
+            MainTable.Columns[(int)TableLocation.Nr].AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells;
+            MainTable.Columns[(int)TableLocation.Nr].Resizable = DataGridViewTriState.False;
+
+            MainTable.Columns[(int)TableLocation.Keyframe].ReadOnly = false;
+            MainTable.Columns[(int)TableLocation.Keyframe].Width = 30;
+            MainTable.Columns[(int)TableLocation.Keyframe].SortMode = DataGridViewColumnSortMode.NotSortable;
+            MainTable.Columns[(int)TableLocation.Keyframe].Resizable = DataGridViewTriState.False;
+
+            MainTable.Columns[(int)TableLocation.Filename].ReadOnly = true;
+            MainTable.Columns[(int)TableLocation.Filename].Width = 120;
+            MainTable.Columns[(int)TableLocation.Filename].SortMode = DataGridViewColumnSortMode.NotSortable;
+            MainTable.Columns[(int)TableLocation.Filename].Resizable = DataGridViewTriState.True;
+
+            MainTable.Columns[(int)TableLocation.Brightness].ReadOnly = false;
+            MainTable.Columns[(int)TableLocation.Brightness].Width = 100;
+            MainTable.Columns[(int)TableLocation.Brightness].SortMode = DataGridViewColumnSortMode.NotSortable;
+            MainTable.Columns[(int)TableLocation.Brightness].Resizable = DataGridViewTriState.True;
+
+            MainTable.Columns[(int)TableLocation.AV].ReadOnly = true;
+            MainTable.Columns[(int)TableLocation.AV].Width = 60;
+            MainTable.Columns[(int)TableLocation.AV].SortMode = DataGridViewColumnSortMode.NotSortable;
+            MainTable.Columns[(int)TableLocation.AV].Resizable = DataGridViewTriState.True;
+
+            MainTable.Columns[(int)TableLocation.TV].ReadOnly = true;
+            MainTable.Columns[(int)TableLocation.TV].Width = 60;
+            MainTable.Columns[(int)TableLocation.TV].SortMode = DataGridViewColumnSortMode.NotSortable;
+            MainTable.Columns[(int)TableLocation.TV].Resizable = DataGridViewTriState.True;
+
+            MainTable.Columns[(int)TableLocation.ISO].ReadOnly = true;
+            MainTable.Columns[(int)TableLocation.ISO].SortMode = DataGridViewColumnSortMode.NotSortable;
+            MainTable.Columns[(int)TableLocation.ISO].Resizable = DataGridViewTriState.True;
+            MainTable.Columns[(int)TableLocation.ISO].AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill;
+
+            if (ProjectManager.CurrentProject.Type == ProjectType.LapseStudio) MainTable.Columns[(int)TableLocation.Keyframe].Visible = false;
+            else MainTable.Columns[(int)TableLocation.Keyframe].Visible = true;
+        }
+        
         #endregion
 
         private void CalcTypeCoBox_SelectedIndexChanged(object sender, EventArgs e)

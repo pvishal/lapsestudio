@@ -130,6 +130,14 @@ namespace Timelapse_UI
                     res = this.Show(Message.GetString("Brightness is already calculated. Do you want to calculate again?"), Message.GetString("Calculate Again?"), MessageWindowType.Question, MessageWindowButtons.YesNo);
                     break;
 
+                case MessageContent.KeyframeAdded:
+                    SendInfoText(Message.GetString("Keyframe set!"));
+                    break;
+
+                case MessageContent.KeyframeNotAdded:
+                    SendInfoText(Message.GetString("Keyframe not set!"));
+                    break;
+
 				default:
 					res = this.Show(Message.GetString("Something happened!") + Environment.NewLine + Message.GetString("(There is not more information available)"), MessageWindowType.Warning, MessageWindowButtons.Ok);
 					break;
