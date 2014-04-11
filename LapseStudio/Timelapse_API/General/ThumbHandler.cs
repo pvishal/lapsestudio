@@ -16,7 +16,6 @@ namespace Timelapse_API
         private BinaryFormatter formatter = new BinaryFormatter();
         private BufferEntry tmpBuff;
         private BitmapEx tmpBmp;
-        private object lockObj = new object();
 
         /// <summary>
         /// Initializes the ThumbHandler and opens stream to temporary file

@@ -395,7 +395,6 @@ namespace LapseStudioGtkUI
             AVColumn.AddAttribute(AVCell, "text", (int)TableLocation.AV);
             TVColumn.AddAttribute(TVCell, "text", (int)TableLocation.TV);
             ISOColumn.AddAttribute(ISOCell, "text", (int)TableLocation.ISO);
-            KeyframeColumn.AddAttribute(KeyframeCell, "toggle", (int)TableLocation.Keyframe);
 
 
             FileTree.AppendColumn(NrColumn);

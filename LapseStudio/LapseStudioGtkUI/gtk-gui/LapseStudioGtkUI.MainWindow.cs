@@ -16,11 +16,11 @@ namespace LapseStudioGtkUI
 		private global::Gtk.Action HelpAction;
 		private global::Gtk.Action helpAction;
 		private global::Gtk.Action aboutAction;
-		private global::Gtk.Action Add32Action;
-		private global::Gtk.Action Calculate32Action;
+		private global::Gtk.Action AddAction;
+		private global::Gtk.Action CalculateAction;
 		private global::Gtk.Action ReloadAction;
-		private global::Gtk.Action Save32Action;
-		private global::Gtk.Action Cancel32Action;
+		private global::Gtk.Action SaveAction;
+		private global::Gtk.Action CancelAction;
 		private global::Gtk.VBox vbox1;
 		private global::Gtk.MenuBar MainMenuBar;
 		private global::Gtk.Toolbar MainToolBar;
@@ -55,67 +55,67 @@ namespace LapseStudioGtkUI
 		private global::Gtk.ProgressBar MainProgressBar;
 		private global::Gtk.Label StatusLabel;
 		private global::Gtk.Fixed fixed1;
-
+		
 		protected virtual void Build ()
 		{
 			global::Stetic.Gui.Initialize (this);
 			// Widget LapseStudioGtkUI.MainWindow
 			this.UIManager = new global::Gtk.UIManager ();
 			global::Gtk.ActionGroup w1 = new global::Gtk.ActionGroup ("Default");
-			this.MenuAction = new global::Gtk.Action ("MenuAction", global::Mono.Unix.Catalog.GetString ("Menu"), null, null);
-			this.MenuAction.ShortLabel = global::Mono.Unix.Catalog.GetString ("Menu");
+			this.MenuAction = new global::Gtk.Action ("MenuAction", "Menu", null, null);
+			this.MenuAction.ShortLabel = "Menu";
 			w1.Add (this.MenuAction, null);
-			this.newAction = new global::Gtk.Action ("newAction", global::Mono.Unix.Catalog.GetString ("New Project"), null, "gtk-new");
-			this.newAction.ShortLabel = global::Mono.Unix.Catalog.GetString ("New Project");
+			this.newAction = new global::Gtk.Action ("newAction", "New Project", null, "gtk-new");
+			this.newAction.ShortLabel = "New Project";
 			w1.Add (this.newAction, null);
-			this.openAction = new global::Gtk.Action ("openAction", global::Mono.Unix.Catalog.GetString ("Open Project"), null, "gtk-open");
-			this.openAction.ShortLabel = global::Mono.Unix.Catalog.GetString ("Open Project");
+			this.openAction = new global::Gtk.Action ("openAction", "Open Project", null, "gtk-open");
+			this.openAction.ShortLabel = "Open Project";
 			w1.Add (this.openAction, null);
-			this.saveAction = new global::Gtk.Action ("saveAction", global::Mono.Unix.Catalog.GetString ("Save Project"), null, "gtk-save");
-			this.saveAction.ShortLabel = global::Mono.Unix.Catalog.GetString ("Save Project");
+			this.saveAction = new global::Gtk.Action ("saveAction", "Save Project", null, "gtk-save");
+			this.saveAction.ShortLabel = "Save Project";
 			w1.Add (this.saveAction, null);
-			this.saveAsAction = new global::Gtk.Action ("saveAsAction", global::Mono.Unix.Catalog.GetString ("Save Project As"), null, "gtk-save-as");
-			this.saveAsAction.ShortLabel = global::Mono.Unix.Catalog.GetString ("Save Project As");
+			this.saveAsAction = new global::Gtk.Action ("saveAsAction", "Save Project As", null, "gtk-save-as");
+			this.saveAsAction.ShortLabel = "Save Project As";
 			w1.Add (this.saveAsAction, null);
-			this.quitAction = new global::Gtk.Action ("quitAction", global::Mono.Unix.Catalog.GetString ("Quit"), null, "gtk-quit");
-			this.quitAction.ShortLabel = global::Mono.Unix.Catalog.GetString ("Quit");
+			this.quitAction = new global::Gtk.Action ("quitAction", "Quit", null, "gtk-quit");
+			this.quitAction.ShortLabel = "Quit";
 			w1.Add (this.quitAction, null);
-			this.SettingsAction = new global::Gtk.Action ("SettingsAction", global::Mono.Unix.Catalog.GetString ("Settings"), null, null);
-			this.SettingsAction.ShortLabel = global::Mono.Unix.Catalog.GetString ("Settings");
+			this.SettingsAction = new global::Gtk.Action ("SettingsAction", "Settings", null, null);
+			this.SettingsAction.ShortLabel = "Settings";
 			w1.Add (this.SettingsAction, null);
-			this.preferencesAction = new global::Gtk.Action ("preferencesAction", global::Mono.Unix.Catalog.GetString ("General Settings"), null, "gtk-preferences");
-			this.preferencesAction.ShortLabel = global::Mono.Unix.Catalog.GetString ("General Settings");
+			this.preferencesAction = new global::Gtk.Action ("preferencesAction", "General Settings", null, "gtk-preferences");
+			this.preferencesAction.ShortLabel = "General Settings";
 			w1.Add (this.preferencesAction, null);
-			this.HelpAction = new global::Gtk.Action ("HelpAction", global::Mono.Unix.Catalog.GetString ("Help"), null, null);
-			this.HelpAction.ShortLabel = global::Mono.Unix.Catalog.GetString ("Help");
+			this.HelpAction = new global::Gtk.Action ("HelpAction", "Help", null, null);
+			this.HelpAction.ShortLabel = "Help";
 			w1.Add (this.HelpAction, null);
-			this.helpAction = new global::Gtk.Action ("helpAction", global::Mono.Unix.Catalog.GetString ("Help"), null, "gtk-help");
-			this.helpAction.ShortLabel = global::Mono.Unix.Catalog.GetString ("Help");
+			this.helpAction = new global::Gtk.Action ("helpAction", "Help", null, "gtk-help");
+			this.helpAction.ShortLabel = "Help";
 			w1.Add (this.helpAction, null);
-			this.aboutAction = new global::Gtk.Action ("aboutAction", global::Mono.Unix.Catalog.GetString ("About"), null, "gtk-about");
-			this.aboutAction.ShortLabel = global::Mono.Unix.Catalog.GetString ("About");
+			this.aboutAction = new global::Gtk.Action ("aboutAction", "About", null, "gtk-about");
+			this.aboutAction.ShortLabel = "About";
 			w1.Add (this.aboutAction, null);
-			this.Add32Action = new global::Gtk.Action ("Add32Action", null, global::Mono.Unix.Catalog.GetString ("Add Frames"), "Add32");
-			w1.Add (this.Add32Action, null);
-			this.Calculate32Action = new global::Gtk.Action ("Calculate32Action", null, global::Mono.Unix.Catalog.GetString ("Calculate Brightnes"), "Calculate32");
-			w1.Add (this.Calculate32Action, null);
-			this.ReloadAction = new global::Gtk.Action ("ReloadAction", null, global::Mono.Unix.Catalog.GetString ("Reload XMP"), "Reload32");
+			this.AddAction = new global::Gtk.Action ("AddAction", null, "Add Frames", "Add");
+			w1.Add (this.AddAction, null);
+			this.CalculateAction = new global::Gtk.Action ("CalculateAction", null, "Calculate Brightnes", "Calculate");
+			w1.Add (this.CalculateAction, null);
+			this.ReloadAction = new global::Gtk.Action ("ReloadAction", null, "Reload XMP", "Reload");
 			w1.Add (this.ReloadAction, null);
-			this.Save32Action = new global::Gtk.Action ("Save32Action", null, global::Mono.Unix.Catalog.GetString ("Process Frames"), "Save32");
-			w1.Add (this.Save32Action, null);
-			this.Cancel32Action = new global::Gtk.Action ("Cancel32Action", null, global::Mono.Unix.Catalog.GetString ("Cancel"), "Cancel32");
-			w1.Add (this.Cancel32Action, null);
+			this.SaveAction = new global::Gtk.Action ("SaveAction", null, "Process Frames", "Save");
+			w1.Add (this.SaveAction, null);
+			this.CancelAction = new global::Gtk.Action ("CancelAction", null, "Cancel", "Cancel");
+			w1.Add (this.CancelAction, null);
 			this.UIManager.InsertActionGroup (w1, 0);
 			this.AddAccelGroup (this.UIManager.AccelGroup);
 			this.Name = "LapseStudioGtkUI.MainWindow";
-			this.Title = global::Mono.Unix.Catalog.GetString ("LapseStudio");
+			this.Title = "LapseStudio";
 			this.WindowPosition = ((global::Gtk.WindowPosition)(4));
 			// Container child LapseStudioGtkUI.MainWindow.Gtk.Container+ContainerChild
 			this.vbox1 = new global::Gtk.VBox ();
 			this.vbox1.Name = "vbox1";
 			this.vbox1.Spacing = 6;
 			// Container child vbox1.Gtk.Box+BoxChild
-			this.UIManager.AddUiFromString (@"<ui><menubar name='MainMenuBar'><menu name='MenuAction' action='MenuAction'><menuitem name='newAction' action='newAction'/><menuitem name='openAction' action='openAction'/><separator/><menuitem name='saveAction' action='saveAction'/><menuitem name='saveAsAction' action='saveAsAction'/><separator/><menuitem name='quitAction' action='quitAction'/></menu><menu name='SettingsAction' action='SettingsAction'><menuitem name='preferencesAction' action='preferencesAction'/></menu><menu name='HelpAction' action='HelpAction'><menuitem name='helpAction' action='helpAction'/><menuitem name='aboutAction' action='aboutAction'/></menu></menubar></ui>");
+			this.UIManager.AddUiFromString ("<ui><menubar name='MainMenuBar'><menu name='MenuAction' action='MenuAction'><menuitem name='newAction' action='newAction'/><menuitem name='openAction' action='openAction'/><separator/><menuitem name='saveAction' action='saveAction'/><menuitem name='saveAsAction' action='saveAsAction'/><separator/><menuitem name='quitAction' action='quitAction'/></menu><menu name='SettingsAction' action='SettingsAction'><menuitem name='preferencesAction' action='preferencesAction'/></menu><menu name='HelpAction' action='HelpAction'><menuitem name='helpAction' action='helpAction'/><menuitem name='aboutAction' action='aboutAction'/></menu></menubar></ui>");
 			this.MainMenuBar = ((global::Gtk.MenuBar)(this.UIManager.GetWidget ("/MainMenuBar")));
 			this.MainMenuBar.Name = "MainMenuBar";
 			this.vbox1.Add (this.MainMenuBar);
@@ -124,7 +124,7 @@ namespace LapseStudioGtkUI
 			w2.Expand = false;
 			w2.Fill = false;
 			// Container child vbox1.Gtk.Box+BoxChild
-			this.UIManager.AddUiFromString (@"<ui><toolbar name='MainToolBar'><toolitem name='Add32Action' action='Add32Action'/><toolitem name='Calculate32Action' action='Calculate32Action'/><toolitem name='ReloadAction' action='ReloadAction'/><toolitem name='Save32Action' action='Save32Action'/><toolitem name='Cancel32Action' action='Cancel32Action'/></toolbar></ui>");
+			this.UIManager.AddUiFromString ("<ui><toolbar name='MainToolBar'><toolitem name='AddAction' action='AddAction'/><toolitem name='CalculateAction' action='CalculateAction'/><toolitem name='ReloadAction' action='ReloadAction'/><toolitem name='SaveAction' action='SaveAction'/><toolitem name='CancelAction' action='CancelAction'/></toolbar></ui>");
 			this.MainToolBar = ((global::Gtk.Toolbar)(this.UIManager.GetWidget ("/MainToolBar")));
 			this.MainToolBar.Name = "MainToolBar";
 			this.MainToolBar.ShowArrow = false;
@@ -187,7 +187,7 @@ namespace LapseStudioGtkUI
 			// Notebook tab
 			this.TabPageLabel1 = new global::Gtk.Label ();
 			this.TabPageLabel1.Name = "TabPageLabel1";
-			this.TabPageLabel1.LabelProp = global::Mono.Unix.Catalog.GetString ("Files");
+			this.TabPageLabel1.LabelProp = "Files";
 			this.MainNotebook.SetTabLabel (this.hbox2, this.TabPageLabel1);
 			this.TabPageLabel1.ShowAll ();
 			// Container child MainNotebook.Gtk.Notebook+NotebookChild
@@ -200,7 +200,7 @@ namespace LapseStudioGtkUI
 			// Notebook tab
 			this.TabPageLabel2 = new global::Gtk.Label ();
 			this.TabPageLabel2.Name = "TabPageLabel2";
-			this.TabPageLabel2.LabelProp = global::Mono.Unix.Catalog.GetString ("Calculation");
+			this.TabPageLabel2.LabelProp = "Calculation";
 			this.MainNotebook.SetTabLabel (this.fixed3, this.TabPageLabel2);
 			this.TabPageLabel2.ShowAll ();
 			// Container child MainNotebook.Gtk.Notebook+NotebookChild
@@ -225,7 +225,7 @@ namespace LapseStudioGtkUI
 			this.YToStartButton.CanFocus = true;
 			this.YToStartButton.Name = "YToStartButton";
 			this.YToStartButton.UseUnderline = true;
-			this.YToStartButton.Label = global::Mono.Unix.Catalog.GetString ("Y To Start");
+			this.YToStartButton.Label = "Y To Start";
 			this.vbox4.Add (this.YToStartButton);
 			global::Gtk.Box.BoxChild w11 = ((global::Gtk.Box.BoxChild)(this.vbox4 [this.YToStartButton]));
 			w11.Position = 0;
@@ -237,7 +237,7 @@ namespace LapseStudioGtkUI
 			this.AlignXButton.CanFocus = true;
 			this.AlignXButton.Name = "AlignXButton";
 			this.AlignXButton.UseUnderline = true;
-			this.AlignXButton.Label = global::Mono.Unix.Catalog.GetString ("Align X");
+			this.AlignXButton.Label = "Align X";
 			this.vbox4.Add (this.AlignXButton);
 			global::Gtk.Box.BoxChild w12 = ((global::Gtk.Box.BoxChild)(this.vbox4 [this.AlignXButton]));
 			w12.Position = 1;
@@ -259,7 +259,7 @@ namespace LapseStudioGtkUI
 			this.YToEndButton.CanFocus = true;
 			this.YToEndButton.Name = "YToEndButton";
 			this.YToEndButton.UseUnderline = true;
-			this.YToEndButton.Label = global::Mono.Unix.Catalog.GetString ("Y To End");
+			this.YToEndButton.Label = "Y To End";
 			this.vbox5.Add (this.YToEndButton);
 			global::Gtk.Box.BoxChild w14 = ((global::Gtk.Box.BoxChild)(this.vbox5 [this.YToEndButton]));
 			w14.Position = 0;
@@ -271,7 +271,7 @@ namespace LapseStudioGtkUI
 			this.ResetGraphButton.CanFocus = true;
 			this.ResetGraphButton.Name = "ResetGraphButton";
 			this.ResetGraphButton.UseUnderline = true;
-			this.ResetGraphButton.Label = global::Mono.Unix.Catalog.GetString ("Reset");
+			this.ResetGraphButton.Label = "Reset";
 			this.vbox5.Add (this.ResetGraphButton);
 			global::Gtk.Box.BoxChild w15 = ((global::Gtk.Box.BoxChild)(this.vbox5 [this.ResetGraphButton]));
 			w15.Position = 1;
@@ -302,9 +302,9 @@ namespace LapseStudioGtkUI
 			this.FrameSelectScale = new global::Gtk.HScale (null);
 			this.FrameSelectScale.CanFocus = true;
 			this.FrameSelectScale.Name = "FrameSelectScale";
-			this.FrameSelectScale.Adjustment.Upper = 100D;
-			this.FrameSelectScale.Adjustment.PageIncrement = 10D;
-			this.FrameSelectScale.Adjustment.StepIncrement = 1D;
+			this.FrameSelectScale.Adjustment.Upper = 100;
+			this.FrameSelectScale.Adjustment.PageIncrement = 10;
+			this.FrameSelectScale.Adjustment.StepIncrement = 1;
 			this.FrameSelectScale.DrawValue = true;
 			this.FrameSelectScale.Digits = 0;
 			this.FrameSelectScale.ValuePos = ((global::Gtk.PositionType)(3));
@@ -315,10 +315,11 @@ namespace LapseStudioGtkUI
 			w19.Fill = false;
 			// Container child vbox3.Gtk.Box+BoxChild
 			this.ThumbEditButton = new global::Gtk.Button ();
+			this.ThumbEditButton.Sensitive = false;
 			this.ThumbEditButton.CanFocus = true;
 			this.ThumbEditButton.Name = "ThumbEditButton";
 			this.ThumbEditButton.UseUnderline = true;
-			this.ThumbEditButton.Label = global::Mono.Unix.Catalog.GetString ("Edit Thumbs");
+			this.ThumbEditButton.Label = "Edit Thumbs";
 			this.vbox3.Add (this.ThumbEditButton);
 			global::Gtk.Box.BoxChild w20 = ((global::Gtk.Box.BoxChild)(this.vbox3 [this.ThumbEditButton]));
 			w20.Position = 3;
@@ -336,12 +337,13 @@ namespace LapseStudioGtkUI
 			w21.Fill = false;
 			// Container child vbox3.Gtk.Box+BoxChild
 			this.BrightnessScale = new global::Gtk.HScale (null);
+			this.BrightnessScale.Sensitive = false;
 			this.BrightnessScale.CanFocus = true;
 			this.BrightnessScale.Name = "BrightnessScale";
-			this.BrightnessScale.Adjustment.Lower = -100D;
-			this.BrightnessScale.Adjustment.Upper = 100D;
-			this.BrightnessScale.Adjustment.PageIncrement = 10D;
-			this.BrightnessScale.Adjustment.StepIncrement = 1D;
+			this.BrightnessScale.Adjustment.Lower = -100;
+			this.BrightnessScale.Adjustment.Upper = 100;
+			this.BrightnessScale.Adjustment.PageIncrement = 10;
+			this.BrightnessScale.Adjustment.StepIncrement = 1;
 			this.BrightnessScale.DrawValue = true;
 			this.BrightnessScale.Digits = 0;
 			this.BrightnessScale.ValuePos = ((global::Gtk.PositionType)(3));
@@ -363,7 +365,9 @@ namespace LapseStudioGtkUI
 			w24.Expand = false;
 			w24.Fill = false;
 			// Container child hbox3.Gtk.Box+BoxChild
-            this.MainGraph = new Graph();
+			this.MainGraph = new global::LapseStudioGtkUI.Graph ();
+			this.MainGraph.Events = ((global::Gdk.EventMask)(256));
+			this.MainGraph.Name = "MainGraph";
 			this.hbox3.Add (this.MainGraph);
 			global::Gtk.Box.BoxChild w25 = ((global::Gtk.Box.BoxChild)(this.hbox3 [this.MainGraph]));
 			w25.Position = 1;
@@ -373,7 +377,7 @@ namespace LapseStudioGtkUI
 			// Notebook tab
 			this.TabPageLabel3 = new global::Gtk.Label ();
 			this.TabPageLabel3.Name = "TabPageLabel3";
-			this.TabPageLabel3.LabelProp = global::Mono.Unix.Catalog.GetString ("Graph");
+			this.TabPageLabel3.LabelProp = "Graph";
 			this.MainNotebook.SetTabLabel (this.hbox3, this.TabPageLabel3);
 			this.TabPageLabel3.ShowAll ();
 			this.vbox1.Add (this.MainNotebook);
@@ -394,7 +398,7 @@ namespace LapseStudioGtkUI
 			// Container child hbox1.Gtk.Box+BoxChild
 			this.StatusLabel = new global::Gtk.Label ();
 			this.StatusLabel.Name = "StatusLabel";
-			this.StatusLabel.LabelProp = global::Mono.Unix.Catalog.GetString ("Everything ok");
+			this.StatusLabel.LabelProp = "Everything ok";
 			this.hbox1.Add (this.StatusLabel);
 			global::Gtk.Box.BoxChild w29 = ((global::Gtk.Box.BoxChild)(this.hbox1 [this.StatusLabel]));
 			w29.Position = 1;
@@ -430,11 +434,11 @@ namespace LapseStudioGtkUI
 			this.preferencesAction.Activated += new global::System.EventHandler (this.OnPreferencesActionActivated);
 			this.helpAction.Activated += new global::System.EventHandler (this.OnHelpActionActivated);
 			this.aboutAction.Activated += new global::System.EventHandler (this.OnAboutActionActivated);
-			this.Add32Action.Activated += new global::System.EventHandler (this.OnAddActionActivated);
-			this.Calculate32Action.Activated += new global::System.EventHandler (this.OnCalculateActionActivated);
+			this.AddAction.Activated += new global::System.EventHandler (this.OnAddActionActivated);
+			this.CalculateAction.Activated += new global::System.EventHandler (this.OnCalculateActionActivated);
 			this.ReloadAction.Activated += new global::System.EventHandler (this.OnReloadActionActivated);
-			this.Save32Action.Activated += new global::System.EventHandler (this.OnProcessActionActivated);
-			this.Cancel32Action.Activated += new global::System.EventHandler (this.OnCancelActionActivated);
+			this.SaveAction.Activated += new global::System.EventHandler (this.OnProcessActionActivated);
+			this.CancelAction.Activated += new global::System.EventHandler (this.OnCancelActionActivated);
 			this.YToStartButton.Clicked += new global::System.EventHandler (this.OnYToStartButtonClicked);
 			this.AlignXButton.Clicked += new global::System.EventHandler (this.OnAlignXButtonClicked);
 			this.YToEndButton.Clicked += new global::System.EventHandler (this.OnYToEndButtonClicked);

@@ -47,13 +47,13 @@ namespace LapseStudioGtkUI
 		private global::Gtk.Fixed fixed1;
 		private global::Gtk.Button buttonCancel;
 		private global::Gtk.Button buttonOk;
-
+		
 		protected virtual void Build ()
 		{
 			global::Stetic.Gui.Initialize (this);
 			// Widget LapseStudioGtkUI.MySettingsDialog
 			this.Name = "LapseStudioGtkUI.MySettingsDialog";
-			this.Title = global::Mono.Unix.Catalog.GetString ("Settings");
+			this.Title = "Settings";
 			this.Icon = global::Stetic.IconLoader.LoadIcon (this, "gtk-preferences", global::Gtk.IconSize.Menu);
 			this.WindowPosition = ((global::Gtk.WindowPosition)(4));
 			this.Modal = true;
@@ -74,7 +74,7 @@ namespace LapseStudioGtkUI
 			// Container child hbox1.Gtk.Box+BoxChild
 			this.ThreadLabel = new global::Gtk.Label ();
 			this.ThreadLabel.Name = "ThreadLabel";
-			this.ThreadLabel.LabelProp = global::Mono.Unix.Catalog.GetString ("Threads:");
+			this.ThreadLabel.LabelProp = "Threads:";
 			this.hbox1.Add (this.ThreadLabel);
 			global::Gtk.Box.BoxChild w2 = ((global::Gtk.Box.BoxChild)(this.hbox1 [this.ThreadLabel]));
 			w2.Position = 0;
@@ -88,13 +88,13 @@ namespace LapseStudioGtkUI
 			global::Gtk.Box.BoxChild w3 = ((global::Gtk.Box.BoxChild)(this.hbox1 [this.fixed3]));
 			w3.Position = 1;
 			// Container child hbox1.Gtk.Box+BoxChild
-			this.ThreadSpin = new global::Gtk.SpinButton (1D, 100D, 1D);
+			this.ThreadSpin = new global::Gtk.SpinButton (1, 100, 1);
 			this.ThreadSpin.CanFocus = true;
 			this.ThreadSpin.Name = "ThreadSpin";
-			this.ThreadSpin.Adjustment.PageIncrement = 1D;
-			this.ThreadSpin.ClimbRate = 1D;
+			this.ThreadSpin.Adjustment.PageIncrement = 1;
+			this.ThreadSpin.ClimbRate = 1;
 			this.ThreadSpin.Numeric = true;
-			this.ThreadSpin.Value = 1D;
+			this.ThreadSpin.Value = 1;
 			this.hbox1.Add (this.ThreadSpin);
 			global::Gtk.Box.BoxChild w4 = ((global::Gtk.Box.BoxChild)(this.hbox1 [this.ThreadSpin]));
 			w4.Position = 2;
@@ -104,7 +104,7 @@ namespace LapseStudioGtkUI
 			this.AutothreadChBox = new global::Gtk.CheckButton ();
 			this.AutothreadChBox.CanFocus = true;
 			this.AutothreadChBox.Name = "AutothreadChBox";
-			this.AutothreadChBox.Label = global::Mono.Unix.Catalog.GetString ("Autothreads");
+			this.AutothreadChBox.Label = "Autothreads";
 			this.AutothreadChBox.DrawIndicator = true;
 			this.AutothreadChBox.UseUnderline = true;
 			this.hbox1.Add (this.AutothreadChBox);
@@ -124,7 +124,7 @@ namespace LapseStudioGtkUI
 			// Container child hbox2.Gtk.Box+BoxChild
 			this.LanguageLabel = new global::Gtk.Label ();
 			this.LanguageLabel.Name = "LanguageLabel";
-			this.LanguageLabel.LabelProp = global::Mono.Unix.Catalog.GetString ("Language:");
+			this.LanguageLabel.LabelProp = "Language:";
 			this.hbox2.Add (this.LanguageLabel);
 			global::Gtk.Box.BoxChild w7 = ((global::Gtk.Box.BoxChild)(this.hbox2 [this.LanguageLabel]));
 			w7.Position = 0;
@@ -158,7 +158,7 @@ namespace LapseStudioGtkUI
 			// Container child hbox3.Gtk.Box+BoxChild
 			this.ProgramLabel = new global::Gtk.Label ();
 			this.ProgramLabel.Name = "ProgramLabel";
-			this.ProgramLabel.LabelProp = global::Mono.Unix.Catalog.GetString ("Used Program:");
+			this.ProgramLabel.LabelProp = "Used Program:";
 			this.hbox3.Add (this.ProgramLabel);
 			global::Gtk.Box.BoxChild w11 = ((global::Gtk.Box.BoxChild)(this.hbox3 [this.ProgramLabel]));
 			w11.Position = 0;
@@ -205,7 +205,7 @@ namespace LapseStudioGtkUI
 			this.RunRTChBox = new global::Gtk.CheckButton ();
 			this.RunRTChBox.CanFocus = true;
 			this.RunRTChBox.Name = "RunRTChBox";
-			this.RunRTChBox.Label = global::Mono.Unix.Catalog.GetString ("Run RawTherapee");
+			this.RunRTChBox.Label = "Run RawTherapee";
 			this.RunRTChBox.DrawIndicator = true;
 			this.RunRTChBox.UseUnderline = true;
 			this.vbox3.Add (this.RunRTChBox);
@@ -217,7 +217,7 @@ namespace LapseStudioGtkUI
 			this.KeepPP3ChBox = new global::Gtk.CheckButton ();
 			this.KeepPP3ChBox.CanFocus = true;
 			this.KeepPP3ChBox.Name = "KeepPP3ChBox";
-			this.KeepPP3ChBox.Label = global::Mono.Unix.Catalog.GetString ("Keep PP3");
+			this.KeepPP3ChBox.Label = "Keep PP3";
 			this.KeepPP3ChBox.DrawIndicator = true;
 			this.KeepPP3ChBox.UseUnderline = true;
 			this.vbox3.Add (this.KeepPP3ChBox);
@@ -240,7 +240,7 @@ namespace LapseStudioGtkUI
 			// Container child hbox5.Gtk.Box+BoxChild
 			this.RTLabel = new global::Gtk.Label ();
 			this.RTLabel.Name = "RTLabel";
-			this.RTLabel.LabelProp = global::Mono.Unix.Catalog.GetString ("RawTherapee:");
+			this.RTLabel.LabelProp = "RawTherapee:";
 			this.hbox5.Add (this.RTLabel);
 			global::Gtk.Box.BoxChild w20 = ((global::Gtk.Box.BoxChild)(this.hbox5 [this.RTLabel]));
 			w20.Position = 0;
@@ -266,7 +266,7 @@ namespace LapseStudioGtkUI
 			this.RTBrowseButton = new global::Gtk.Button ();
 			this.RTBrowseButton.CanFocus = true;
 			this.RTBrowseButton.Name = "RTBrowseButton";
-			this.RTBrowseButton.Label = global::Mono.Unix.Catalog.GetString ("...");
+			this.RTBrowseButton.Label = "...";
 			this.hbox5.Add (this.RTBrowseButton);
 			global::Gtk.Box.BoxChild w23 = ((global::Gtk.Box.BoxChild)(this.hbox5 [this.RTBrowseButton]));
 			w23.Position = 3;
@@ -284,7 +284,7 @@ namespace LapseStudioGtkUI
 			// Container child hbox6.Gtk.Box+BoxChild
 			this.FormatLabel = new global::Gtk.Label ();
 			this.FormatLabel.Name = "FormatLabel";
-			this.FormatLabel.LabelProp = global::Mono.Unix.Catalog.GetString ("File Format:");
+			this.FormatLabel.LabelProp = "File Format:";
 			this.hbox6.Add (this.FormatLabel);
 			global::Gtk.Box.BoxChild w25 = ((global::Gtk.Box.BoxChild)(this.hbox6 [this.FormatLabel]));
 			w25.Position = 0;
@@ -318,7 +318,7 @@ namespace LapseStudioGtkUI
 			// Container child hbox7.Gtk.Box+BoxChild
 			this.BitDepthLabel = new global::Gtk.Label ();
 			this.BitDepthLabel.Name = "BitDepthLabel";
-			this.BitDepthLabel.LabelProp = global::Mono.Unix.Catalog.GetString ("Bit Depth:");
+			this.BitDepthLabel.LabelProp = "Bit Depth:";
 			this.hbox7.Add (this.BitDepthLabel);
 			global::Gtk.Box.BoxChild w29 = ((global::Gtk.Box.BoxChild)(this.hbox7 [this.BitDepthLabel]));
 			w29.Position = 0;
@@ -352,7 +352,7 @@ namespace LapseStudioGtkUI
 			// Container child hbox8.Gtk.Box+BoxChild
 			this.JpgQualityLabel = new global::Gtk.Label ();
 			this.JpgQualityLabel.Name = "JpgQualityLabel";
-			this.JpgQualityLabel.LabelProp = global::Mono.Unix.Catalog.GetString ("Jpg Quality:");
+			this.JpgQualityLabel.LabelProp = "Jpg Quality:";
 			this.hbox8.Add (this.JpgQualityLabel);
 			global::Gtk.Box.BoxChild w33 = ((global::Gtk.Box.BoxChild)(this.hbox8 [this.JpgQualityLabel]));
 			w33.Position = 0;
@@ -370,11 +370,11 @@ namespace LapseStudioGtkUI
 			this.JpgQualityScale.WidthRequest = 100;
 			this.JpgQualityScale.CanFocus = true;
 			this.JpgQualityScale.Name = "JpgQualityScale";
-			this.JpgQualityScale.Adjustment.Lower = 1D;
-			this.JpgQualityScale.Adjustment.Upper = 100D;
-			this.JpgQualityScale.Adjustment.PageIncrement = 10D;
-			this.JpgQualityScale.Adjustment.StepIncrement = 10D;
-			this.JpgQualityScale.Adjustment.Value = 100D;
+			this.JpgQualityScale.Adjustment.Lower = 1;
+			this.JpgQualityScale.Adjustment.Upper = 100;
+			this.JpgQualityScale.Adjustment.PageIncrement = 10;
+			this.JpgQualityScale.Adjustment.StepIncrement = 10;
+			this.JpgQualityScale.Adjustment.Value = 100;
 			this.JpgQualityScale.DrawValue = true;
 			this.JpgQualityScale.Digits = 0;
 			this.JpgQualityScale.ValuePos = ((global::Gtk.PositionType)(0));
@@ -393,7 +393,7 @@ namespace LapseStudioGtkUI
 			// Container child hbox9.Gtk.Box+BoxChild
 			this.CompressionLabel = new global::Gtk.Label ();
 			this.CompressionLabel.Name = "CompressionLabel";
-			this.CompressionLabel.LabelProp = global::Mono.Unix.Catalog.GetString ("Tiff Compression:");
+			this.CompressionLabel.LabelProp = "Tiff Compression:";
 			this.hbox9.Add (this.CompressionLabel);
 			global::Gtk.Box.BoxChild w37 = ((global::Gtk.Box.BoxChild)(this.hbox9 [this.CompressionLabel]));
 			w37.Position = 0;

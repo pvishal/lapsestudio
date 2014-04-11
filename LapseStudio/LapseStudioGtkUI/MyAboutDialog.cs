@@ -7,7 +7,7 @@ namespace LapseStudioGtkUI
 		public MyAboutDialog()
 		{
 			this.Build();
-			//textview1.Text = GeneralValues.AbouText;
+			textview1.Buffer.Text = GeneralValues.AbouText;
 		}
 
 		protected void OnButtonOKClicked(object sender, System.EventArgs e)

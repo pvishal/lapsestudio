@@ -7,16 +7,19 @@ namespace LapseStudioGtkUI
 		private global::Gtk.ScrolledWindow GtkScrolledWindow;
 		private global::Gtk.TextView textview1;
 		private global::Gtk.Button buttonOK;
-
+		
 		protected virtual void Build ()
 		{
 			global::Stetic.Gui.Initialize (this);
 			// Widget LapseStudioGtkUI.MyAboutDialog
+			this.WidthRequest = 470;
+			this.HeightRequest = 340;
 			this.Name = "LapseStudioGtkUI.MyAboutDialog";
-			this.Title = global::Mono.Unix.Catalog.GetString ("About LapseStudio");
+			this.Title = "About LapseStudio";
 			this.Icon = global::Stetic.IconLoader.LoadIcon (this, "gtk-about", global::Gtk.IconSize.Menu);
 			this.WindowPosition = ((global::Gtk.WindowPosition)(4));
 			this.Modal = true;
+			this.Resizable = false;
 			this.DestroyWithParent = true;
 			// Internal child LapseStudioGtkUI.MyAboutDialog.VBox
 			global::Gtk.VBox w1 = this.VBox;
@@ -57,8 +60,8 @@ namespace LapseStudioGtkUI
 			if ((this.Child != null)) {
 				this.Child.ShowAll ();
 			}
-			this.DefaultWidth = 400;
-			this.DefaultHeight = 300;
+			this.DefaultWidth = 470;
+			this.DefaultHeight = 340;
 			this.Show ();
 			this.buttonOK.Clicked += new global::System.EventHandler (this.OnButtonOKClicked);
 		}

@@ -6,32 +6,32 @@
   </configuration>
   <import>
     <widget-library name="glade-sharp, Version=2.12.0.0, Culture=neutral, PublicKeyToken=35e10195dab3c99f" />
-    <widget-library name="../bin/Debug/LapseStudioGtkUI.exe" internal="true" />
+    <widget-library name="../bin/Release/LapseStudioGtkUI.exe" internal="true" />
   </import>
   <icon-factory>
-    <icon-set id="Add32">
+    <icon-set id="Add">
       <source>
-        <property name="Image">file:.\Icons\Add32.png</property>
+        <property name="Image">file:./Icons/Add32.png</property>
       </source>
     </icon-set>
-    <icon-set id="Calculate32">
+    <icon-set id="Calculate">
       <source>
-        <property name="Image">file:.\Icons\Calculate32.png</property>
+        <property name="Image">file:./Icons/Calculate32.png</property>
       </source>
     </icon-set>
-    <icon-set id="Cancel32">
+    <icon-set id="Cancel">
       <source>
-        <property name="Image">file:.\Icons\Cancel32.png</property>
+        <property name="Image">file:./Icons/Cancel32.png</property>
       </source>
     </icon-set>
-    <icon-set id="Reload32">
+    <icon-set id="Reload">
       <source>
-        <property name="Image">file:.\Icons\Reload32.png</property>
+        <property name="Image">file:./Icons/Reload32.png</property>
       </source>
     </icon-set>
-    <icon-set id="Save32">
+    <icon-set id="Save">
       <source>
-        <property name="Image">file:.\Icons\Save32.png</property>
+        <property name="Image">file:./Icons/Save32.png</property>
       </source>
     </icon-set>
   </icon-factory>
@@ -108,38 +108,38 @@
         <property name="StockId">gtk-about</property>
         <signal name="Activated" handler="OnAboutActionActivated" />
       </action>
-      <action id="Add32Action">
+      <action id="AddAction">
         <property name="Type">Action</property>
         <property name="Label" translatable="yes" />
-        <property name="StockId">Add32</property>
+        <property name="StockId">Add</property>
         <property name="Tooltip" translatable="yes">Add Frames</property>
         <signal name="Activated" handler="OnAddActionActivated" />
       </action>
-      <action id="Calculate32Action">
+      <action id="CalculateAction">
         <property name="Type">Action</property>
         <property name="Label" translatable="yes" />
-        <property name="StockId">Calculate32</property>
+        <property name="StockId">Calculate</property>
         <property name="Tooltip" translatable="yes">Calculate Brightnes</property>
         <signal name="Activated" handler="OnCalculateActionActivated" />
       </action>
       <action id="ReloadAction">
         <property name="Type">Action</property>
         <property name="Label" translatable="yes" />
-        <property name="StockId">Reload32</property>
+        <property name="StockId">Reload</property>
         <property name="Tooltip" translatable="yes">Reload XMP</property>
         <signal name="Activated" handler="OnReloadActionActivated" />
       </action>
-      <action id="Save32Action">
+      <action id="SaveAction">
         <property name="Type">Action</property>
         <property name="Label" translatable="yes" />
-        <property name="StockId">Save32</property>
+        <property name="StockId">Save</property>
         <property name="Tooltip" translatable="yes">Process Frames</property>
         <signal name="Activated" handler="OnProcessActionActivated" />
       </action>
-      <action id="Cancel32Action">
+      <action id="CancelAction">
         <property name="Type">Action</property>
         <property name="Label" translatable="yes" />
-        <property name="StockId">Cancel32</property>
+        <property name="StockId">Cancel</property>
         <property name="Tooltip" translatable="yes">Cancel</property>
         <signal name="Activated" handler="OnCancelActionActivated" />
       </action>
@@ -189,11 +189,11 @@
             <property name="ButtonStyle">Icons</property>
             <property name="IconSize">LargeToolbar</property>
             <node name="MainToolBar" type="Toolbar">
-              <node type="Toolitem" action="Add32Action" />
-              <node type="Toolitem" action="Calculate32Action" />
+              <node type="Toolitem" action="AddAction" />
+              <node type="Toolitem" action="CalculateAction" />
               <node type="Toolitem" action="ReloadAction" />
-              <node type="Toolitem" action="Save32Action" />
-              <node type="Toolitem" action="Cancel32Action" />
+              <node type="Toolitem" action="SaveAction" />
+              <node type="Toolitem" action="CancelAction" />
             </node>
           </widget>
           <packing>
@@ -443,6 +443,7 @@
                     <child>
                       <widget class="Gtk.Button" id="ThumbEditButton">
                         <property name="MemberName" />
+                        <property name="Sensitive">False</property>
                         <property name="CanFocus">True</property>
                         <property name="Type">TextOnly</property>
                         <property name="Label" translatable="yes">Edit Thumbs</property>
@@ -471,6 +472,7 @@
                     <child>
                       <widget class="Gtk.HScale" id="BrightnessScale">
                         <property name="MemberName" />
+                        <property name="Sensitive">False</property>
                         <property name="CanFocus">True</property>
                         <property name="Lower">-100</property>
                         <property name="Upper">100</property>
@@ -1180,12 +1182,15 @@
       </widget>
     </child>
   </widget>
-  <widget class="Gtk.Dialog" id="LapseStudioGtkUI.MyAboutDialog" design-size="400 300">
+  <widget class="Gtk.Dialog" id="LapseStudioGtkUI.MyAboutDialog" design-size="470 340">
     <property name="MemberName" />
+    <property name="WidthRequest">470</property>
+    <property name="HeightRequest">340</property>
     <property name="Title" translatable="yes">About LapseStudio</property>
     <property name="Icon">stock:gtk-about Menu</property>
     <property name="WindowPosition">CenterOnParent</property>
     <property name="Modal">True</property>
+    <property name="Resizable">False</property>
     <property name="DestroyWithParent">True</property>
     <property name="Buttons">1</property>
     <property name="HelpButton">False</property>

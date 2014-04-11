@@ -111,7 +111,6 @@ namespace LapseStudioWinFormsUI
             {
                 byte* pixIn = (byte*)bmpEx.Scan0;
                 byte* pixOut = (byte*)bmd.Scan0;
-                long length = bmpEx.Width * bmpEx.Height * depth;
                 long idx;
                 uint x, y;
                 int resV = (int)(bmd.Stride - bmpEx.Stride);

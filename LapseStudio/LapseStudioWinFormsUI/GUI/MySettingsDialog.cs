@@ -7,8 +7,6 @@ namespace LapseStudioWinFormsUI
     {
         WinFormSettingsUI Settings;
 
-        WinFormMessageBox MsgBox = new WinFormMessageBox();
-
         public MySettingsDialog()
         {
             InitializeComponent();

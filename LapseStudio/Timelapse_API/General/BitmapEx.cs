@@ -328,7 +328,6 @@ namespace Timelapse_API
             this.Height = (uint)bmp.Height;
             SetInitValues();
             int bpc = this.BytePerChannel;
-            int cc = this.ChannelCount;
 
             ImageData = new byte[this.Width * this.Height * bpc * this.ChannelCount];
             BitmapData bmd = bmp.LockBits(new System.Drawing.Rectangle(0, 0, bmp.Width, bmp.Height), ImageLockMode.ReadOnly, bmp.PixelFormat);
@@ -338,7 +337,6 @@ namespace Timelapse_API
                 fixed (byte* outData = ImageData)
                 {
                     byte* inData = (byte*)bmd.Scan0;
-                    long length = ImageData.LongLength;
                     long idx;
                     uint x, y;
                     int resV = (int)(bmd.Stride - this.Stride);

@@ -34,7 +34,7 @@ namespace Timelapse_API
             if (x == null || y == null) { throw new ArgumentNullException(); }
 
             CubicSpline Spline = new CubicSpline();
-            PointD[] Output = new PointD[length];
+            //PointD[] Output = new PointD[length];
             double[] xs = new double[length];
             //double[] ys;
 

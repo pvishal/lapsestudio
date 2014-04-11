@@ -76,9 +76,11 @@ namespace LapseStudioGtkUI
         }
 
         public void Dispose()
-        {
-            gh.Dispose();
-            g.Dispose();
-        }
+		{
+			((IDisposable)gh.Target).Dispose ();
+			((IDisposable)gh).Dispose ();
+			((IDisposable)g.Target).Dispose ();
+			((IDisposable)g).Dispose ();
+		}
     }
 }

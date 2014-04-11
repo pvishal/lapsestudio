@@ -7,13 +7,13 @@ namespace LapseStudioGtkUI
 		private global::Gtk.ScrolledWindow GtkScrolledWindow;
 		private global::Gtk.TextView textview2;
 		private global::Gtk.Button buttonOK;
-
+		
 		protected virtual void Build ()
 		{
 			global::Stetic.Gui.Initialize (this);
 			// Widget LapseStudioGtkUI.MyHelpDialog
 			this.Name = "LapseStudioGtkUI.MyHelpDialog";
-			this.Title = global::Mono.Unix.Catalog.GetString ("LapseStudio Help");
+			this.Title = "LapseStudio Help";
 			this.Icon = global::Stetic.IconLoader.LoadIcon (this, "gtk-help", global::Gtk.IconSize.Menu);
 			this.WindowPosition = ((global::Gtk.WindowPosition)(4));
 			// Internal child LapseStudioGtkUI.MyHelpDialog.VBox
