@@ -287,10 +287,14 @@ namespace Timelapse_API
             switch (type)
             {
                 case ProgressType.LoadThumbnails:
-                    MainWorker.ReportProgress(0, new ProgressChangeEventArgs(66 + (int)(33 * percent / 100f), ProgressType.LoadThumbnails));
+                    MainWorker.ReportProgress(0, new ProgressChangeEventArgs(percent, ProgressType.LoadThumbnails));
                     break;
                 case ProgressType.LoadFrames:
                     MainWorker.ReportProgress(0, new ProgressChangeEventArgs((int)(33 * percent / 100f), ProgressType.LoadFrames));
+                    break;
+
+                default:
+                    MainWorker.ReportProgress(0, new ProgressChangeEventArgs(percent, type));
                     break;
             }
         }
@@ -385,7 +389,6 @@ namespace Timelapse_API
             MainWorker.ReportProgress(0, new ProgressChangeEventArgs(66, ProgressType.LoadMetadata));
 
             LoadThumbnails(files);
-            MainWorker.ReportProgress(0, new ProgressChangeEventArgs(100, ProgressType.LoadThumbnails));
         }
 
         protected virtual void SetFrames(string[] files)

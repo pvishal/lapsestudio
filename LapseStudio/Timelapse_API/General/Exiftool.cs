@@ -5,7 +5,6 @@ using System.IO;
 using System.Globalization;
 using System.Linq;
 using System.Text;
-using System.Drawing;
 
 namespace Timelapse_API
 {
@@ -66,7 +65,6 @@ namespace Timelapse_API
                 
                 if (idx.Count != ProjectManager.CurrentProject.Frames.Count) throw new Exception("Not all images have a thumbnail");
 
-                int LastProg = -1;
                 for (int i = 0; i < idx.Count; i++)
                 {
                     if (ProjectManager.CurrentProject.MainWorker.CancellationPending) break;
@@ -76,12 +74,7 @@ namespace Timelapse_API
                         str.CopyTo(str2);
                         ProjectManager.CurrentProject.AddThumb(new BitmapEx(str2).ScaleW(300));   //Normal Thumb
                         ProjectManager.CurrentProject.AddThumb(new BitmapEx(str2).ScaleW(300));   //Edit Thumb
-                        int prog = i * 100 / (idx.Count - 1);
-                        if (LastProg != prog)
-                        {
-                            ProjectManager.CurrentProject.ReportWorkProgress(prog, ProgressType.LoadThumbnails);
-                            LastProg = prog;
-                        }
+                        ProjectManager.CurrentProject.ReportWorkProgress(i, ProgressType.LoadThumbnails);
                     }
                 }
             }

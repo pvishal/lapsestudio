@@ -1,8 +1,11 @@
 ﻿using System;
 using System.IO;
 using System.Runtime.InteropServices;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
+//using System.Windows.Media;
+//using System.Windows.Media.Imaging;
+
+using System.Drawing;
+using System.Drawing.Imaging;
 
 namespace Timelapse_API
 {
@@ -61,7 +64,6 @@ namespace Timelapse_API
 		public bool IsPinned { get; private set; }
 		public IntPtr Scan0 { get; private set; }
 		public uint Stride { get; private set; }
-		public uint Length { get { return Height * Stride; } }
 
 		#region Constructor/Init
 
@@ -71,12 +73,13 @@ namespace Timelapse_API
         /// <param name="path">Path to the image</param>
 		public BitmapEx(string path)
 		{
-            using (Stream str = new FileStream(path, FileMode.Open, FileAccess.Read, FileShare.Read))
+            /*using (Stream str = new FileStream(path, FileMode.Open, FileAccess.Read, FileShare.Read))
             {
                 BitmapDecoder dec = BitmapDecoder.Create(str, BitmapCreateOptions.PreservePixelFormat, BitmapCacheOption.Default);
                 if (dec.Frames.Count > 0) SetFromBitmapSource(dec.Frames[0]);
                 else throw new FileLoadException("Couldn't load file " + path);
-            }
+            }*/
+            SetFromBitmap(new Bitmap(path));
 		}
         
         /// <summary>
@@ -85,9 +88,10 @@ namespace Timelapse_API
 		public BitmapEx(Stream encodedStream)
 		{
             encodedStream.Position = 0;
-            BitmapDecoder dec = BitmapDecoder.Create(encodedStream, BitmapCreateOptions.PreservePixelFormat, BitmapCacheOption.Default);
+            /*BitmapDecoder dec = BitmapDecoder.Create(encodedStream, BitmapCreateOptions.PreservePixelFormat, BitmapCacheOption.Default);
             if (dec.Frames.Count > 0) SetFromBitmapSource(dec.Frames[0]);
-            else throw new FileLoadException("Couldn't load file");
+            else throw new FileLoadException("Couldn't load file");*/
+            SetFromBitmap(new Bitmap(encodedStream));
 		}
 
         /// <summary>
@@ -97,9 +101,10 @@ namespace Timelapse_API
         {
             using (MemoryStream str = new MemoryStream(encodedData))
             {
-                BitmapDecoder dec = BitmapDecoder.Create(str, BitmapCreateOptions.PreservePixelFormat, BitmapCacheOption.Default);
+                SetFromBitmap(new Bitmap(str));
+                /*BitmapDecoder dec = BitmapDecoder.Create(str, BitmapCreateOptions.PreservePixelFormat, BitmapCacheOption.Default);
                 if (dec.Frames.Count > 0) SetFromBitmapSource(dec.Frames[0]);
-                else throw new FileLoadException("Couldn't load file");
+                else throw new FileLoadException("Couldn't load file");*/
             }
         }
 
@@ -115,7 +120,7 @@ namespace Timelapse_API
             this.Height = Height;
             this.BitDepth = BitDepth;
             SetInitValues();
-            this.ImageData = new byte[Height * Stride];
+            this.ImageData = new byte[Height * Width * BytePerChannel * ChannelCount];
         }
 
         /// <summary>
@@ -138,7 +143,7 @@ namespace Timelapse_API
 
         #region Subroutines
 
-        private PixelFormat GetPixelFormat(ImageType BitDepth, out bool SwitchChannels)
+        /*private PixelFormat GetPixelFormat(ImageType BitDepth, out bool SwitchChannels)
         {
             PixelFormat pixFormat;
             if (this.BitDepth == ImageType.RGB8)
@@ -174,9 +179,9 @@ namespace Timelapse_API
             else throw new ArgumentException("Pixel format not supported");
 
             return pixFormat;
-        }
+        }*/
 
-        private ImageType GetBitDepth(PixelFormat pixFormat, out bool SwitchChannels)
+        /*private ImageType GetBitDepth(PixelFormat pixFormat, out bool SwitchChannels)
         {
             ImageType bitDepth;
             if (pixFormat == PixelFormats.Bgr24
@@ -222,7 +227,7 @@ namespace Timelapse_API
             else throw new ArgumentException("Pixel format not supported");
 
             return bitDepth;
-        }
+        }*/
 
         private void SetInitValues()
         {
@@ -271,7 +276,7 @@ namespace Timelapse_API
             }
         }
 
-        private void SetFromBitmapSource(BitmapSource bmpSrc)
+        /*private void SetFromBitmapSource(BitmapSource bmpSrc)
         {
             bool SwitchChannels = false;
             this.BitDepth = GetBitDepth(bmpSrc.Format, out SwitchChannels);
@@ -307,6 +312,53 @@ namespace Timelapse_API
                     }
                 }
             }
+        }*/
+
+        private void SetFromBitmap(Bitmap bmp)
+        {
+            ImageType tp;
+            bool HasAlpha;
+            uint depth;
+            if (bmp.PixelFormat == PixelFormat.Format24bppRgb) { tp = ImageType.RGB8; HasAlpha = false; depth = 3; }
+            else if (bmp.PixelFormat == PixelFormat.Format32bppArgb) { tp = ImageType.RGBA8; HasAlpha = true; depth = 4; }
+            else throw new ArgumentException("Couldn't load image");
+            this.BitDepth = tp;
+
+            this.Width = (uint)bmp.Width;
+            this.Height = (uint)bmp.Height;
+            SetInitValues();
+            int bpc = this.BytePerChannel;
+            int cc = this.ChannelCount;
+
+            ImageData = new byte[this.Width * this.Height * bpc * this.ChannelCount];
+            BitmapData bmd = bmp.LockBits(new System.Drawing.Rectangle(0, 0, bmp.Width, bmp.Height), ImageLockMode.ReadOnly, bmp.PixelFormat);
+
+            unsafe
+            {
+                fixed (byte* outData = ImageData)
+                {
+                    byte* inData = (byte*)bmd.Scan0;
+                    long length = ImageData.LongLength;
+                    long idx;
+                    uint x, y;
+                    int resV = (int)(bmd.Stride - this.Stride);
+                    int res = 0;
+                    for (y = 0; y < bmd.Height; y++)
+                    {
+                        for (x = 0; x < bmd.Stride; x += depth)
+                        {
+                            idx = y * bmd.Stride + x;
+                            outData[idx - res] = inData[idx + 2];
+                            outData[idx + 1 - res] = inData[idx + 1];
+                            outData[idx + 2 - res] = inData[idx];
+                            if (HasAlpha) outData[idx + 3 - res] = inData[idx + 3];
+                        }
+                        res += resV;
+                    }
+                }
+            }
+            bmp.UnlockBits(bmd);
+            bmp.Dispose();
         }
 
         #endregion
@@ -354,7 +406,7 @@ namespace Timelapse_API
 
         #region Saving
 
-        public void Save(string path)
+        /*public void Save(string path)
         {
             FileFormat format;
             string ext = Path.GetExtension(path).ToLower();
@@ -373,9 +425,9 @@ namespace Timelapse_API
             }
 
             using (FileStream str = new FileStream(path, FileMode.Create)) { this.Save(str, format); }
-        }
+        }*/
 
-        public void Save(Stream str, FileFormat format)
+        /*public void Save(Stream str, FileFormat format)
         {
             BitmapEncoder enc;
             switch(format)
@@ -424,7 +476,7 @@ namespace Timelapse_API
             BitmapSource src = BitmapSource.Create((int)this.Width, (int)this.Height, 96, 96, pixFormat, null, imgData, (int)(this.Width * bpc * this.ChannelCount));
             enc.Frames.Add(BitmapFrame.Create(src));
             enc.Save(str);
-        }
+        }*/
 
         #endregion
 

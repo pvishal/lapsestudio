@@ -9,8 +9,6 @@
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>LapseStudioWinFormsUI</RootNamespace>
     <FileAlignment>512</FileAlignment>
-    <ProductVersion>12.0.0</ProductVersion>
-    <SchemaVersion>2.0</SchemaVersion>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <PlatformTarget>x86</PlatformTarget>
@@ -35,9 +33,6 @@
   <PropertyGroup>
     <ApplicationIcon>Icon256.ico</ApplicationIcon>
   </PropertyGroup>
-  <PropertyGroup>
-    <AssemblyName>LapseStudio</AssemblyName>
-  </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />
     <Reference Include="System.Data" />
@@ -46,7 +41,7 @@
     <Reference Include="MessageTranslation">
       <HintPath>..\Lib\MessageTranslation.dll</HintPath>
     </Reference>
-    <Reference Include="System.XML" />
+    <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="GUI\Graph.cs">

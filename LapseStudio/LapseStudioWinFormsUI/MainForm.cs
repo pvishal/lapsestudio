@@ -313,14 +313,13 @@ namespace LapseStudioWinFormsUI
             this.Text = Text;
         }
         
-        //TODO: the checkbox is only set correctly after a second update
         public void SetTableRow(int Index, ArrayList Values, bool fill)
         {
-            if (fill) TableData.Rows.Add(Values.ToArray());
+            if (fill) { TableData.Rows.Add(Values.ToArray()); TableData.AcceptChanges(); }
             else
             {
                 TableData.Rows[Index].ItemArray = Values.ToArray();
-                MainTable.Rows[Index].Cells[(int)TableLocation.Keyframe].Value = Values[(int)TableLocation.Keyframe];
+                TableData.AcceptChanges();
             }
         }
 

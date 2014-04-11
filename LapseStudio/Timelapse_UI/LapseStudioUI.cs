@@ -10,47 +10,48 @@ using System.Runtime.Serialization.Formatters.Binary;
 
 namespace Timelapse_UI
 {
-	public class LapseStudioUI
+    public class LapseStudioUI
     {
-		#region Variables
-        
-		public MessageBox MsgBox;
+        #region Variables
+
+        public MessageBox MsgBox;
         public FileDialog FDialog;
-		private bool ProjectSaved = true;
+        private bool ProjectSaved = true;
         private bool IsTableUpdate = false;
-		private string ProjectSavePath;
+        private string ProjectSavePath;
         private IUIHandler UIHandler;
+        private object[] DefArray = new object[] { "0", false, "N/A", "0.000", "N/A", "N/A", "N/A" };
 
-		public BrightnessGraph MainGraph;
+        public BrightnessGraph MainGraph;
 
-		#endregion
-        
-		public LapseStudioUI(Platform RunningPlatform, IUIHandler UIHandler, MessageBox MsgBox, FileDialog FDialog)
-		{
+        #endregion
+
+        public LapseStudioUI(Platform RunningPlatform, IUIHandler UIHandler, MessageBox MsgBox, FileDialog FDialog)
+        {
             this.UIHandler = UIHandler;
-			this.MsgBox = MsgBox;
-			this.FDialog = FDialog;
+            this.MsgBox = MsgBox;
+            this.FDialog = FDialog;
             Error.Init(MsgBox);
 
             Init(RunningPlatform);
 
-			AppDomain currentDomain = AppDomain.CurrentDomain;
-			currentDomain.UnhandledException += HandleUnhandledException;
+            AppDomain currentDomain = AppDomain.CurrentDomain;
+            currentDomain.UnhandledException += HandleUnhandledException;
 
             ProjectManager.BrightnessCalculated += CurrentProject_BrightnessCalculated;
             ProjectManager.FramesLoaded += CurrentProject_FramesLoaded;
             ProjectManager.ProgressChanged += CurrentProject_ProgressChanged;
             ProjectManager.WorkDone += CurrentProject_WorkDone;
             MsgBox.InfoTextChanged += MsgBox_InfoTextChanged;
-		}
-        
+        }
+
         #region Event handling
 
-        private void HandleUnhandledException (object sender, UnhandledExceptionEventArgs e)
-		{
-			Error.Report("Unhandled Exception", (Exception)e.ExceptionObject);
-		}
-        
+        private void HandleUnhandledException(object sender, UnhandledExceptionEventArgs e)
+        {
+            Error.Report("Unhandled Exception", (Exception)e.ExceptionObject);
+        }
+
         private void CurrentProject_WorkDone(object sender, WorkFinishedEventArgs e)
         {
             try
@@ -79,7 +80,14 @@ namespace Timelapse_UI
         {
             try
             {
-                UIHandler.SetProgress(e.ProgressPercentage);
+                int p = e.ProgressPercentage;
+                if (e.Topic == ProgressType.LoadThumbnails)
+                {
+                    UIHandler.SetTableRow(p, GetRow(p), true);
+                    p = 100 * p / ProjectManager.CurrentProject.Frames.Count;
+                    p = (int)(66.66f + (33.33f * p) / 100f);
+                }
+                UIHandler.SetProgress(p);
                 UIHandler.SetStatusLabel(Message.GetString(e.Topic.ToString()));
             }
             catch (Exception ex) { Error.Report("Progress changed", ex); }
@@ -90,7 +98,6 @@ namespace Timelapse_UI
             try
             {
                 UIHandler.SetStatusLabel(Message.GetString("Frames loaded"));
-                UpdateTable(true);
                 UIHandler.RefreshImages();
                 UIHandler.SetProgress(0);
                 UIHandler.InitAfterFrameLoad();
@@ -121,25 +128,25 @@ namespace Timelapse_UI
         #region Shared Methods
 
         public bool Quit(ClosingReason reason)
-		{
-			//the return value defines if the quiting should get canceled or not
-			if (reason != ClosingReason.Error)
-			{
-				WindowResponse res;
+        {
+            //the return value defines if the quiting should get canceled or not
+            if (reason != ClosingReason.Error)
+            {
+                WindowResponse res;
 
-				if (ProjectManager.CurrentProject.IsWorking)
-				{
-					res = MsgBox.ShowMessage(MessageContent.BusyClose);
-					if (res == WindowResponse.No) { return true; }
-					else if (res == WindowResponse.Yes) { ProjectManager.Cancel(); }
-				}
+                if (ProjectManager.CurrentProject.IsWorking)
+                {
+                    res = MsgBox.ShowMessage(MessageContent.BusyClose);
+                    if (res == WindowResponse.No) { return true; }
+                    else if (res == WindowResponse.Yes) { ProjectManager.Cancel(); }
+                }
 
-				res = AskForSaving();
-				if (res == WindowResponse.Cancel) { return true; }
-			}
-			else { ProjectManager.Cancel(); }
+                res = AskForSaving();
+                if (res == WindowResponse.Cancel) { return true; }
+            }
+            else { ProjectManager.Cancel(); }
 
-			LSSettings.Save();
+            LSSettings.Save();
 
             ProjectManager.BrightnessCalculated -= CurrentProject_BrightnessCalculated;
             ProjectManager.FramesLoaded -= CurrentProject_FramesLoaded;
@@ -152,65 +159,66 @@ namespace Timelapse_UI
             ProjectManager.Close();
 
             UIHandler.QuitApplication();
-			return false;
-		}
+            return false;
+        }
 
-		public WindowResponse AskForSaving()
-		{
-			if (!ProjectSaved)
-			{
-				WindowResponse res = MsgBox.ShowMessage(MessageContent.SaveQuestion);
-				if (res == WindowResponse.Yes) { Click_SaveProject(false); return WindowResponse.Ok; }
-				else if (res == WindowResponse.No) { return WindowResponse.Ok; }
-				else { return WindowResponse.Cancel; }
-			}
-			return WindowResponse.Ok;
-		}
+        public WindowResponse AskForSaving()
+        {
+            if (!ProjectSaved)
+            {
+                WindowResponse res = MsgBox.ShowMessage(MessageContent.SaveQuestion);
+                if (res == WindowResponse.Yes) { Click_SaveProject(false); return WindowResponse.Ok; }
+                else if (res == WindowResponse.No) { return WindowResponse.Ok; }
+                else { return WindowResponse.Cancel; }
+            }
+            return WindowResponse.Ok;
+        }
 
-		public void SetSaveStatus(bool isSaved)
-		{
-			ProjectSaved = isSaved;
-			string t = "LapseStudio";
-			if (isSaved && !String.IsNullOrEmpty(ProjectSavePath)) { t += " - " + Path.GetFileNameWithoutExtension(ProjectSavePath); }
-			else if (String.IsNullOrEmpty(ProjectSavePath) && isSaved) { t += " - " + Message.GetString("NewProject"); }
-			else if (String.IsNullOrEmpty(ProjectSavePath) && !isSaved) { t +=" - " + Message.GetString("NewProject") + "*"; }
-			else { t += " - " + Path.GetFileNameWithoutExtension(ProjectSavePath) + "*"; }
+        public void SetSaveStatus(bool isSaved)
+        {
+            ProjectSaved = isSaved;
+            string t = "LapseStudio";
+            if (isSaved && !String.IsNullOrEmpty(ProjectSavePath)) { t += " - " + Path.GetFileNameWithoutExtension(ProjectSavePath); }
+            else if (String.IsNullOrEmpty(ProjectSavePath) && isSaved) { t += " - " + Message.GetString("NewProject"); }
+            else if (String.IsNullOrEmpty(ProjectSavePath) && !isSaved) { t += " - " + Message.GetString("NewProject") + "*"; }
+            else { t += " - " + Path.GetFileNameWithoutExtension(ProjectSavePath) + "*"; }
             UIHandler.SetWindowTitle(t);
-		}
+        }
 
-		public void SavingProject()
-		{
-			SavingStorage Storage = new SavingStorage();
-			using (GZipStream str = new GZipStream(File.Create(ProjectSavePath), CompressionMode.Compress))
-			{
-				BinaryFormatter ft = new BinaryFormatter();
-				ft.Serialize(str, Storage);
-			}
-			MsgBox.ShowMessage(MessageContent.ProjectSaved);
-		}
+        public void SavingProject()
+        {
+            SavingStorage Storage = new SavingStorage();
+            using (GZipStream str = new GZipStream(File.Create(ProjectSavePath), CompressionMode.Compress))
+            {
+                BinaryFormatter ft = new BinaryFormatter();
+                ft.Serialize(str, Storage);
+            }
+            MsgBox.ShowMessage(MessageContent.ProjectSaved);
+        }
 
-		public void OpeningProject()
-		{
-			using (GZipStream str = new GZipStream(File.Open(ProjectSavePath, FileMode.Open), CompressionMode.Decompress))
-			{
-				BinaryFormatter ft = new BinaryFormatter();
-				SavingStorage Storage = (SavingStorage)ft.Deserialize(str);
-				ProjectManager.OpenProject(Storage);
-			}
-		}
+        public void OpeningProject()
+        {
+            using (GZipStream str = new GZipStream(File.Open(ProjectSavePath, FileMode.Open), CompressionMode.Decompress))
+            {
+                BinaryFormatter ft = new BinaryFormatter();
+                SavingStorage Storage = (SavingStorage)ft.Deserialize(str);
+                ProjectManager.OpenProject(Storage);
+            }
+        }
 
-		public void ProcessFiles()
-		{
-			bool ask = true;
-			if (LSSettings.UsedProgram == ProjectType.CameraRaw) { ask = false; }
-			else if (LSSettings.UsedProgram == ProjectType.LapseStudio)
+        public void ProcessFiles()
+        {
+            bool ask = true;
+            if (LSSettings.UsedProgram == ProjectType.CameraRaw) { ask = false; }
+            else if (LSSettings.UsedProgram == ProjectType.LapseStudio)
             {
                 ask = true;
                 ((ProjectLS)ProjectManager.CurrentProject).SaveFormat = LSSettings.SaveFormat;
             }
-			else if (LSSettings.UsedProgram == ProjectType.RawTherapee)
-			{
-                if (!File.Exists(LSSettings.RTPath)) {
+            else if (LSSettings.UsedProgram == ProjectType.RawTherapee)
+            {
+                if (!File.Exists(LSSettings.RTPath))
+                {
                     string NewRTPath = ProjectRT.SearchForRT();
                     if (NewRTPath != null)
                     {
@@ -224,121 +232,93 @@ namespace Timelapse_UI
                         return;
                     }
                 }
-				ask = ((ProjectRT)ProjectManager.CurrentProject).RunRT;
-				((ProjectRT)ProjectManager.CurrentProject).SaveFormat = LSSettings.SaveFormat;
-			}
+                ask = ((ProjectRT)ProjectManager.CurrentProject).RunRT;
+                ((ProjectRT)ProjectManager.CurrentProject).SaveFormat = LSSettings.SaveFormat;
+            }
 
-			if (ask)
-			{
-				using(FileDialog fdlg = FDialog.CreateDialog(FileDialogType.SelectFolder, Message.GetString("Select Folder")))
-				{
-					if(Directory.Exists(LSSettings.LastProcDir)) fdlg.InitialDirectory = LSSettings.LastProcDir;
-					if(fdlg.Show() == WindowResponse.Ok)
-					{
-						LSSettings.LastProcDir = fdlg.SelectedPath;
+            if (ask)
+            {
+                using (FileDialog fdlg = FDialog.CreateDialog(FileDialogType.SelectFolder, Message.GetString("Select Folder")))
+                {
+                    if (Directory.Exists(LSSettings.LastProcDir)) fdlg.InitialDirectory = LSSettings.LastProcDir;
+                    if (fdlg.Show() == WindowResponse.Ok)
+                    {
+                        LSSettings.LastProcDir = fdlg.SelectedPath;
                         LSSettings.Save();
-						if (ProjectManager.CurrentProject.IsBrightnessCalculated) { ProjectManager.SetAltBrightness(MainGraph.Points); }
-						ProjectManager.ProcessFiles(fdlg.SelectedPath);
-					}
-				}
-			}
-			else
-			{
-				if (ProjectManager.CurrentProject.IsBrightnessCalculated) { ProjectManager.SetAltBrightness(MainGraph.Points); }
-				ProjectManager.ProcessFiles();
-			}
-			SetSaveStatus(false);
-		}
+                        if (ProjectManager.CurrentProject.IsBrightnessCalculated) { ProjectManager.SetAltBrightness(MainGraph.Points); }
+                        ProjectManager.ProcessFiles(fdlg.SelectedPath);
+                    }
+                }
+            }
+            else
+            {
+                if (ProjectManager.CurrentProject.IsBrightnessCalculated) { ProjectManager.SetAltBrightness(MainGraph.Points); }
+                ProjectManager.ProcessFiles();
+            }
+            SetSaveStatus(false);
+        }
 
-		public void Init(Platform RunningPlatform)
-		{
+        public void Init(Platform RunningPlatform)
+        {
             ProjectManager.Init(RunningPlatform);
-			LSSettings.Init();
-			string lang;
-			switch (LSSettings.UsedLanguage)
-			{
-				case Language.English: lang = "en"; break;
-				case Language.German: lang = "de"; break;
+            LSSettings.Init();
+            string lang;
+            switch (LSSettings.UsedLanguage)
+            {
+                case Language.English: lang = "en"; break;
+                case Language.German: lang = "de"; break;
 
-				default: lang = "en"; break;
-			}
-			Message.Init(lang);
-		}
+                default: lang = "en"; break;
+            }
+            Message.Init(lang);
+        }
 
-		public void InitBaseUI()
-		{
-			ProjectManager.NewProject(LSSettings.UsedProgram);
-			if (LSSettings.UsedProgram == ProjectType.RawTherapee)
-			{
-				((ProjectRT)ProjectManager.CurrentProject).RunRT = LSSettings.RunRT;
-				((ProjectRT)ProjectManager.CurrentProject).RTPath = LSSettings.RTPath;
-				((ProjectRT)ProjectManager.CurrentProject).KeepPP3 = LSSettings.KeepPP3;
-				((ProjectRT)ProjectManager.CurrentProject).JpgQuality = LSSettings.JpgQuality;
-				((ProjectRT)ProjectManager.CurrentProject).TiffCompression = LSSettings.TiffCompression != TiffCompressionFormat.None;
-			}
-			MainGraph.Init();
-			ProjectManager.Threadcount = LSSettings.Threadcount;
+        public void InitBaseUI()
+        {
+            ProjectManager.NewProject(LSSettings.UsedProgram);
+            if (LSSettings.UsedProgram == ProjectType.RawTherapee)
+            {
+                ((ProjectRT)ProjectManager.CurrentProject).RunRT = LSSettings.RunRT;
+                ((ProjectRT)ProjectManager.CurrentProject).RTPath = LSSettings.RTPath;
+                ((ProjectRT)ProjectManager.CurrentProject).KeepPP3 = LSSettings.KeepPP3;
+                ((ProjectRT)ProjectManager.CurrentProject).JpgQuality = LSSettings.JpgQuality;
+                ((ProjectRT)ProjectManager.CurrentProject).TiffCompression = LSSettings.TiffCompression != TiffCompressionFormat.None;
+            }
+            MainGraph.Init();
+            ProjectManager.Threadcount = LSSettings.Threadcount;
             UIHandler.InitUI();
             UIHandler.InitTable();
             UIHandler.RefreshImages();
-		}
+        }
 
-		public bool CheckBusy()
-		{
-			if (ProjectManager.CurrentProject.IsWorking) { MsgBox.ShowMessage(MessageContent.IsBusy); return true; }
-			else return false;
-		}
+        public bool CheckBusy()
+        {
+            if (ProjectManager.CurrentProject.IsWorking) { MsgBox.ShowMessage(MessageContent.IsBusy); return true; }
+            else return false;
+        }
 
         public void SettingsChanged()
         {
             if (LSSettings.UsedProgram != ProjectManager.CurrentProject.Type) { if (Click_NewProject() == WindowResponse.Cancel) { LSSettings.UsedProgram = ProjectManager.CurrentProject.Type; } }
-            else if (LSSettings.UsedProgram == ProjectType.RawTherapee) { ((ProjectRT)ProjectManager.CurrentProject).RTPath = LSSettings.RTPath; }
+            else if (LSSettings.UsedProgram == ProjectType.RawTherapee) 
+            {
+                ((ProjectRT)ProjectManager.CurrentProject).RTPath = LSSettings.RTPath;
+                ((ProjectRT)ProjectManager.CurrentProject).RunRT = LSSettings.RunRT;
+                ((ProjectRT)ProjectManager.CurrentProject).KeepPP3 = LSSettings.KeepPP3;
+            }
             ProjectManager.Threadcount = LSSettings.Threadcount;
         }
 
         public void UpdateTable(bool fill)
         {
             IsTableUpdate = true;
-            List<Frame> Framelist = ProjectManager.CurrentProject.Frames;
-            
-            ArrayList LScontent = new ArrayList();
-            int index;
-            for (int i = 0; i < Enum.GetNames(typeof(TableLocation)).Length; i++) { LScontent.Add("N/A"); }
-
-            for (int i = 0; i < Framelist.Count; i++)
+            for (int i = 0; i < ProjectManager.CurrentProject.Frames.Count; i++)
             {
-                //Nr
-                index = (int)TableLocation.Nr;
-                LScontent[index] = Convert.ToString(i + 1);
-                //Filenames
-                index = (int)TableLocation.Filename;
-                LScontent[index] = Framelist[i].Filename;
-                //Brightness
-                index = (int)TableLocation.Brightness;
-				LScontent[index] = Framelist[i].AlternativeBrightness.ToString("N3");
-                //AV
-                index = (int)TableLocation.AV;
-                if (Framelist[i].AVstring != null) { LScontent[index] = Framelist[i].AVstring; }
-                else { LScontent[index] = "N/A"; }
-                //TV
-                index = (int)TableLocation.TV;
-                if (Framelist[i].TVstring != null) { LScontent[index] = Framelist[i].TVstring; }
-                else { LScontent[index] = "N/A"; }
-                //ISO
-                index = (int)TableLocation.ISO;
-                if (Framelist[i].SVstring != null) { LScontent[index] = Framelist[i].SVstring; }
-                else { LScontent[index] = "N/A"; }
-                //Keyframes
-                index = (int)TableLocation.Keyframe;
-                if (Framelist[i].IsKeyframe) { LScontent[index] = true; }
-                else { LScontent[index] = false; }
-
-                //filling the table
-                UIHandler.SetTableRow(i, LScontent, fill);
+                UIHandler.SetTableRow(i, GetRow(i), fill);
             }
             IsTableUpdate = false;
         }
-        
+
         public void OpenMetaData(int index)
         {
             if (LSSettings.UsedProgram == ProjectType.CameraRaw)
@@ -414,137 +394,172 @@ No lets you load values from a standalone XMP file."), MessageWindowType.Questio
 
             if (!IsTableUpdate) UpdateTable(false);
         }
-        
-		#endregion
 
-		#region User Input Methods
+        private ArrayList GetRow(int row)
+        {
+            Frame CurFrame = ProjectManager.CurrentProject.Frames[row];
+            ArrayList LScontent = new ArrayList(DefArray);
+            int index;
 
-		public void Click_SaveProject(bool alwaysAsk)
-		{
-			if (CheckBusy()) return;
-			if (File.Exists(ProjectSavePath) && !alwaysAsk) { SavingProject(); }
-			else
-			{
-				using(FileDialog fdlg = FDialog.CreateDialog(FileDialogType.SaveFile, Message.GetString("Save Project")))
-				{
-					fdlg.AddFileTypeFilter(new FileTypeFilter(Message.GetString("LapseStudio Project"), "lasp"));
-					if(Directory.Exists(LSSettings.LastProjDir)) fdlg.InitialDirectory = LSSettings.LastProjDir;
-					if(fdlg.Show() == WindowResponse.Ok)
-					{
-						if (Path.GetExtension(fdlg.SelectedPath) != ".lasp") { Path.ChangeExtension(fdlg.SelectedPath, ".lasp"); }
+            //Nr
+            index = (int)TableLocation.Nr;
+            LScontent[index] = Convert.ToString(row + 1);
+            //Filenames
+            index = (int)TableLocation.Filename;
+            LScontent[index] = CurFrame.Filename;
+            //Brightness
+            index = (int)TableLocation.Brightness;
+            LScontent[index] = CurFrame.AlternativeBrightness.ToString("N3");
+            //AV
+            index = (int)TableLocation.AV;
+            if (CurFrame.AVstring != null) { LScontent[index] = CurFrame.AVstring; }
+            else { LScontent[index] = "N/A"; }
+            //TV
+            index = (int)TableLocation.TV;
+            if (CurFrame.TVstring != null) { LScontent[index] = CurFrame.TVstring; }
+            else { LScontent[index] = "N/A"; }
+            //ISO
+            index = (int)TableLocation.ISO;
+            if (CurFrame.SVstring != null) { LScontent[index] = CurFrame.SVstring; }
+            else { LScontent[index] = "N/A"; }
+            //Keyframes
+            index = (int)TableLocation.Keyframe;
+            if (CurFrame.IsKeyframe) { LScontent[index] = true; }
+            else { LScontent[index] = false; }
+
+            return LScontent;
+        }
+
+        #endregion
+
+        #region User Input Methods
+
+        public void Click_SaveProject(bool alwaysAsk)
+        {
+            if (CheckBusy()) return;
+            if (File.Exists(ProjectSavePath) && !alwaysAsk) { SavingProject(); }
+            else
+            {
+                using (FileDialog fdlg = FDialog.CreateDialog(FileDialogType.SaveFile, Message.GetString("Save Project")))
+                {
+                    fdlg.AddFileTypeFilter(new FileTypeFilter(Message.GetString("LapseStudio Project"), "lasp"));
+                    if (Directory.Exists(LSSettings.LastProjDir)) fdlg.InitialDirectory = LSSettings.LastProjDir;
+                    if (fdlg.Show() == WindowResponse.Ok)
+                    {
+                        if (Path.GetExtension(fdlg.SelectedPath) != ".lasp") { Path.ChangeExtension(fdlg.SelectedPath, ".lasp"); }
                         LSSettings.LastProjDir = Path.GetDirectoryName(fdlg.SelectedPath);
                         LSSettings.Save();
-						ProjectSavePath = fdlg.SelectedPath;
-						SavingProject();
-					}
-				}
-			}
-			SetSaveStatus(true);
-		}
+                        ProjectSavePath = fdlg.SelectedPath;
+                        SavingProject();
+                    }
+                }
+            }
+            SetSaveStatus(true);
+        }
 
-		public void Click_OpenProject()
-		{
-			if (CheckBusy()) return;
-			using(FileDialog fdlg = FDialog.CreateDialog(FileDialogType.OpenFile, Message.GetString("Open Project")))
-			{
-				fdlg.AddFileTypeFilter(new FileTypeFilter(Message.GetString("LapseStudio Project"), "lasp"));
-				if(Directory.Exists(LSSettings.LastProjDir)) fdlg.InitialDirectory = LSSettings.LastProjDir;
-				if(fdlg.Show() == WindowResponse.Ok)
-				{
+        public void Click_OpenProject()
+        {
+            if (CheckBusy()) return;
+            using (FileDialog fdlg = FDialog.CreateDialog(FileDialogType.OpenFile, Message.GetString("Open Project")))
+            {
+                fdlg.AddFileTypeFilter(new FileTypeFilter(Message.GetString("LapseStudio Project"), "lasp"));
+                if (Directory.Exists(LSSettings.LastProjDir)) fdlg.InitialDirectory = LSSettings.LastProjDir;
+                if (fdlg.Show() == WindowResponse.Ok)
+                {
                     LSSettings.LastProjDir = System.IO.Path.GetDirectoryName(fdlg.SelectedPath);
                     LSSettings.Save();
-					ProjectSavePath = fdlg.SelectedPath;
-					OpeningProject();
-				}
-			}
-			SetSaveStatus(true);
-		}
+                    ProjectSavePath = fdlg.SelectedPath;
+                    OpeningProject();
+                }
+            }
+            SetSaveStatus(true);
+        }
 
-		public void Click_AddFrames()
-		{
-			if (CheckBusy()) return;
-			if (ProjectManager.CurrentProject.Frames.Count == 0)
-			{
-				using(FileDialog fdlg = FDialog.CreateDialog(FileDialogType.SelectFolder, Message.GetString("Select Folder")))
-				{
-					if(Directory.Exists(LSSettings.LastImgDir)) fdlg.InitialDirectory = LSSettings.LastImgDir;
-					if(fdlg.Show() == WindowResponse.Ok)
-					{
+        public void Click_AddFrames()
+        {
+            if (CheckBusy()) return;
+            if (ProjectManager.CurrentProject.Frames.Count == 0)
+            {
+                using (FileDialog fdlg = FDialog.CreateDialog(FileDialogType.SelectFolder, Message.GetString("Select Folder")))
+                {
+                    if (Directory.Exists(LSSettings.LastImgDir)) fdlg.InitialDirectory = LSSettings.LastImgDir;
+                    if (fdlg.Show() == WindowResponse.Ok)
+                    {
                         LSSettings.LastImgDir = fdlg.SelectedPath;
                         LSSettings.Save();
-						if (ProjectManager.AddFrames(fdlg.SelectedPath)) SetSaveStatus(false);
+                        if (ProjectManager.AddFrames(fdlg.SelectedPath)) SetSaveStatus(false);
                         else { MsgBox.ShowMessage(MessageContent.NotEnoughValidFiles); }
-					}
-				}
-			}
-			else { MsgBox.ShowMessage(MessageContent.FramesAlreadyAdded); }
-		}
+                    }
+                }
+            }
+            else { MsgBox.ShowMessage(MessageContent.FramesAlreadyAdded); }
+        }
 
-		public WindowResponse Click_NewProject()
-		{
-			if (CheckBusy()) return WindowResponse.Cancel;
-			WindowResponse res = AskForSaving();
-			if (res == WindowResponse.Ok)
-			{
-				InitBaseUI();
-				SetSaveStatus(true);
-			}
-			return res;
-		}
+        public WindowResponse Click_NewProject()
+        {
+            if (CheckBusy()) return WindowResponse.Cancel;
+            WindowResponse res = AskForSaving();
+            if (res == WindowResponse.Ok)
+            {
+                InitBaseUI();
+                SetSaveStatus(true);
+            }
+            return res;
+        }
 
-		public void Click_Process()
-		{
-			if (CheckBusy()) return;
+        public void Click_Process()
+        {
+            if (CheckBusy()) return;
             if (ProjectManager.CurrentProject.KeyframeCount == 0) { MsgBox.ShowMessage(MessageContent.KeyframecountLow); }
-			else if (ProjectManager.CurrentProject.IsBrightnessCalculated) { ProcessFiles(); }
+            else if (ProjectManager.CurrentProject.IsBrightnessCalculated) { ProcessFiles(); }
             else if (LSSettings.UsedProgram == ProjectType.LapseStudio) { MsgBox.ShowMessage(MessageContent.BrightnessNotCalculatedError); }
-			else if (MsgBox.ShowMessage(MessageContent.BrightnessNotCalculatedWarning) == WindowResponse.Yes) { ProcessFiles(); }
-		}
+            else if (MsgBox.ShowMessage(MessageContent.BrightnessNotCalculatedWarning) == WindowResponse.Yes) { ProcessFiles(); }
+        }
 
-		public void Click_RefreshMetadata()
-		{
-			if (CheckBusy()) return;
-			if (ProjectManager.CurrentProject.Type == ProjectType.CameraRaw) { ProjectManager.ReadXMP(); }
-		}
+        public void Click_RefreshMetadata()
+        {
+            if (CheckBusy()) return;
+            if (ProjectManager.CurrentProject.Type == ProjectType.CameraRaw) { ProjectManager.ReadXMP(); }
+        }
 
         public void Click_Calculate(BrightnessCalcType Type)
-		{
-			if (CheckBusy()) return;
+        {
+            if (CheckBusy()) return;
             if (ProjectManager.CurrentProject.IsBrightnessCalculated && MsgBox.ShowMessage(MessageContent.BrightnessAlreadyCalculated) == WindowResponse.No) return;
             if (ProjectManager.CurrentProject.Frames.Count > 1) { ProjectManager.CalculateBrightness(Type); }
-			else { MsgBox.ShowMessage(MessageContent.NotEnoughFrames); }
-		}
+            else { MsgBox.ShowMessage(MessageContent.NotEnoughFrames); }
+        }
 
-		public void Click_ThumbEdit()
-		{
-			if (ProjectManager.CurrentProject.IsBrightnessCalculated)
-			{
-				ProjectManager.SetAltBrightness(MainGraph.Points);
-				ProjectManager.ProcessThumbs();
-			}
-		}
+        public void Click_ThumbEdit()
+        {
+            if (ProjectManager.CurrentProject.IsBrightnessCalculated)
+            {
+                ProjectManager.SetAltBrightness(MainGraph.Points);
+                ProjectManager.ProcessThumbs();
+            }
+        }
 
         public void Click_KeyframeToggle(int Row, bool Toggled)
         {
             if (!Toggled) OpenMetaData(Row);
             else ProjectManager.RemoveKeyframe(Row, false);
-            UpdateTable(false);
+            UIHandler.SetTableRow(Row, GetRow(Row), false);
         }
 
-		public void Click_BrightnessSlider(double Value)
-		{
-			if (ProjectManager.CurrentProject.IsBrightnessCalculated)
-			{
-				for (int i = 1; i < ProjectManager.CurrentProject.Frames.Count; i++)
-				{
-					//LTODO: make brightness scale working
-					double orig1 = ProjectManager.CurrentProject.Frames[i - 1].OriginalBrightness;
-					double orig2 = ProjectManager.CurrentProject.Frames[i].OriginalBrightness;
-					ProjectManager.CurrentProject.Frames[i].AlternativeBrightness = orig2 + ((orig2 - orig1) * Value / 100);
-				}
-				MainGraph.RefreshGraph();
-			}
-		}
+        public void Click_BrightnessSlider(double Value)
+        {
+            if (ProjectManager.CurrentProject.IsBrightnessCalculated)
+            {
+                for (int i = 1; i < ProjectManager.CurrentProject.Frames.Count; i++)
+                {
+                    //LTODO: make brightness scale working
+                    double orig1 = ProjectManager.CurrentProject.Frames[i - 1].OriginalBrightness;
+                    double orig2 = ProjectManager.CurrentProject.Frames[i].OriginalBrightness;
+                    ProjectManager.CurrentProject.Frames[i].AlternativeBrightness = orig2 + ((orig2 - orig1) * Value / 100);
+                }
+                MainGraph.RefreshGraph();
+            }
+        }
 
         public string Click_CalcTypeChanged(BrightnessCalcType Type)
         {
@@ -560,6 +575,6 @@ No lets you load values from a standalone XMP file."), MessageWindowType.Questio
             }
         }
 
-		#endregion
+        #endregion
     }
 }

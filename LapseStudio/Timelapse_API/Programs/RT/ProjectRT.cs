@@ -231,8 +231,6 @@ namespace Timelapse_API
             RTStartInfo.UseShellExecute = false;
             RTStartInfo.CreateNoWindow = true;
             RTStartInfo.WindowStyle = ProcessWindowStyle.Hidden;
-            RTStartInfo.RedirectStandardInput = true;
-            RTStartInfo.RedirectStandardOutput = true;
             RT.StartInfo = RTStartInfo;
 
             #region Build command
@@ -264,7 +262,7 @@ namespace Timelapse_API
             
 			OutputWatcher.Filter = "*." + SaveFileType;
             OutputWatcher.Path = ProjectManager.ImageSavePath;
-            OutputWatcher.EnableRaisingEvents = true;
+            OutputWatcher.EnableRaisingEvents = true;            
 
             MainWorker.ReportProgress(0, new ProgressChangeEventArgs(0, ProgressType.ProcessingImages));
 
