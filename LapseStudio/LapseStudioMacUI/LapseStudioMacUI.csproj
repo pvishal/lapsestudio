@@ -10,6 +10,8 @@
     <MonoMacResourcePrefix>Resources</MonoMacResourcePrefix>
     <SuppressXamMacUpsell>True</SuppressXamMacUpsell>
     <AssemblyName>LapseStudio</AssemblyName>
+    <ProductVersion>8.0.30703</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -74,7 +76,6 @@
     <Compile Include="CocoaClasses\CocoaFileDialog.cs" />
     <Compile Include="CocoaClasses\CocoaHelper.cs" />
     <Compile Include="CocoaClasses\CocoaMessageBox.cs" />
-    <Compile Include="CocoaClasses\CocoaUI.cs" />
     <Compile Include="GUI\Graph.cs" />
     <Compile Include="GUI\Graph.designer.cs">
       <DependentUpon>Graph.cs</DependentUpon>

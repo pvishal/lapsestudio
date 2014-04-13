@@ -9,10 +9,11 @@ using Timelapse_UI;
 
 namespace LapseStudioMacUI
 {
-	public partial class MainWindowController : MonoMac.AppKit.NSWindowController
+	public partial class MainWindowController : MonoMac.AppKit.NSWindowController, IUIHandler
 	{
-		internal CocoaUI MainUI;
+		internal LapseStudioUI MainUI;
 		internal CocoaMessageBox MsgBox = new CocoaMessageBox();
+		TableDataSource TableSource = new TableDataSource();
 
 		#region Constructors
 
@@ -55,11 +56,13 @@ namespace LapseStudioMacUI
 			{
 				base.AwakeFromNib();
 
-				MainUI = new CocoaUI(this, new CocoaMessageBox(), new CocoaFileDialog());
+				MainUI = new LapseStudioUI(Platform.MacOSX, this, new CocoaMessageBox(), new CocoaFileDialog());
 				MainUI.MainGraph = new BrightnessGraph((int)MainGraph.FittingSize.Width, (int)MainGraph.FittingSize.Height);
 				((Graph)MainGraph).Init(MainUI.MainGraph);
 				MainUI.InitBaseUI();
 				Window.Delegate = new WindowDelegate();
+				MainTable.Delegate = new TableDelegate();
+				((TableDelegate)MainTable.Delegate).TableSelectionChanged += HandleTableSelectionChanged;
 			}
 			catch(Exception ex) { Error.Report("Init", ex); }
 		}
@@ -73,7 +76,7 @@ namespace LapseStudioMacUI
 		#endregion
 
 		#region ToolBar
-	
+
 		partial void MetadataToolItem_Clicked(NSObject sender)
 		{
 			try { MainUI.Click_RefreshMetadata(); }
@@ -122,7 +125,7 @@ namespace LapseStudioMacUI
 
 		partial void FrameSelectSlider_Changed(NSObject sender)
 		{
-			try { FrameSelectChanged(); }
+			try { RefreshImages(); }
 			catch (Exception ex) { Error.Report("FrameSelectSlider_Changed", ex); }
 		}
 
@@ -164,7 +167,81 @@ namespace LapseStudioMacUI
 
 		#endregion
 
-		public void FrameSelectChanged()
+		private void HandleTableSelectionChanged()
+		{
+			try
+			{
+				if(MainTable.SelectedRow >= 0 && TabChangeButton.SelectedSegment == (int)TabLocation.Filelist)
+				{
+					ThumbViewList.Image = CocoaHelper.ToNSImage(ProjectManager.CurrentProject.GetThumb(MainTable.SelectedRow));
+				}
+			}
+			catch(Exception ex) { Error.Report("HandleTableSelectionChanged", ex); }
+		}
+
+		private void HandleBrightnessCellEdited(int Row, string value)
+		{
+			try { MainUI.UpdateBrightness(Row, value); }
+			catch (Exception ex) { Error.Report("HandleBrightnessCellEdited", ex); }
+		}
+
+		#region IUIHandler implementation
+
+		public void ReleaseUIData()
+		{
+			ResetPictureBoxes();
+		}
+
+		public void InvokeUI(Action action)
+		{
+			InvokeOnMainThread(new NSAction(delegate { action(); } ));
+		}
+
+		public void QuitApplication()
+		{
+			NSApplication.SharedApplication.Terminate(this);
+		}
+
+		public void InitOpenedProject()
+		{
+			MainUI.UpdateTable(false);
+			SelectTableRow(0);
+			RefreshImages();
+			FrameSelectSlider.MinValue = 0;
+			FrameSelectSlider.MaxValue = ProjectManager.CurrentProject.Frames.Count - 1;
+		}
+
+		public void SetProgress(int percent)
+		{
+			InvokeUI(() => { MainProgressBar.DoubleValue = percent; });
+		}
+
+		public void ResetPictureBoxes()
+		{
+			if (ThumbEditView.Image != null) { ThumbEditView.Image.Dispose(); }
+			if (ThumbViewList.Image != null) { ThumbViewList.Image.Dispose(); }
+			if (ThumbViewGraph.Image != null) { ThumbViewGraph.Image.Dispose(); }
+		}
+
+		public void InitTable()
+		{
+			MainTable.DataSource = TableSource;
+			TableSource.BrightnessCellEdited += HandleBrightnessCellEdited;
+		}
+
+		public void InitUI()
+		{
+			MetadataToolItem.Enabled = (LSSettings.UsedProgram != ProjectType.CameraRaw) ? false : true;
+			if(TableSource != null) TableSource = new TableDataSource();
+			InitTable();
+		}
+
+		public void SelectTableRow(int index)
+		{
+			MainTable.SelectRow(index, false);
+		}
+
+		public void RefreshImages()
 		{
 			int val = FrameSelectSlider.IntValue;
 			FrameSelectedLabel.StringValue = val.ToString();
@@ -176,51 +253,28 @@ namespace LapseStudioMacUI
 			}
 		}
 
-		#region Controls as Public
+		public void SetTableRow(int index, System.Collections.ArrayList values, bool fill)
+		{
+			if(fill) TableSource.Add(values);
+			else { for(int i = 0; i < values.Count; i++) TableSource.Rows[index][i] = values[i]; }
+			MainTable.ReloadData();
+		}
 
-		public NSButton PublicAlignXButton { get { return AlignXButton; } set { AlignXButton = value; } }
+		public void SetStatusLabel(string text)
+		{
+			Statuslabel.StringValue = text;
+		}
 
-		public NSSlider PublicBrightnessSlider { get { return BrightnessSlider; } set { BrightnessSlider = value; } }
+		public void SetWindowTitle(string text)
+		{
+			Window.Title = text;
+		}
 
-		public NSToolbarItem PublicBrightnessToolItem { get { return BrightnessToolItem; } set { BrightnessToolItem = value; } }
-
-		public NSToolbarItem PublicCancelToolItem  { get { return CancelToolItem; } set { CancelToolItem = value; } }
-
-		public NSButton PublicEditThumbsButton  { get { return EditThumbsButton; } set { EditThumbsButton = value; } }
-
-		public NSTextField PublicFrameSelectedLabel { get { return FrameSelectedLabel; } set { FrameSelectedLabel = value; } }
-
-		public NSSlider PublicFrameSelectSlider  { get { return FrameSelectSlider; } set { FrameSelectSlider = value; } }
-
-		public NSButton PublicGraphResetButton  { get { return GraphResetButton; } set { GraphResetButton = value; } }
-
-		public NSView PublicMainGraph { get { return MainGraph; } set { MainGraph = value; } }
-
-		public NSProgressIndicator PublicMainProgressBar { get { return MainProgressBar; } set { MainProgressBar = value; } }
-
-		public NSTableView PublicMainTable  { get { return MainTable; } set { MainTable = value; } }
-
-		public NSTabView PublicMainTabView  { get { return MainTabView; } set { MainTabView = value; } }
-
-		public NSToolbarItem PublicMetadataToolItem  { get { return MetadataToolItem; } set { MetadataToolItem = value; } }
-
-		public NSToolbarItem PublicOpenFileToolItem  { get { return OpenFileToolItem; } set { OpenFileToolItem = value; } }
-
-		public NSToolbarItem PublicProcessToolItem  { get { return ProcessToolItem; } set { ProcessToolItem = value; } }
-
-		public NSTextField PublicStatuslabel  { get { return Statuslabel; } set { Statuslabel = value; } }
-
-		public NSSegmentedControl PublicTabChangeButton  { get { return TabChangeButton; } set { TabChangeButton = value; } }
-
-		public NSImageView PublicThumbEditView  { get { return ThumbEditView; } set { ThumbEditView = value; } }
-
-		public NSImageView PublicThumbViewGraph  { get { return ThumbViewGraph; } set { ThumbViewGraph = value; } }
-
-		public NSImageView PublicThumbViewList { get { return ThumbViewList; } set { ThumbViewList = value; } }
-
-		public NSButton PublicYToEndButton  { get { return YToEndButton; } set { YToEndButton = value; } }
-
-		public NSButton PublicYToStartButton  { get { return YToStartButton; } set { YToStartButton = value; } }
+		public void InitAfterFrameLoad()
+		{
+			FrameSelectSlider.MinValue = 0;
+			FrameSelectSlider.MaxValue = ProjectManager.CurrentProject.Frames.Count - 1;
+		}
 
 		#endregion
 	}
