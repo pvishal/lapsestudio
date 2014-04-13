@@ -40,10 +40,13 @@ namespace LapseStudioGtkUI
 
 		protected void OnGraphEventBoxExposeEvent(object o, ExposeEventArgs args)
 		{
-			using(ImageSurface tmpSurface = new ImageSurface(Format.Rgb24, ((DrawingArea)o).Allocation.Width, ((DrawingArea)o).Allocation.Height))
-			using(GtkGraphDrawer drawer = new GtkGraphDrawer(Gdk.CairoHelper.Create(((DrawingArea)o).GdkWindow), new Context(tmpSurface), tmpSurface))
+			if (((DrawingArea)o).GdkWindow != null)
 			{
-				BaseGraph.DrawFullGraph(drawer);
+				using(ImageSurface tmpSurface = new ImageSurface(Format.Rgb24, ((DrawingArea)o).Allocation.Width, ((DrawingArea)o).Allocation.Height))
+				using(GtkGraphDrawer drawer = new GtkGraphDrawer(Gdk.CairoHelper.Create(((DrawingArea)o).GdkWindow), new Context(tmpSurface), tmpSurface))
+				{
+					BaseGraph.DrawFullGraph (drawer);
+				}
 			}
 		}
 

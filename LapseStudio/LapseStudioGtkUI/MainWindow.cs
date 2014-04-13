@@ -1,7 +1,9 @@
 ﻿using Gdk;
 using Gtk;
 using System;
+using System.IO;
 using System.Collections;
+using System.Collections.Generic;
 using Timelapse_API;
 using Timelapse_UI;
 using Error = Timelapse_UI.Error;
@@ -28,19 +30,19 @@ namespace LapseStudioGtkUI
                 MainUI = new LapseStudioUI(Platform.Unix, this, MsgBox, new GtkFileDialog());
 
                 FileTree.CursorChanged += FileTree_CursorChanged;
-                Pixbuf[] iconlist = new Pixbuf[5];
-                iconlist[0] = new Pixbuf("Icons/Icon16.png");
-                iconlist[1] = new Pixbuf("Icons/Icon32.png");
-                iconlist[2] = new Pixbuf("Icons/Icon64.png");
-                iconlist[3] = new Pixbuf("Icons/Icon128.png");
-                iconlist[4] = new Pixbuf("Icons/Icon256.png");
-                this.IconList = iconlist;
+				List<Pixbuf> iconlist = new List<Pixbuf>();
+				if (File.Exists("Icons/Icon16.png")) iconlist.Add(new Pixbuf("Icons/Icon16.png"));
+                if (File.Exists("Icons/Icon32.png"))iconlist.Add(new Pixbuf("Icons/Icon32.png"));
+                if (File.Exists("Icons/Icon64.png")) iconlist.Add(new Pixbuf("Icons/Icon64.png"));
+                if (File.Exists("Icons/Icon128.png")) iconlist.Add(new Pixbuf("Icons/Icon128.png"));
+                if (File.Exists("Icons/Icon256.png")) iconlist.Add(new Pixbuf("Icons/Icon256.png"));
+                this.IconList = iconlist.ToArray();
 
 				MainUI.MainGraph = new BrightnessGraph(MainGraph.Allocation.Width, MainGraph.Allocation.Height);
 				MainGraph.Init(MainUI.MainGraph);
 				MainUI.InitBaseUI();
 			}
-			catch (Exception ex) { Error.Report("Init", ex); }
+			catch (Exception ex) { Error.Report("Init", ex); MainUI.Quit(ClosingReason.Error); }
 		}
 
 		public void OnDeleteEvent(object sender, DeleteEventArgs a)
