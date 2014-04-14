@@ -41,43 +41,53 @@ namespace Timelapse_API
         /// </summary>
         /// <param name="directory">The directory which will be scanned</param>
         public static void ExtractThumbnails(string[] files)
-        {
-            SetProcess("-q -q -previewImage -b -@ -", ExifArgument.Thumbnails);
-            exiftool.Start();
+		{
+			SetProcess ("-q -q -previewImage -b -@ -", ExifArgument.Thumbnails);
+			exiftool.Start ();
 
-            byte[] data = Encoding.UTF8.GetBytes(String.Join("\r\n", files));
-            exiftool.StandardInput.BaseStream.Write(data, 0, data.Length);
-            exiftool.StandardInput.BaseStream.Close();
+			byte[] data = Encoding.UTF8.GetBytes (String.Join ("\r\n", files));
+			exiftool.StandardInput.BaseStream.Write (data, 0, data.Length);
+			exiftool.StandardInput.BaseStream.Close ();
 
-            using (MemoryStream str = new MemoryStream())
+			using(MemoryStream str = new MemoryStream())
             {
-                exiftool.StandardOutput.BaseStream.CopyTo(str);
-                str.Position = 0;
-                List<long> idx = new List<long>();
-                byte[] tmp = new byte[2];
-                for (long ct = 0; ct < str.Length; ct++)
+				exiftool.StandardOutput.BaseStream.CopyTo (str);
+				str.Position = 0;
+				List<long> idx = new List<long>();
+				byte[] tmp = new byte[2];
+				for (long ct = 0; ct < str.Length; ct++)
                 {
-                    str.Position = ct;
-                    str.Read(tmp, 0, 2);
-                    if (BitConverter.IsLittleEndian) Array.Reverse(tmp);
-                    if (BitConverter.ToUInt16(tmp, 0) == JpgMarker) idx.Add(ct);
+					str.Position = ct;
+					str.Read (tmp, 0, 2);
+					if (BitConverter.IsLittleEndian) Array.Reverse (tmp);
+					if (BitConverter.ToUInt16 (tmp, 0) == JpgMarker) idx.Add (ct);
                 }
                 
-                if (idx.Count != ProjectManager.CurrentProject.Frames.Count) throw new Exception("Not all images have a thumbnail");
+				if (idx.Count != ProjectManager.CurrentProject.Frames.Count) throw new Exception("Not all images have a thumbnail");
 
-                for (int i = 0; i < idx.Count; i++)
+				BitmapEx tmpBmp = null;
+				byte[] buffer;
+				long length;
+				for (int i = 0; i < idx.Count; i++)
                 {
-                    if (ProjectManager.CurrentProject.MainWorker.CancellationPending) break;
-                    str.Position = idx[i];
-                    using (MemoryStream str2 = new MemoryStream())
+					if (ProjectManager.CurrentProject.MainWorker.CancellationPending) break;
+
+					if (i + 1 < idx.Count) length = idx[i + 1] - idx[i];
+					else length = str.Length - idx[i];
+					buffer = new byte[length];
+					str.Position = idx[i];
+					str.Read (buffer, 0, (int)length);
+					using(MemoryStream str2 = new MemoryStream(buffer))
                     {
-                        str.CopyTo(str2);
-                        ProjectManager.CurrentProject.AddThumb(new BitmapEx(str2).ScaleW(300));   //Normal Thumb
-                        ProjectManager.CurrentProject.AddThumb(new BitmapEx(str2).ScaleW(300));   //Edit Thumb
-                        ProjectManager.CurrentProject.ReportWorkProgress(i, ProgressType.LoadThumbnails);
-                    }
+						tmpBmp = new BitmapEx(str2).ScaleW (300);
+						ProjectManager.CurrentProject.AddThumb (tmpBmp);   //Normal Thumb
+						ProjectManager.CurrentProject.AddThumb (tmpBmp);   //Edit Thumb
+						ProjectManager.CurrentProject.ReportWorkProgress (i, ProgressType.LoadThumbnails);
+					}
                 }
-            }
+				if (tmpBmp != null) tmpBmp.Dispose ();
+				buffer = null;
+			}
             exiftool.WaitForExit();
             exiftool.Dispose();
         }

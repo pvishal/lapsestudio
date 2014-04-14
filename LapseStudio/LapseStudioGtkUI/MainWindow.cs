@@ -317,7 +317,8 @@ namespace LapseStudioGtkUI
         {
             InvokeUI(() =>
             {
-                MainProgressBar.Fraction = percent / 100f;
+				float p = percent / 100f;
+                MainProgressBar.Fraction = Math.Max(0, Math.Min(1f, p));
                 MainProgressBar.Text = String.Empty;
             });
         }
@@ -448,7 +449,7 @@ namespace LapseStudioGtkUI
 
         public void SetStatusLabel(string Text)
         {
-            StatusLabel.Text = Text;
+			InvokeUI(() => { StatusLabel.Text = Text; });
         }
 
         public void SetWindowTitle(string Text)
