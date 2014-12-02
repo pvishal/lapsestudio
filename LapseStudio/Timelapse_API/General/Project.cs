@@ -4,7 +4,7 @@ using System.ComponentModel;
 using System.IO;
 using System.Linq;
 using System.Threading;
-using ColorManagment;
+using ColorManager;
 using System.Globalization;
 
 namespace Timelapse_API
@@ -490,7 +490,34 @@ namespace Timelapse_API
                         }
                         else if (lines[i].ToLower().StartsWith("colorspace"))
                         {
-                            Frames[f].ColorSpace = ColorManagment.RGBColorspace.GetColorspaceName(lines[i].Substring(lines[i].IndexOf(":") + 2));
+                            string colspace = lines[i].Substring(lines[i].IndexOf(":") + 2).ToLower().Replace(" ", "");
+                            switch(colspace)
+                            {
+                                case "adobergb":
+                                    Frames[f].ColorSpace = new RGBColorspaceAdobeRGB();
+                                    break;
+
+                                case "widegamut":
+                                case "widegamutrgb":
+                                case "adobewidegamut":
+                                case "adobewidegamutrgb":
+                                    Frames[f].ColorSpace = new RGBColorspaceWideGamutRGB();
+                                    break;
+
+                                case "ciergb":
+                                    Frames[f].ColorSpace = new RGBColorspaceCIERGB();
+                                    break;
+
+                                case "prophotorgb":
+                                case "prophoto":
+                                    Frames[f].ColorSpace = new RGBColorspaceProPhotoRGB();
+                                    break;
+
+                                case "srgb":
+                                default:
+                                    Frames[f].ColorSpace = new RGBColorspacesRGB();
+                                    break;
+                            }
                         }
                         else if (lines[i].ToLower().StartsWith("imagesize"))
                         {
@@ -593,6 +620,7 @@ namespace Timelapse_API
                 n = bmp1.ChannelCount;
                 index = count = isdark = 0;
                 br1 = br2 = br3 = newBr = maxiBrDiff = 0;
+                IRGBSpace space = new RGBColorspacesRGB();
                 
                 #endregion
 
@@ -614,14 +642,14 @@ namespace Timelapse_API
                         {
                             index = y * rowstride + x;
 
-                            c = new ColorRGB(RGBSpaceName.sRGB, pix1[index], pix1[index + 1], pix1[index + 2], false);
-                            c = c.ToLinear();
+                            c = new ColorRGB(pix1[index], pix1[index + 1], pix1[index + 2], space);
+                            fixed (double* pt = c.Values) { ((IRGBSpace)c.Space).ToLinear(pt, pt); }
                             br1 = (c.R + c.G + c.B) * 255d / 3d;
-                            c = new ColorRGB(RGBSpaceName.sRGB, pix2[index], pix2[index + 1], pix2[index + 2], false);
-                            c = c.ToLinear();
+                            c = new ColorRGB(pix2[index], pix2[index + 1], pix2[index + 2], space);
+                            fixed (double* pt = c.Values) { ((IRGBSpace)c.Space).ToLinear(pt, pt); }
                             br2 = (c.R + c.G + c.B) * 255d / 3d;
-                            c = new ColorRGB(RGBSpaceName.sRGB, pix3[index], pix3[index + 1], pix3[index + 2], false);
-                            c = c.ToLinear();
+                            c = new ColorRGB(pix3[index], pix3[index + 1], pix3[index + 2], space);
+                            fixed (double* pt = c.Values) { ((IRGBSpace)c.Space).ToLinear(pt, pt); }
                             br3 = (c.R + c.G + c.B) * 255d / 3d;
 
                             if (br1 > min && br2 > min && br3 > min && br1 < max && br2 < max && br3 < max) { NonUseMask[x / n, y] = false; }
@@ -654,14 +682,14 @@ namespace Timelapse_API
                                                 {
                                                     index = (y + yS) * rowstride + x + xS;
 
-                                                    c = new ColorRGB(RGBSpaceName.sRGB, pix1[index], pix1[index + 1], pix1[index + 2], false);
-                                                    c = c.ToLinear();
+                                                    c = new ColorRGB(pix1[index], pix1[index + 1], pix1[index + 2], space);
+                                                    fixed (double* pt = c.Values) { ((IRGBSpace)c.Space).ToLinear(pt, pt); }
                                                     br1 = (c.R + c.G + c.B) * 255d / 3d;
-                                                    c = new ColorRGB(RGBSpaceName.sRGB, pix2[index], pix2[index + 1], pix2[index + 2], false);
-                                                    c = c.ToLinear();
+                                                    c = new ColorRGB(pix2[index], pix2[index + 1], pix2[index + 2], space);
+                                                    fixed (double* pt = c.Values) { ((IRGBSpace)c.Space).ToLinear(pt, pt); }
                                                     br2 = (c.R + c.G + c.B) * 255d / 3d;
-                                                    c = new ColorRGB(RGBSpaceName.sRGB, pix3[index], pix3[index + 1], pix3[index + 2], false);
-                                                    c = c.ToLinear();
+                                                    c = new ColorRGB(pix3[index], pix3[index + 1], pix3[index + 2], space);
+                                                    fixed (double* pt = c.Values) { ((IRGBSpace)c.Space).ToLinear(pt, pt); }
                                                     br3 = (c.R + c.G + c.B) * 255d / 3d;
 
                                                     brightnessDiff1.Add(Math.Abs(br1 - br2));
@@ -722,14 +750,14 @@ namespace Timelapse_API
                         for (x = 0; x < rowstride; x += n)
                         {
                             index = y * rowstride + x;
-                            c = new ColorRGB(RGBSpaceName.sRGB, pix1[index], pix1[index + 1], pix1[index + 2], false);
-                            c = c.ToLinear();
+                            c = new ColorRGB(pix1[index], pix1[index + 1], pix1[index + 2], space);
+                            fixed (double* pt = c.Values) { ((IRGBSpace)c.Space).ToLinear(pt, pt); }
                             br1 = (c.R + c.G + c.B) * 255d / 3d;
-                            c = new ColorRGB(RGBSpaceName.sRGB, pix2[index], pix2[index + 1], pix2[index + 2], false);
-                            c = c.ToLinear();
+                            c = new ColorRGB(pix2[index], pix2[index + 1], pix2[index + 2], space);
+                            fixed (double* pt = c.Values) { ((IRGBSpace)c.Space).ToLinear(pt, pt); }
                             br2 = (c.R + c.G + c.B) * 255d / 3d;
-                            c = new ColorRGB(RGBSpaceName.sRGB, pix3[index], pix3[index + 1], pix3[index + 2], false);
-                            c = c.ToLinear();
+                            c = new ColorRGB(pix3[index], pix3[index + 1], pix3[index + 2], space);
+                            fixed (double* pt = c.Values) { ((IRGBSpace)c.Space).ToLinear(pt, pt); }
                             br3 = (c.R + c.G + c.B) * 255d / 3d;
 
                             double factor = BrightChangeMask[x / n, y] / 100;
@@ -737,8 +765,7 @@ namespace Timelapse_API
                             count++;
                         }
                     }
-
-
+                    
                     double val0 = (PixelBrightness.Average(p => p[0]));
                     double val1 = (PixelBrightness.Average(p => p[1]));
                     double val2 = (PixelBrightness.Average(p => p[2]));
@@ -814,102 +841,115 @@ namespace Timelapse_API
             uint x, y;
             int x1, y1, maxCol = 8;
             double fact, d1, d2;
-            ColorConverter Converter = new ColorConverter();
             List<double[]> PixelBrightness;
-
-            ColorLab[,] labimg1 = new ColorLab[ThumbWidth, ThumbHeight];
-            ColorLab[,] labimg2 = new ColorLab[ThumbWidth, ThumbHeight];
-            ColorLab[,] labimg3 = new ColorLab[ThumbWidth, ThumbHeight];
-
             bool[,] NonUseMask = new bool[ThumbWidth, ThumbHeight];
 
-            for (int f = 1; f < Frames.Count; f += 2)
+            using (ColorConverter Converter = new ColorConverter())
             {
-                if (MainWorker.CancellationPending) { return; }
+                ColorLab[,] labimg1 = new ColorLab[ThumbWidth, ThumbHeight];
+                ColorLab[,] labimg2 = new ColorLab[ThumbWidth, ThumbHeight];
+                ColorLab[,] labimg3 = new ColorLab[ThumbWidth, ThumbHeight];
+                ColorRGB colrgb = new ColorRGB(new RGBColorspacesRGB());
+                IConversionRoutine rout = ColorConverter.FindRoutine(colrgb, labimg1[0, 0]);
 
-                if (f + 2 >= Frames.Count) { f = Frames.Count - 2; }
-
-                bmp1 = GetThumb(f - 1, false).Scale(ThumbWidth, ThumbHeight);
-                bmp2 = GetThumb(f, false).Scale(ThumbWidth, ThumbHeight);
-                bmp3 = GetThumb(f + 1, false).Scale(ThumbWidth, ThumbHeight);
-                rowstride = bmp1.Stride;
-
-                unsafe
+                for (int f = 1; f < Frames.Count; f += 2)
                 {
-                    bmp1.LockBits();
-                    bmp2.LockBits();
-                    bmp3.LockBits();
+                    if (MainWorker.CancellationPending) { return; }
 
-                    byte* pix1 = (byte*)bmp1.Scan0;
-                    byte* pix2 = (byte*)bmp2.Scan0;
-                    byte* pix3 = (byte*)bmp3.Scan0;
+                    if (f + 2 >= Frames.Count) { f = Frames.Count - 2; }
 
-                    //Non use Mask and Lab conversion
+                    bmp1 = GetThumb(f - 1, false).Scale(ThumbWidth, ThumbHeight);
+                    bmp2 = GetThumb(f, false).Scale(ThumbWidth, ThumbHeight);
+                    bmp3 = GetThumb(f + 1, false).Scale(ThumbWidth, ThumbHeight);
+                    rowstride = bmp1.Stride;
+
+                    unsafe
+                    {
+                        bmp1.LockBits();
+                        bmp2.LockBits();
+                        bmp3.LockBits();
+
+                        byte* pix1 = (byte*)bmp1.Scan0;
+                        byte* pix2 = (byte*)bmp2.Scan0;
+                        byte* pix3 = (byte*)bmp3.Scan0;
+
+                        //Non use Mask and Lab conversion
+                        for (y = 0; y < ThumbHeight; y++)
+                        {
+                            for (x = 0; x < ThumbWidth; x++)
+                            {
+                                index = y * rowstride + (x * n);
+
+                                colrgb.R = pix1[index];
+                                colrgb.G = pix1[index + 1];
+                                colrgb.B = pix1[index + 2];
+                                Converter.Convert(colrgb, labimg1[x, y], rout);
+                                colrgb.R = pix2[index];
+                                colrgb.G = pix2[index + 1];
+                                colrgb.B = pix2[index + 2];
+                                Converter.Convert(colrgb, labimg2[x, y], rout);
+                                colrgb.R = pix3[index];
+                                colrgb.G = pix3[index + 1];
+                                colrgb.B = pix3[index + 2];
+                                Converter.Convert(colrgb, labimg3[x, y], rout);
+
+
+                                if (labimg1[x, y].L < min || labimg1[x, y].L > max || labimg2[x, y].L < min || labimg2[x, y].L > max || labimg3[x, y].L < min || labimg3[x, y].L > max ||
+                                    Math.Abs(labimg2[x, y].a - labimg1[x, y].a) > maxCol || Math.Abs(labimg3[x, y].a - labimg2[x, y].a) > maxCol ||
+                                    Math.Abs(labimg2[x, y].b - labimg1[x, y].b) > maxCol || Math.Abs(labimg3[x, y].b - labimg2[x, y].b) > maxCol)
+                                {
+                                    NonUseMask[x, y] = true;
+                                }
+                            }
+                        }
+                        bmp1.UnlockBits();
+                        bmp2.UnlockBits();
+                        bmp3.UnlockBits();
+                    }
+
+                    PixelBrightness = new List<double[]>();
+
+                    //Brightness calculation
                     for (y = 0; y < ThumbHeight; y++)
                     {
                         for (x = 0; x < ThumbWidth; x++)
                         {
-                            index = y * rowstride + (x * n);
-
-                            labimg1[x, y] = Converter.ToLab(new ColorRGB(RGBSpaceName.sRGB, pix1[index], pix1[index + 1], pix1[index + 2]));
-                            labimg2[x, y] = Converter.ToLab(new ColorRGB(RGBSpaceName.sRGB, pix2[index], pix2[index + 1], pix2[index + 2]));
-                            labimg3[x, y] = Converter.ToLab(new ColorRGB(RGBSpaceName.sRGB, pix3[index], pix3[index + 1], pix3[index + 2]));
-
-                            if (labimg1[x, y].L < min || labimg1[x, y].L > max || labimg2[x, y].L < min || labimg2[x, y].L > max || labimg3[x, y].L < min || labimg3[x, y].L > max ||
-                                Math.Abs(labimg2[x, y].a - labimg1[x, y].a) > maxCol || Math.Abs(labimg3[x, y].a - labimg2[x, y].a) > maxCol ||
-                                Math.Abs(labimg2[x, y].b - labimg1[x, y].b) > maxCol || Math.Abs(labimg3[x, y].b - labimg2[x, y].b) > maxCol)
+                            if (!NonUseMask[x, y])
                             {
-                                NonUseMask[x, y] = true;
-                            }
-                        }
-                    }
-                    bmp1.UnlockBits();
-                    bmp2.UnlockBits();
-                    bmp3.UnlockBits();
-                }
-
-                PixelBrightness = new List<double[]>();
-
-                //Brightness calculation
-                for (y = 0; y < ThumbHeight; y++)
-                {
-                    for (x = 0; x < ThumbWidth; x++)
-                    {
-                        if (!NonUseMask[x, y])
-                        {
-                            fact = 0;
-                            if (y > 0 && x > 0 && y < ThumbHeight - 1 && x < ThumbWidth - 1)
-                            {
-                                d1 = 0;
-                                d2 = 0;
-                                for (y1 = -1; y1 <= 1; y1++)
+                                fact = 0;
+                                if (y > 0 && x > 0 && y < ThumbHeight - 1 && x < ThumbWidth - 1)
                                 {
-                                    for (x1 = -1; x1 <= 1; x1++)
+                                    d1 = 0;
+                                    d2 = 0;
+                                    for (y1 = -1; y1 <= 1; y1++)
                                     {
-                                        d1 += Math.Abs(labimg1[x, y].L - labimg2[x, y].L);
-                                        d2 += Math.Abs(labimg2[x, y].L - labimg3[x, y].L);
+                                        for (x1 = -1; x1 <= 1; x1++)
+                                        {
+                                            d1 += Math.Abs(labimg1[x, y].L - labimg2[x, y].L);
+                                            d2 += Math.Abs(labimg2[x, y].L - labimg3[x, y].L);
+                                        }
                                     }
+                                    fact = Math.Max(d1 / 9d, d2 / 9d);
                                 }
-                                fact = Math.Max(d1 / 9d, d2 / 9d);
+                                if (fact > 0.2) PixelBrightness.Add(new double[] { fact * Math.Log(labimg1[x, y].L), fact * Math.Log(labimg2[x, y].L), fact * Math.Log(labimg3[x, y].L) });
                             }
-                            if (fact > 0.2) PixelBrightness.Add(new double[] { fact * Math.Log(labimg1[x, y].L), fact * Math.Log(labimg2[x, y].L), fact * Math.Log(labimg3[x, y].L) });
                         }
                     }
+
+                    Frames[f - 1].OriginalBrightness = PixelBrightness.Average(p => p[0]);
+                    Frames[f].OriginalBrightness = PixelBrightness.Average(p => p[1]);
+                    Frames[f + 1].OriginalBrightness = PixelBrightness.Average(p => p[2]);
+
+                    Frames[f - 1].AlternativeBrightness = Frames[f - 1].OriginalBrightness;
+                    Frames[f].AlternativeBrightness = Frames[f].OriginalBrightness;
+                    Frames[f + 1].AlternativeBrightness = Frames[f + 1].OriginalBrightness;
+
+                    Frames[f - 1].NewBrightness = Frames[f - 1].OriginalBrightness;
+                    Frames[f].NewBrightness = Frames[f].OriginalBrightness;
+                    Frames[f + 1].NewBrightness = Frames[f + 1].OriginalBrightness;
+
+                    MainWorker.ReportProgress(0, new ProgressChangeEventArgs(f * 100 / (Frames.Count - 1), ProgressType.CalculateBrightness));
                 }
-
-                Frames[f - 1].OriginalBrightness = PixelBrightness.Average(p => p[0]);
-                Frames[f].OriginalBrightness = PixelBrightness.Average(p => p[1]);
-                Frames[f + 1].OriginalBrightness = PixelBrightness.Average(p => p[2]);
-
-                Frames[f - 1].AlternativeBrightness = Frames[f - 1].OriginalBrightness;
-                Frames[f].AlternativeBrightness = Frames[f].OriginalBrightness;
-                Frames[f + 1].AlternativeBrightness = Frames[f + 1].OriginalBrightness;
-
-                Frames[f - 1].NewBrightness = Frames[f - 1].OriginalBrightness;
-                Frames[f].NewBrightness = Frames[f].OriginalBrightness;
-                Frames[f + 1].NewBrightness = Frames[f + 1].OriginalBrightness;
-
-                MainWorker.ReportProgress(0, new ProgressChangeEventArgs(f * 100 / (Frames.Count - 1), ProgressType.CalculateBrightness));
             }
         }
 
@@ -963,49 +1003,52 @@ namespace Timelapse_API
         {
             double ld = Math.Log(2);
             long index = 0;
-            ColorRGB crgb = new ColorRGB(RGBSpaceName.sRGB, false);
+            ColorRGB crgb = new ColorRGB(new RGBColorspacesRGB());
             ColorLab cl = new ColorLab();
-            ColorConverter Converter = new ColorConverter();
+            IConversionRoutine routLab = ColorConverter.FindRoutine(crgb, cl);
+            IConversionRoutine routRGB = ColorConverter.FindRoutine(cl, crgb);
             BitmapEx bmp, bmpE;
 
-            for (int i = 0; i < Frames.Count; i++)
+            using (ColorConverter Converter = new ColorConverter())
             {
-                double exposure = Math.Log(Frames[i].NewBrightness / Frames[i].AlternativeBrightness, 2);
-                bmp = GetThumb(i, false);
-                bmpE = GetThumbEdited(i, false);
-                
-                unsafe
+                for (int i = 0; i < Frames.Count; i++)
                 {
-                    bmp.LockBits();
-                    bmpE.LockBits();
-                    byte* pix1 = (byte*)bmp.Scan0;
-                    byte* pix2 = (byte*)bmpE.Scan0;
+                    double exposure = Math.Log(Frames[i].NewBrightness / Frames[i].AlternativeBrightness, 2);
+                    bmp = GetThumb(i, false);
+                    bmpE = GetThumbEdited(i, false);
 
-                    for (uint y = 0; y < bmp.Height; y++)
+                    unsafe
                     {
-                        for (uint x = 0; x < bmp.Stride; x += bmp.ChannelCount)
+                        bmp.LockBits();
+                        bmpE.LockBits();
+                        byte* pix1 = (byte*)bmp.Scan0;
+                        byte* pix2 = (byte*)bmpE.Scan0;
+
+                        for (uint y = 0; y < bmp.Height; y++)
                         {
-                            index = y * bmp.Stride + x;
+                            for (uint x = 0; x < bmp.Stride; x += bmp.ChannelCount)
+                            {
+                                index = y * bmp.Stride + x;
 
-                            //LTODO: doesn't calculate correctly
-                            crgb.R = pix1[index] / 255d; crgb.G = pix1[index + 1] / 255d; crgb.B = pix1[index + 2] / 255d;
-                            cl = Converter.ToLab(crgb);
-                            if (exposure < 0) { cl.L = (cl.L < 0.94) ? cl.L : Math.Exp(exposure * ld) * cl.L; }
-                            else if (exposure > 0) { cl.L = (cl.L > 0.06) ? cl.L : Math.Exp(exposure * ld) * cl.L; }
-                            crgb = Converter.ToRGB(cl, RGBSpaceName.sRGB);
-                            crgb = crgb.ToNonLinear();
+                                //LTODO: doesn't calculate correctly
+                                crgb.R = pix1[index] / 255d; crgb.G = pix1[index + 1] / 255d; crgb.B = pix1[index + 2] / 255d;
+                                Converter.Convert(crgb, cl, routLab);
+                                if (exposure < 0) { cl.L = (cl.L < 0.94) ? cl.L : Math.Exp(exposure * ld) * cl.L; }
+                                else if (exposure > 0) { cl.L = (cl.L > 0.06) ? cl.L : Math.Exp(exposure * ld) * cl.L; }
+                                Converter.Convert(cl, crgb, routRGB);
 
-                            pix2[index] = (byte)(crgb.R * byte.MaxValue);
-                            pix2[index + 1] = (byte)(crgb.G * byte.MaxValue);
-                            pix2[index + 2] = (byte)(crgb.B * byte.MaxValue);
+                                pix2[index] = (byte)(crgb.R * byte.MaxValue);
+                                pix2[index + 1] = (byte)(crgb.G * byte.MaxValue);
+                                pix2[index + 2] = (byte)(crgb.B * byte.MaxValue);
+                            }
                         }
+                        bmp.UnlockBits();
+                        bmpE.UnlockBits();
                     }
-                    bmp.UnlockBits();
-                    bmpE.UnlockBits();
-                }
 
-                SetThumbEdited(i, bmpE);
-                MainWorker.ReportProgress(0, new ProgressChangeEventArgs(i * 100 / (Frames.Count - 1), ProgressType.ProcessingThumbs));
+                    SetThumbEdited(i, bmpE);
+                    MainWorker.ReportProgress(0, new ProgressChangeEventArgs(i * 100 / (Frames.Count - 1), ProgressType.ProcessingThumbs));
+                }
             }
         }
 
@@ -1020,5 +1063,5 @@ namespace Timelapse_API
         }
         
         #endregion
-    }    
+    }
 }

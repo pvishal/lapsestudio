@@ -1,5 +1,6 @@
 ﻿using System;
 using System.IO;
+using ColorManager;
 
 namespace Timelapse_API
 {
@@ -86,7 +87,7 @@ namespace Timelapse_API
         /// </summary>
         public bool HasMetadata { get; internal set; }
 
-        internal ColorManagment.RGBSpaceName ColorSpace;
+        internal IRGBSpace ColorSpace;
         
         /// <summary>
         /// Init a new frame

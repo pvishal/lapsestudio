@@ -5,8 +5,9 @@ namespace LapseStudioGtkUI
 	public partial class Graph
 	{
 		private global::Gtk.EventBox GraphEventBox;
-		private global::Gtk.DrawingArea GraphView;
 		
+		private global::Gtk.DrawingArea GraphView;
+
 		protected virtual void Build ()
 		{
 			global::Stetic.Gui.Initialize (this);

@@ -1,0 +1,1850 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>ColorManager</name>
+    </assembly>
+    <members>
+        <member name="T:ColorManager.ICCConversionRoutine">
+            <summary>
+            A routine to convert from one ICC color to another
+            </summary>
+        </member>
+        <member name="M:ColorManager.ICCConversionRoutine.Convert(System.Double*,System.Double*,System.Double*,ColorManager.ICC.ICCProfile,ColorManager.ICCconversionMethod,ColorManager.ICCconversionType)">
+            <summary>
+            Converts a color to another
+            </summary>
+            <param name="inColor">Pointer to input color values</param>
+            <param name="outColor">Pointer to output color values</param>
+            <param name="v">A temporary array to help calculations</param>
+            <param name="profile">The ICC profile</param>
+        </member>
+        <member name="M:ColorManager.ICCConverter.#ctor">
+            <summary>
+            Creates a new instance of the ColorConverter class
+            </summary>
+            <param name="fill">Fill list with standard conversion routines</param>
+        </member>
+        <member name="M:ColorManager.ICCConverter.Dispose">
+            <summary>
+            Releases all allocated resources
+            </summary>
+        </member>
+        <member name="M:ColorManager.Color.ChangeColorspace(ColorManager.Colorspace)">
+            <summary>
+            Change the current colorspace with a new one.
+            You should take care to use the correct type of colorspace. It may vary for different colormodels.
+            </summary>
+            <param name="newSpace">The new colorspace for the color</param>
+        </member>
+        <member name="P:ColorManager.Color.Name">
+            <summary>
+            The name of this model
+            </summary>
+        </member>
+        <member name="P:ColorManager.Color.ChannelCount">
+            <summary>
+            Number of channels this model has
+            </summary>
+        </member>
+        <member name="P:ColorManager.Color.MinValues">
+            <summary>
+            Minimum value for each channel
+            </summary>
+        </member>
+        <member name="P:ColorManager.Color.MaxValues">
+            <summary>
+            Maximum value for each channel
+            </summary>
+        </member>
+        <member name="P:ColorManager.Color.ChannelShortNames">
+            <summary>
+            Names of channels short
+            </summary>
+        </member>
+        <member name="P:ColorManager.Color.ChannelFullNames">
+            <summary>
+            Names of channels full
+            </summary>
+        </member>
+        <member name="T:ColorManager.ICC.ICCHeader">
+            <summary>
+            The header of an ICC profile
+            </summary>
+        </member>
+        <member name="P:ColorManager.ICC.ICCHeader.ProfileSize">
+            <summary>
+            Size of profile in bytes
+            </summary>
+        </member>
+        <member name="P:ColorManager.ICC.ICCHeader.CMMType">
+            <summary>
+            Preferred CMM (Color Management Module) type
+            </summary>
+        </member>
+        <member name="P:ColorManager.ICC.ICCHeader.ProfileVersionNumber">
+            <summary>
+            Version number of profile
+            </summary>
+        </member>
+        <member name="P:ColorManager.ICC.ICCHeader.ProfileClass">
+            <summary>
+            Type of profile
+            </summary>
+        </member>
+        <member name="P:ColorManager.ICC.ICCHeader.DataColorspace">
+            <summary>
+            Colorspace of data
+            </summary>
+        </member>
+        <member name="P:ColorManager.ICC.ICCHeader.PCS">
+            <summary>
+            Profile Connection Space
+            </summary>
+        </member>
+        <member name="P:ColorManager.ICC.ICCHeader.CreationDate">
+            <summary>
+            Date and time this profile was first created
+            </summary>
+        </member>
+        <member name="P:ColorManager.ICC.ICCHeader.ProfileFileSignature">
+            <summary>
+            Has to be "acsp"
+            </summary>
+        </member>
+        <member name="P:ColorManager.ICC.ICCHeader.PrimaryPlatformSignature">
+            <summary>
+            Primary platform this profile was created for
+            </summary>
+        </member>
+        <member name="P:ColorManager.ICC.ICCHeader.ProfileFlags">
+            <summary>
+            Profile flags to indicate various options for the CMM such as distributed processing and caching options
+            </summary>
+        </member>
+        <member name="P:ColorManager.ICC.ICCHeader.DeviceManufacturer">
+            <summary>
+            Device manufacturer of the device for which this profile is created
+            </summary>
+        </member>
+        <member name="P:ColorManager.ICC.ICCHeader.DeviceModel">
+            <summary>
+            Device model of the device for which this profile is created
+            </summary>
+        </member>
+        <member name="P:ColorManager.ICC.ICCHeader.DeviceAttributes">
+            <summary>
+            Device attributes unique to the particular device setup such as media type
+            </summary>
+        </member>
+        <member name="P:ColorManager.ICC.ICCHeader.RenderingIntent">
+            <summary>
+            Rendering Intent
+            </summary>
+        </member>
+        <member name="P:ColorManager.ICC.ICCHeader.PCSIlluminant">
+            <summary>
+            The normalized XYZ values of the illuminant of the PCS
+            </summary>
+        </member>
+        <member name="P:ColorManager.ICC.ICCHeader.ProfileCreatorSignature">
+            <summary>
+            Profile creator signature
+            </summary>
+        </member>
+        <member name="P:ColorManager.ICC.ICCHeader.ProfileID">
+            <summary>
+            Profile ID
+            </summary>
+        </member>
+        <member name="T:ColorManager.ICC.MultiProcessElement">
+            <summary>
+            An element to process data
+            </summary>
+        </member>
+        <member name="P:ColorManager.ICC.MultiProcessElement.Signature">
+            <summary>
+            The signature of this element
+            </summary>
+        </member>
+        <member name="P:ColorManager.ICC.MultiProcessElement.InputChannelCount">
+            <summary>
+            Number of input channels
+            </summary>
+        </member>
+        <member name="P:ColorManager.ICC.MultiProcessElement.OutputChannelCount">
+            <summary>
+            Number of output channels
+            </summary>
+        </member>
+        <member name="T:ColorManager.ICC.MatrixProcessElement">
+            <summary>
+            A matrix element to process data
+            </summary>
+        </member>
+        <member name="P:ColorManager.ICC.MatrixProcessElement.Signature">
+            <summary>
+            The signature of this element
+            </summary>
+        </member>
+        <member name="T:ColorManager.ICC.CurveSetProcessElement">
+            <summary>
+            A set of curves to process data
+            </summary>
+        </member>
+        <member name="P:ColorManager.ICC.CurveSetProcessElement.Signature">
+            <summary>
+            The signature of this element
+            </summary>
+        </member>
+        <member name="P:ColorManager.ICC.CurveSetProcessElement.Curves">
+            <summary>
+            An array with one dimensional curves
+            </summary>
+        </member>
+        <member name="T:ColorManager.ICC.CLUTProcessElement">
+            <summary>
+            An CLUT (Color Look-Up-Table) element to process data
+            </summary>
+        </member>
+        <member name="P:ColorManager.ICC.CLUTProcessElement.Signature">
+            <summary>
+            The signature of this element
+            </summary>
+        </member>
+        <member name="T:ColorManager.ICC.bACSProcessElement">
+            <summary>
+            An empty process element for future expansion
+            </summary>
+        </member>
+        <member name="P:ColorManager.ICC.bACSProcessElement.Signature">
+            <summary>
+            The signature of this element
+            </summary>
+        </member>
+        <member name="T:ColorManager.ICC.eACSProcessElement">
+            <summary>
+            An empty process element for future expansion
+            </summary>
+        </member>
+        <member name="P:ColorManager.ICC.eACSProcessElement.Signature">
+            <summary>
+            The signature of this element
+            </summary>
+        </member>
+        <member name="T:ColorManager.ICC.ICCProfile">
+            <summary>
+            Stores all values from an ICC profile
+            </summary>
+        </member>
+        <member name="M:ColorManager.ICC.ICCProfile.#ctor(System.String)">
+            <summary>
+            Reads an ICC profile from disk
+            </summary>
+            <param name="path">Path to the ICC file</param>
+        </member>
+        <member name="M:ColorManager.ICC.ICCProfile.#ctor(System.Byte[])">
+            <summary>
+            Reads an ICC profile from byte data
+            </summary>
+            <param name="data">An ICC profile as byte array</param>
+        </member>
+        <member name="M:ColorManager.ICC.ICCProfile.#ctor(System.IO.Stream)">
+            <summary>
+            Reads an ICC profile from a stream
+            </summary>
+            <param name="str">A stream containing ICC data</param>
+        </member>
+        <member name="M:ColorManager.ICC.ICCProfile.ReadAll">
+            <summary>
+            Reads all information stored in an ICC profile
+            </summary>
+        </member>
+        <member name="M:ColorManager.ICC.ICCProfile.GetFirstEntry(ColorManager.ICC.TagSignature)">
+            <summary>
+            Get the first entry with the specific signature. Returns null if none is found
+            </summary>
+            <param name="TagName">The signature of the entry</param>
+            <returns>The data of the named entry</returns>
+        </member>
+        <member name="M:ColorManager.ICC.ICCProfile.GetAllEntries(ColorManager.ICC.TagSignature)">
+            <summary>
+            Get the all entries with the specific signature
+            </summary>
+            <param name="TagName">The signature of the entry</param>
+            <returns>The array of data of the named entry</returns>
+        </member>
+        <member name="P:ColorManager.ICC.ICCProfile.ProfileName">
+            <summary>
+            Name of the profile
+            </summary>
+        </member>
+        <member name="P:ColorManager.ICC.ICCProfile.ICCType">
+            <summary>
+            ICC Profile Type
+            </summary>
+        </member>
+        <member name="P:ColorManager.ICC.ICCProfile.ReferenceWhite">
+            <summary>
+            The reference white
+            </summary>
+        </member>
+        <member name="P:ColorManager.ICC.ICCProfile.ProfileDescription">
+            <summary>
+            Description of this profile in localized strings
+            </summary>
+        </member>
+        <member name="P:ColorManager.ICC.ICCProfile.CopyrightInformation">
+            <summary>
+            Copyright information of this profile in localized strings
+            </summary>
+        </member>
+        <member name="P:ColorManager.ICC.ICCProfile.Ma">
+            <summary>
+            Chromatic adaption matrix
+            </summary>
+        </member>
+        <member name="P:ColorManager.ICC.ICCProfile.Ma1">
+            <summary>
+            Inverted chromatic adaption matrix
+            </summary>
+        </member>
+        <member name="P:ColorManager.ICC.ICCProfile.MatrixTRCpossible">
+            <summary>
+            States if a conversion is possible with Matrix TRC
+            </summary>
+        </member>
+        <member name="P:ColorManager.ICC.ICCProfile.MultiprocessPossible_ToPCS">
+            <summary>
+            States if a conversion to the PCS is possible with Multiprocess Elements
+            </summary>
+        </member>
+        <member name="P:ColorManager.ICC.ICCProfile.MultiprocessPossible_ToDevice">
+            <summary>
+            States if a conversion to the device color is possible with Multiprocess Elements
+            </summary>
+        </member>
+        <member name="P:ColorManager.ICC.ICCProfile.nLUTpossible_ToPCS">
+            <summary>
+            States if a conversion to the PCS is possible with an N-LUT
+            </summary>
+        </member>
+        <member name="P:ColorManager.ICC.ICCProfile.nLUTpossible_ToDevice">
+            <summary>
+            States if a conversion to the device color is possible with an N-LUT
+            </summary>
+        </member>
+        <member name="P:ColorManager.ICC.ICCProfile.MonochromePossible">
+            <summary>
+            States if a monochrome conversion is possible
+            </summary>
+        </member>
+        <member name="P:ColorManager.ICC.ICCProfile.HasGrayTRC">
+            <summary>
+            States if the profile has a gray TRC tag
+            </summary>
+        </member>
+        <member name="P:ColorManager.ICC.ICCProfile.HasRedTRC">
+            <summary>
+            States if the profile has a red TRC tag
+            </summary>
+        </member>
+        <member name="P:ColorManager.ICC.ICCProfile.HasGreenTRC">
+            <summary>
+            States if the profile has a green TRC tag
+            </summary>
+        </member>
+        <member name="P:ColorManager.ICC.ICCProfile.HasBlueTRC">
+            <summary>
+            States if the profile has a blue TRC tag
+            </summary>
+        </member>
+        <member name="P:ColorManager.ICC.ICCProfile.HasBToA0">
+            <summary>
+            States if the profile has a B to A0 tag (PCS->Device: perceptual)
+            </summary>
+        </member>
+        <member name="P:ColorManager.ICC.ICCProfile.HasBToA1">
+            <summary>
+            States if the profile has a B to A1 tag (PCS->Device: relative colorimetric)
+            </summary>
+        </member>
+        <member name="P:ColorManager.ICC.ICCProfile.HasBToA2">
+            <summary>
+            States if the profile has a B to A2 tag (PCS->Device: saturation)
+            </summary>
+        </member>
+        <member name="P:ColorManager.ICC.ICCProfile.HasAToB0">
+            <summary>
+            States if the profile has a A to B0 tag (Device->PCS: perceptual)
+            </summary>
+        </member>
+        <member name="P:ColorManager.ICC.ICCProfile.HasAToB1">
+            <summary>
+            States if the profile has a A to B1 tag (Device->PCS: relative colorimetric)
+            </summary>
+        </member>
+        <member name="P:ColorManager.ICC.ICCProfile.HasAToB2">
+            <summary>
+            States if the profile has a A to B2 tag (Device->PCS: saturation)
+            </summary>
+        </member>
+        <member name="P:ColorManager.ICC.ICCProfile.HasBToD0">
+            <summary>
+            States if the profile has a B to D0 tag (PCS->Device: perceptual)
+            </summary>
+        </member>
+        <member name="P:ColorManager.ICC.ICCProfile.HasBToD1">
+            <summary>
+            States if the profile has a B to D1 tag (PCS->Device: relative colorimetric)
+            </summary>
+        </member>
+        <member name="P:ColorManager.ICC.ICCProfile.HasBToD2">
+            <summary>
+            States if the profile has a B to D2 tag (PCS->Device: saturation)
+            </summary>
+        </member>
+        <member name="P:ColorManager.ICC.ICCProfile.HasBToD3">
+            <summary>
+            States if the profile has a B to D3 tag (PCS->Device: absolute colorimetric)
+            </summary>
+        </member>
+        <member name="P:ColorManager.ICC.ICCProfile.HasDToB0">
+            <summary>
+            States if the profile has a D to B0 tag (Device->PCS: perceptual)
+            </summary>
+        </member>
+        <member name="P:ColorManager.ICC.ICCProfile.HasDToB1">
+            <summary>
+            States if the profile has a D to B1 tag (Device->PCS: relative colorimetric)
+            </summary>
+        </member>
+        <member name="P:ColorManager.ICC.ICCProfile.HasDToB2">
+            <summary>
+            States if the profile has a D to B2 tag (Device->PCS: saturation)
+            </summary>
+        </member>
+        <member name="P:ColorManager.ICC.ICCProfile.HasDToB3">
+            <summary>
+            States if the profile has a D to B3 tag (Device->PCS: absolute colorimetric)
+            </summary>
+        </member>
+        <member name="P:ColorManager.ICC.ICCProfile.Header">
+            <summary>
+            The header of this profile
+            </summary>
+        </member>
+        <member name="P:ColorManager.ICC.ICCProfile.TagTable">
+            <summary>
+            The tag table of this profile
+            </summary>
+        </member>
+        <member name="P:ColorManager.ICC.ICCProfile.TagData">
+            <summary>
+            The tag data of this profile
+            </summary>
+        </member>
+        <member name="T:ColorManager.Whitepoint">
+            <summary>
+            Represents a whitepoint
+            </summary>
+        </member>
+        <member name="T:ColorManager.ICC.NamedColor">
+            <summary>
+            A color with a name
+            </summary>
+        </member>
+        <member name="T:ColorManager.ICC.OneDimensionalCurve">
+            <summary>
+            A one dimensional curve
+            </summary>
+        </member>
+        <member name="P:ColorManager.ICC.OneDimensionalCurve.SegmentCount">
+            <summary>
+            Number of curve segments
+            </summary>
+        </member>
+        <member name="P:ColorManager.ICC.OneDimensionalCurve.BreakPoints">
+            <summary>
+            Breakpoints separate two curve segments
+            </summary>
+        </member>
+        <member name="P:ColorManager.ICC.OneDimensionalCurve.Segments">
+            <summary>
+            An array of curve segments
+            </summary>
+        </member>
+        <member name="T:ColorManager.ICC.CurveSegment">
+            <summary>
+            A segment of a curve
+            </summary>
+        </member>
+        <member name="M:ColorManager.ICC.CurveSegment.GetValue(System.Double)">
+            <summary>
+            Interpolates a given value with the methods of this curve segment
+            </summary>
+            <param name="X">The value which will get interpolated</param>
+            <returns>The interpolated value</returns>
+        </member>
+        <member name="P:ColorManager.ICC.CurveSegment.Signature">
+            <summary>
+            The signature of this segment
+            </summary>
+        </member>
+        <member name="T:ColorManager.ICC.FormulaCurveElement">
+            <summary>
+            A formula based curve segment
+            </summary>
+        </member>
+        <member name="M:ColorManager.ICC.FormulaCurveElement.GetValue(System.Double)">
+            <summary>
+            Interpolates a given value with the methods of this curve segment
+            </summary>
+            <param name="X">The value which will get interpolated</param>
+            <returns>The interpolated value</returns>
+        </member>
+        <member name="P:ColorManager.ICC.FormulaCurveElement.Signature">
+            <summary>
+            The signature of this segment
+            </summary>
+        </member>
+        <member name="T:ColorManager.ICC.SampledCurveElement">
+            <summary>
+            A sampled curve segment
+            </summary>
+        </member>
+        <member name="M:ColorManager.ICC.SampledCurveElement.GetValue(System.Double)">
+            <summary>
+            Interpolates a given value with the methods of this curve segment
+            </summary>
+            <param name="X">The value which will get interpolated</param>
+            <returns>The interpolated value</returns>
+        </member>
+        <member name="P:ColorManager.ICC.SampledCurveElement.Signature">
+            <summary>
+            The signature of this segment
+            </summary>
+        </member>
+        <member name="P:ColorManager.ICC.SampledCurveElement.EntryCount">
+            <summary>
+            Number of entries
+            </summary>
+        </member>
+        <member name="P:ColorManager.ICC.SampledCurveElement.CurveEntries">
+            <summary>
+            The curve entries
+            </summary>
+        </member>
+        <member name="T:ColorManager.ICC.TagDataEntry">
+            <summary>
+            The data of an entry
+            </summary>
+        </member>
+        <member name="T:ColorManager.ICC.chromaticityTagDataEntry">
+            <summary>
+            The chromaticity tag type provides basic chromaticity data and type of phosphors or colorants of a monitor to applications and utilities.
+            </summary>
+        </member>
+        <member name="T:ColorManager.ICC.colorantOrderTagDataEntry">
+            <summary>
+            This tag specifies the laydown order in which colorants will be printed on an n-colorant device.
+            </summary>
+        </member>
+        <member name="T:ColorManager.ICC.colorantTableTagDataEntry">
+            <summary>
+            The purpose of this tag is to identify the colorants used in the profile by a unique name and set of PCSXYZ or PCSLAB values to give the colorant an unambiguous value.
+            </summary>
+        </member>
+        <member name="T:ColorManager.ICC.curveTagDataEntry">
+            <summary>
+            The type contains a one-dimensional table of double values.
+            </summary>
+        </member>
+        <member name="T:ColorManager.ICC.dataTagDataEntry">
+            <summary>
+            The dataType is a simple data structure that contains either 7-bit ASCII or binary data, i.e. textType data or transparent bytes.
+            </summary>
+        </member>
+        <member name="T:ColorManager.ICC.dateTimeTagDataEntry">
+            <summary>
+            This type is a representation of the time and date.
+            </summary>
+        </member>
+        <member name="T:ColorManager.ICC.lut16TagDataEntry">
+            <summary>
+            This structure represents a colour transform using tables with 16-bit precision.
+            </summary>
+        </member>
+        <member name="T:ColorManager.ICC.lut8TagDataEntry">
+            <summary>
+            This structure represents a colour transform using tables with 8-bit precision.
+            </summary>
+        </member>
+        <member name="T:ColorManager.ICC.lutAToBTagDataEntry">
+            <summary>
+            This structure represents a colour transform.
+            </summary>
+        </member>
+        <member name="T:ColorManager.ICC.lutBToATagDataEntry">
+            <summary>
+            This structure represents a colour transform.
+            </summary>
+        </member>
+        <member name="T:ColorManager.ICC.measurementTagDataEntry">
+            <summary>
+            The measurementType information refers only to the internal profile data and is meant to provide profile makers an alternative to the default measurement specifications.
+            </summary>
+        </member>
+        <member name="T:ColorManager.ICC.multiLocalizedUnicodeTagDataEntry">
+            <summary>
+            This tag structure contains a set of records each referencing a multilingual string associated with a profile.
+            </summary>
+        </member>
+        <member name="T:ColorManager.ICC.multiProcessElementsTagDataEntry">
+            <summary>
+            This structure represents a colour transform, containing a sequence of processing elements.
+            </summary>
+        </member>
+        <member name="T:ColorManager.ICC.namedColor2TagDataEntry">
+            <summary>
+            The namedColor2Type is a count value and array of structures that provide colour coordinates for colour names.
+            </summary>
+        </member>
+        <member name="T:ColorManager.ICC.parametricCurveTagDataEntry">
+            <summary>
+            The parametricCurveType describes a one-dimensional curve by specifying one of a predefined set of functions using the parameters.
+            </summary>
+        </member>
+        <member name="T:ColorManager.ICC.profileSequenceDescTagDataEntry">
+            <summary>
+            This type is an array of structures, each of which contains information from the header fields and tags from the original profiles which were combined to create the final profile.
+            </summary>
+        </member>
+        <member name="T:ColorManager.ICC.profileSequenceIdentifierTagDataEntry">
+            <summary>
+            This type is an array of structures, each of which contains information for identification of a profile used in a sequence.
+            </summary>
+        </member>
+        <member name="T:ColorManager.ICC.responseCurveSet16TagDataEntry">
+            <summary>
+            The purpose of this tag type is to provide a mechanism to relate physical colorant amounts with the normalized device codes produced by lut8Type, lut16Type, lutAToBType, lutBToAType or multiProcessElementsType tags so that corrections can be made for variation in the device without having to produce a new profile.
+            </summary>
+        </member>
+        <member name="T:ColorManager.ICC.s15Fixed16ArrayTagDataEntry">
+            <summary>
+            This type represents an array of doubles (from 32bit fixed point values).
+            </summary>
+        </member>
+        <member name="T:ColorManager.ICC.signatureTagDataEntry">
+            <summary>
+            Typically this type is used for registered tags that can be displayed on many development systems as a sequence of four characters.
+            </summary>
+        </member>
+        <member name="T:ColorManager.ICC.textTagDataEntry">
+            <summary>
+            The textType is a simple text structure that contains a text string.
+            </summary>
+        </member>
+        <member name="T:ColorManager.ICC.u16Fixed16ArrayTagDataEntry">
+            <summary>
+            This type represents an array of doubles (from 32bit values).
+            </summary>
+        </member>
+        <member name="T:ColorManager.ICC.uInt16ArrayTagDataEntry">
+            <summary>
+            This type represents an array of unsigned shorts.
+            </summary>
+        </member>
+        <member name="T:ColorManager.ICC.uInt32ArrayTagDataEntry">
+            <summary>
+            This type represents an array of unsigned 32bit integers.
+            </summary>
+        </member>
+        <member name="T:ColorManager.ICC.uInt64ArrayTagDataEntry">
+            <summary>
+            This type represents an array of unsigned 64bit integers.
+            </summary>
+        </member>
+        <member name="T:ColorManager.ICC.uInt8ArrayTagDataEntry">
+            <summary>
+            This type represents an array of bytes.
+            </summary>
+        </member>
+        <member name="T:ColorManager.ICC.viewingConditionsTagDataEntry">
+            <summary>
+            This type represents a set of viewing condition parameters.
+            </summary>
+        </member>
+        <member name="T:ColorManager.ICC.XYZTagDataEntry">
+            <summary>
+            The XYZType contains an array of XYZ values.
+            </summary>
+        </member>
+        <member name="T:ColorManager.ICC.ICCTagTable">
+            <summary>
+            A table with all tags that are stored in the icc
+            </summary>
+        </member>
+        <member name="P:ColorManager.ICC.ICCTagTable.TagCount">
+            <summary>
+            Number of tags
+            </summary>
+        </member>
+        <member name="P:ColorManager.ICC.ICCTagTable.Data">
+            <summary>
+            An array storing all tags
+            </summary>
+        </member>
+        <member name="T:ColorManager.ColorXYZ">
+            <summary>
+            Represents a CIE XYZ color
+            </summary>
+        </member>
+        <member name="P:ColorManager.ColorXYZ.X">
+            <summary>
+            X-Channel
+            </summary>
+        </member>
+        <member name="P:ColorManager.ColorXYZ.Y">
+            <summary>
+            Y-Channel
+            </summary>
+        </member>
+        <member name="P:ColorManager.ColorXYZ.Z">
+            <summary>
+            Z-Channel
+            </summary>
+        </member>
+        <member name="T:ColorManager.ColorYxy">
+            <summary>
+            Represents a Yxy color
+            </summary>
+        </member>
+        <member name="P:ColorManager.ColorYxy.Y">
+            <summary>
+            Y-Channel
+            </summary>
+        </member>
+        <member name="P:ColorManager.ColorYxy.x">
+            <summary>
+            x-Channel
+            </summary>
+        </member>
+        <member name="P:ColorManager.ColorYxy.y">
+            <summary>
+            y-Channel
+            </summary>
+        </member>
+        <member name="T:ColorManager.ColorLab">
+            <summary>
+            Represents a CIE Lab color
+            </summary>
+        </member>
+        <member name="P:ColorManager.ColorLab.L">
+            <summary>
+            L-Channel
+            </summary>
+        </member>
+        <member name="P:ColorManager.ColorLab.a">
+            <summary>
+            a-Channel
+            </summary>
+        </member>
+        <member name="P:ColorManager.ColorLab.b">
+            <summary>
+            b-Channel
+            </summary>
+        </member>
+        <member name="T:ColorManager.ColorLuv">
+            <summary>
+            Represents a CIE Luv color
+            </summary>
+        </member>
+        <member name="P:ColorManager.ColorLuv.L">
+            <summary>
+            L-Channel
+            </summary>
+        </member>
+        <member name="P:ColorManager.ColorLuv.u">
+            <summary>
+            u-Channel
+            </summary>
+        </member>
+        <member name="P:ColorManager.ColorLuv.v">
+            <summary>
+            v-Channel
+            </summary>
+        </member>
+        <member name="P:ColorManager.ColorCMY.C">
+            <summary>
+            C-Channel
+            </summary>
+        </member>
+        <member name="P:ColorManager.ColorCMY.M">
+            <summary>
+            M-Channel
+            </summary>
+        </member>
+        <member name="P:ColorManager.ColorCMY.Y">
+            <summary>
+            Y-Channel
+            </summary>
+        </member>
+        <member name="P:ColorManager.ColorCMYK.C">
+            <summary>
+            C-Channel
+            </summary>
+        </member>
+        <member name="P:ColorManager.ColorCMYK.M">
+            <summary>
+            M-Channel
+            </summary>
+        </member>
+        <member name="P:ColorManager.ColorCMYK.Y">
+            <summary>
+            Y-Channel
+            </summary>
+        </member>
+        <member name="P:ColorManager.ColorCMYK.K">
+            <summary>
+            K-Channel
+            </summary>
+        </member>
+        <member name="P:ColorManager.ColorDEF.D">
+            <summary>
+            D-Channel
+            </summary>
+        </member>
+        <member name="P:ColorManager.ColorDEF.E">
+            <summary>
+            E-Channel
+            </summary>
+        </member>
+        <member name="P:ColorManager.ColorDEF.F">
+            <summary>
+            F-Channel
+            </summary>
+        </member>
+        <member name="P:ColorManager.ColorBef.B">
+            <summary>
+            B-Channel
+            </summary>
+        </member>
+        <member name="P:ColorManager.ColorBef.e">
+            <summary>
+            e-Channel
+            </summary>
+        </member>
+        <member name="P:ColorManager.ColorBef.f">
+            <summary>
+            f-Channel
+            </summary>
+        </member>
+        <member name="P:ColorManager.ColorBCH.B">
+            <summary>
+            B-Channel
+            </summary>
+        </member>
+        <member name="P:ColorManager.ColorBCH.C">
+            <summary>
+            C-Channel
+            </summary>
+        </member>
+        <member name="P:ColorManager.ColorBCH.H">
+            <summary>
+            H-Channel
+            </summary>
+        </member>
+        <member name="P:ColorManager.ColorLCHab.L">
+            <summary>
+            L-Channel
+            </summary>
+        </member>
+        <member name="P:ColorManager.ColorLCHab.C">
+            <summary>
+            C-Channel
+            </summary>
+        </member>
+        <member name="P:ColorManager.ColorLCHab.H">
+            <summary>
+            H-Channel
+            </summary>
+        </member>
+        <member name="P:ColorManager.ColorLCHuv.L">
+            <summary>
+            L-Channel
+            </summary>
+        </member>
+        <member name="P:ColorManager.ColorLCHuv.C">
+            <summary>
+            C-Channel
+            </summary>
+        </member>
+        <member name="P:ColorManager.ColorLCHuv.H">
+            <summary>
+            H-Channel
+            </summary>
+        </member>
+        <member name="P:ColorManager.ColorLCH99.L">
+            <summary>
+            L-Channel
+            </summary>
+        </member>
+        <member name="P:ColorManager.ColorLCH99.C">
+            <summary>
+            C-Channel
+            </summary>
+        </member>
+        <member name="P:ColorManager.ColorLCH99.H">
+            <summary>
+            H-Channel
+            </summary>
+        </member>
+        <member name="P:ColorManager.ColorLCH99b.L">
+            <summary>
+            L-Channel
+            </summary>
+        </member>
+        <member name="P:ColorManager.ColorLCH99b.C">
+            <summary>
+            C-Channel
+            </summary>
+        </member>
+        <member name="P:ColorManager.ColorLCH99b.H">
+            <summary>
+            H-Channel
+            </summary>
+        </member>
+        <member name="P:ColorManager.ColorLCH99c.L">
+            <summary>
+            L-Channel
+            </summary>
+        </member>
+        <member name="P:ColorManager.ColorLCH99c.C">
+            <summary>
+            C-Channel
+            </summary>
+        </member>
+        <member name="P:ColorManager.ColorLCH99c.H">
+            <summary>
+            H-Channel
+            </summary>
+        </member>
+        <member name="P:ColorManager.ColorLCH99d.L">
+            <summary>
+            L-Channel
+            </summary>
+        </member>
+        <member name="P:ColorManager.ColorLCH99d.C">
+            <summary>
+            C-Channel
+            </summary>
+        </member>
+        <member name="P:ColorManager.ColorLCH99d.H">
+            <summary>
+            H-Channel
+            </summary>
+        </member>
+        <member name="P:ColorManager.ColorGray.G">
+            <summary>
+            G-Channel
+            </summary>
+        </member>
+        <member name="P:ColorManager.ColorRGB.R">
+            <summary>
+            R-Channel
+            </summary>
+        </member>
+        <member name="P:ColorManager.ColorRGB.G">
+            <summary>
+            G-Channel
+            </summary>
+        </member>
+        <member name="P:ColorManager.ColorRGB.B">
+            <summary>
+            B-Channel
+            </summary>
+        </member>
+        <member name="P:ColorManager.ColorHSV.H">
+            <summary>
+            H-Channel
+            </summary>
+        </member>
+        <member name="P:ColorManager.ColorHSV.S">
+            <summary>
+            S-Channel
+            </summary>
+        </member>
+        <member name="P:ColorManager.ColorHSV.V">
+            <summary>
+            V-Channel
+            </summary>
+        </member>
+        <member name="P:ColorManager.ColorHSL.H">
+            <summary>
+            H-Channel
+            </summary>
+        </member>
+        <member name="P:ColorManager.ColorHSL.S">
+            <summary>
+            S-Channel
+            </summary>
+        </member>
+        <member name="P:ColorManager.ColorHSL.L">
+            <summary>
+            L-Channel
+            </summary>
+        </member>
+        <member name="P:ColorManager.ColorYCbCr.Y">
+            <summary>
+            Y-Channel
+            </summary>
+        </member>
+        <member name="P:ColorManager.ColorYCbCr.Cb">
+            <summary>
+            Cb-Channel
+            </summary>
+        </member>
+        <member name="P:ColorManager.ColorYCbCr.Cr">
+            <summary>
+            Cr-Channel
+            </summary>
+        </member>
+        <member name="M:ColorManager.ColorDifferenceCalculator.GetDeltaE_DIN99(ColorManager.ColorLCH99,ColorManager.ColorLCH99)">
+            <summary>
+            Get the difference between two colors
+            </summary>
+            <param name="Color1">First color</param>
+            <param name="Color2">Second color</param>
+            <returns>The difference between Color1 and Color2</returns>
+        </member>
+        <member name="M:ColorManager.ColorDifferenceCalculator.GetDeltaE_DIN99(ColorManager.ColorLCH99b,ColorManager.ColorLCH99b)">
+            <summary>
+            Get the difference between two colors
+            </summary>
+            <param name="Color1">First color</param>
+            <param name="Color2">Second color</param>
+            <returns>The difference between Color1 and Color2</returns>
+        </member>
+        <member name="M:ColorManager.ColorDifferenceCalculator.GetDeltaE_DIN99(ColorManager.ColorLCH99c,ColorManager.ColorLCH99c)">
+            <summary>
+            Get the difference between two colors
+            </summary>
+            <param name="Color1">First color</param>
+            <param name="Color2">Second color</param>
+            <returns>The difference between Color1 and Color2</returns>
+        </member>
+        <member name="M:ColorManager.ColorDifferenceCalculator.GetDeltaE_DIN99(ColorManager.ColorLCH99d,ColorManager.ColorLCH99d)">
+            <summary>
+            Get the difference between two colors
+            </summary>
+            <param name="Color1">First color</param>
+            <param name="Color2">Second color</param>
+            <returns>The difference between Color1 and Color2</returns>
+        </member>
+        <member name="M:ColorManager.ColorDifferenceCalculator.GetDeltaE_CIE76(ColorManager.ColorLab,ColorManager.ColorLab)">
+            <summary>
+            Get the difference between two colors
+            </summary>
+            <param name="Color1">First color</param>
+            <param name="Color2">Second color</param>
+            <returns>The difference between Color1 and Color2</returns>
+        </member>
+        <member name="M:ColorManager.ColorDifferenceCalculator.GetDeltaE_CIE94(ColorManager.ColorLab,ColorManager.ColorLab,ColorManager.CIE94DifferenceMethod)">
+            <summary>
+            Get the difference between two colors
+            </summary>
+            <param name="Color1">First color</param>
+            <param name="Color2">Second color</param>
+            <param name="DiffMethod">The specific way to calculate the difference</param>
+            <returns>The difference between Color1 and Color2</returns>
+        </member>
+        <member name="M:ColorManager.ColorDifferenceCalculator.GetDeltaE_CIEDE2000(ColorManager.ColorLab,ColorManager.ColorLab)">
+            <summary>
+            Get the difference between two colors
+            </summary>
+            <param name="Color1">First color</param>
+            <param name="Color2">Second color</param>
+            <returns>The difference between Color1 and Color2</returns>
+        </member>
+        <member name="M:ColorManager.ColorDifferenceCalculator.GetDeltaE_CMC(ColorManager.ColorLab,ColorManager.ColorLab,ColorManager.CMCDifferenceMethod)">
+            <summary>
+            Get the difference between two colors
+            </summary>
+            <param name="Color1">First color</param>
+            <param name="Color2">Second color</param>
+            <param name="DiffMethod">The specific way to calculate the difference</param>
+            <returns>The difference between Color1 and Color2</returns>
+        </member>
+        <member name="M:ColorManager.ColorDifferenceCalculator.GetDeltaE_CMC(ColorManager.ColorLab,ColorManager.ColorLab,System.Double,System.Double)">
+            <summary>
+            Get the difference between two colors
+            </summary>
+            <param name="Color1">First color</param>
+            <param name="Color2">Second color</param>
+            <param name="l">luma</param>
+            <param name="c">chromaticity</param>
+            <returns>The difference between Color1 and Color2</returns>
+        </member>
+        <member name="M:ColorManager.ColorDifferenceCalculator.GetDeltaH_DIN99(ColorManager.ColorLCH99,ColorManager.ColorLCH99)">
+            <summary>
+            Get the Hue difference between two colors
+            </summary>
+            <param name="Color1">First color</param>
+            <param name="Color2">Second color</param>
+            <returns>The Hue difference between Color1 and Color2</returns>
+        </member>
+        <member name="M:ColorManager.ColorDifferenceCalculator.GetDeltaH_DIN99(ColorManager.ColorLCH99b,ColorManager.ColorLCH99b)">
+            <summary>
+            Get the Hue difference between two colors
+            </summary>
+            <param name="Color1">First color</param>
+            <param name="Color2">Second color</param>
+            <returns>The Hue difference between Color1 and Color2</returns>
+        </member>
+        <member name="M:ColorManager.ColorDifferenceCalculator.GetDeltaH_DIN99(ColorManager.ColorLCH99c,ColorManager.ColorLCH99c)">
+            <summary>
+            Get the Hue difference between two colors
+            </summary>
+            <param name="Color1">First color</param>
+            <param name="Color2">Second color</param>
+            <returns>The Hue difference between Color1 and Color2</returns>
+        </member>
+        <member name="M:ColorManager.ColorDifferenceCalculator.GetDeltaH_DIN99(ColorManager.ColorLCH99d,ColorManager.ColorLCH99d)">
+            <summary>
+            Get the Hue difference between two colors
+            </summary>
+            <param name="Color1">First color</param>
+            <param name="Color2">Second color</param>
+            <returns>The Hue difference between Color1 and Color2</returns>
+        </member>
+        <member name="M:ColorManager.ColorDifferenceCalculator.GetDeltaH_CIE94(ColorManager.ColorLab,ColorManager.ColorLab)">
+            <summary>
+            Get the Hue difference between two colors
+            </summary>
+            <param name="Color1">First color</param>
+            <param name="Color2">Second color</param>
+            <returns>The Hue difference between Color1 and Color2</returns>
+        </member>
+        <member name="M:ColorManager.ColorDifferenceCalculator.GetDeltaH_CMC(ColorManager.ColorLab,ColorManager.ColorLab)">
+            <summary>
+            Get the Hue difference between two colors
+            </summary>
+            <param name="Color1">First color</param>
+            <param name="Color2">Second color</param>
+            <returns>The Hue difference between Color1 and Color2</returns>
+        </member>
+        <member name="M:ColorManager.ColorDifferenceCalculator.GetDeltaC_DIN99(ColorManager.ColorLCH99,ColorManager.ColorLCH99)">
+            <summary>
+            Get the Chroma difference between two colors
+            </summary>
+            <param name="Color1">First color</param>
+            <param name="Color2">Second color</param>
+            <returns>The Chroma difference between Color1 and Color2</returns>
+        </member>
+        <member name="M:ColorManager.ColorDifferenceCalculator.GetDeltaC_DIN99(ColorManager.ColorLCH99b,ColorManager.ColorLCH99b)">
+            <summary>
+            Get the Chroma difference between two colors
+            </summary>
+            <param name="Color1">First color</param>
+            <param name="Color2">Second color</param>
+            <returns>The Chroma difference between Color1 and Color2</returns>
+        </member>
+        <member name="M:ColorManager.ColorDifferenceCalculator.GetDeltaC_DIN99(ColorManager.ColorLCH99c,ColorManager.ColorLCH99c)">
+            <summary>
+            Get the Chroma difference between two colors
+            </summary>
+            <param name="Color1">First color</param>
+            <param name="Color2">Second color</param>
+            <returns>The Chroma difference between Color1 and Color2</returns>
+        </member>
+        <member name="M:ColorManager.ColorDifferenceCalculator.GetDeltaC_DIN99(ColorManager.ColorLCH99d,ColorManager.ColorLCH99d)">
+            <summary>
+            Get the Chroma difference between two colors
+            </summary>
+            <param name="Color1">First color</param>
+            <param name="Color2">Second color</param>
+            <returns>The Chroma difference between Color1 and Color2</returns>
+        </member>
+        <member name="M:ColorManager.ColorDifferenceCalculator.GetDeltaC_CIE94(ColorManager.ColorLab,ColorManager.ColorLab)">
+            <summary>
+            Get the Chroma difference between two colors
+            </summary>
+            <param name="Color1">First color</param>
+            <param name="Color2">Second color</param>
+            <returns>The Chroma difference between Color1 and Color2</returns>
+        </member>
+        <member name="M:ColorManager.ColorDifferenceCalculator.GetDeltaC_CMC(ColorManager.ColorLab,ColorManager.ColorLab)">
+            <summary>
+            Get the Chroma difference between two colors
+            </summary>
+            <param name="Color1">First color</param>
+            <param name="Color2">Second color</param>
+            <returns>The Chroma difference between Color1 and Color2</returns>
+        </member>
+        <member name="T:ColorManager.ConversionRoutine">
+            <summary>
+            A routine to convert from one color to another
+            </summary>
+        </member>
+        <member name="M:ColorManager.ConversionRoutine.Convert(System.Double*,System.Double*,System.Double*,ColorManager.Colorspace,ColorManager.Colorspace)">
+            <summary>
+            Converts a color to another
+            </summary>
+            <param name="inColor">Pointer to input color values</param>
+            <param name="outColor">Pointer to output color values</param>
+            <param name="v">A temporary array to help calculations</param>
+            <param name="inSpace">Input colorspace</param>
+            <param name="outSpace">Output colorspace</param>
+        </member>
+        <member name="P:ColorManager.ConversionRoutine.FromColor">
+            <summary>
+            Input model
+            </summary>
+        </member>
+        <member name="P:ColorManager.ConversionRoutine.ToColor">
+            <summary>
+            Output model
+            </summary>
+        </member>
+        <member name="F:ColorManager.Conversions.Delta">
+            <summary>
+            Smallest value that is not considered zero
+            </summary>
+        </member>
+        <member name="F:ColorManager.Conversions.Epsilon">
+            <summary>
+            Epsilon constant (216 / 24389)
+            </summary>
+        </member>
+        <member name="F:ColorManager.Conversions.Kappa">
+            <summary>
+            Kappa constant (24389 / 27)
+            </summary>
+        </member>
+        <member name="F:ColorManager.Conversions.KapEps">
+            <summary>
+            Kappa * Epsilon
+            </summary>
+        </member>
+        <member name="F:ColorManager.Conversions.Pi180">
+            <summary>
+            Pi / 180
+            </summary>
+        </member>
+        <member name="F:ColorManager.Conversions.Pi180_1">
+            <summary>
+            180 / Pi
+            </summary>
+        </member>
+        <member name="F:ColorManager.Conversions.Pi2">
+            <summary>
+            Pi / 2
+            </summary>
+        </member>
+        <member name="F:ColorManager.Conversions.cos16">
+            <summary>
+            Cos of 16°
+            </summary>
+        </member>
+        <member name="F:ColorManager.Conversions.sin16">
+            <summary>
+            Sin of 16°
+            </summary>
+        </member>
+        <member name="F:ColorManager.Conversions.cos26">
+            <summary>
+            Cos of 26°
+            </summary>
+        </member>
+        <member name="F:ColorManager.Conversions.sin26">
+            <summary>
+            Sin of 26°
+            </summary>
+        </member>
+        <member name="F:ColorManager.Conversions.cos50">
+            <summary>
+            Cos of 50°
+            </summary>
+        </member>
+        <member name="F:ColorManager.Conversions.sin50">
+            <summary>
+            Sin of 50°
+            </summary>
+        </member>
+        <member name="F:ColorManager.Conversions.div1_3">
+            <summary>
+            1 / 3
+            </summary>
+        </member>
+        <member name="F:ColorManager.Conversions.IsPinned">
+            <summary>
+            States if constant arrays are pinned or not
+            </summary>
+        </member>
+        <member name="M:ColorManager.Conversions.Pin">
+            <summary>
+            Pins down all constant arrays
+            </summary>
+        </member>
+        <member name="M:ColorManager.Conversions.UnPin">
+            <summary>
+            Unpins down all constant arrays
+            </summary>
+        </member>
+        <member name="F:ColorManager.Conversions.XYZ_DEF_Matrix">
+            <summary>
+            XYZ to DEF 3x3 transformation matrix
+            </summary>
+        </member>
+        <member name="F:ColorManager.Conversions.DEF_XYZ_Matrix">
+            <summary>
+            DEF to XYZ 3x3 transformation matrix
+            </summary>
+        </member>
+        <member name="T:ColorManager.ColorConverter">
+            <summary>
+            Handles conversion routines and conversion between colors
+            </summary>
+        </member>
+        <member name="M:ColorManager.ColorConverter.#ctor">
+            <summary>
+            Creates a new instance of the ColorConverter class
+            </summary>
+            <param name="fill">Fill list with standard conversion routines</param>
+        </member>
+        <member name="M:ColorManager.ColorConverter.Dispose">
+            <summary>
+            Releases all allocated resources
+            </summary>
+        </member>
+        <member name="M:ColorManager.ColorConverter.ClearConverter">
+            <summary>
+            Clears the list with all converters to add custom ones
+            </summary>
+        </member>
+        <member name="M:ColorManager.ColorConverter.ReplaceConverter(ColorManager.ConversionRoutine,ColorManager.ConversionRoutine)">
+            <summary>
+            Replaces a conversion routine with another. Note that FromColor and ToColor have to match.
+            If the conversion routine is not found, the replacement just gets added
+            </summary>
+            <param name="toReplace">The conversion routine that will get replaced</param>
+            <param name="replacement">The replacement for the routine</param>
+        </member>
+        <member name="M:ColorManager.ColorConverter.AddConverter(ColorManager.ConversionRoutine)">
+            <summary>
+            Adds a conversion routine to the available routines
+            </summary>
+            <param name="converter">The conversion routine</param>
+            <returns>True if successful, false if already available</returns>
+        </member>
+        <member name="M:ColorManager.ColorConverter.GetConverterList">
+            <summary>
+            Get a copy of the available converters
+            </summary>
+            <returns>A list with available converters</returns>
+        </member>
+        <member name="M:ColorManager.ColorConverter.FindRoutine(ColorManager.Color,ColorManager.Color)">
+            <summary>
+            Gets the conversion routine to convert from one color to another
+            </summary>
+            <param name="inColor">Input color</param>
+            <param name="outColor">Output color</param>
+            <returns>The conversion routine</returns>
+        </member>
+        <member name="M:ColorManager.ColorConverter.FindRoutine(System.Type,System.Type)">
+            <summary>
+            Gets the conversion routine to convert from one color to another
+            </summary>
+            <param name="inColor">Type of input color</param>
+            <param name="outColor">Type of output color</param>
+            <returns>The conversion routine</returns>
+        </member>
+        <member name="M:ColorManager.ColorConverter.ClearColorspaces">
+            <summary>
+            Clears the list with all colorspaces to add custom ones
+            </summary>
+        </member>
+        <member name="M:ColorManager.ColorConverter.GetColorspaceList">
+            <summary>
+            Get a copy of the available colorspaces
+            </summary>
+            <returns>A list with available colorspaces</returns>
+        </member>
+        <member name="M:ColorManager.ColorConverter.ReplaceColorspace(ColorManager.Colorspace,ColorManager.Colorspace)">
+            <summary>
+            Replaces a colorspace with another.
+            If the colorspace is not found, the replacement just gets added
+            </summary>
+            <param name="toReplace">The colorspace that will get replaced</param>
+            <param name="replacement">The replacement for the colorspace</param>
+        </member>
+        <member name="M:ColorManager.ColorConverter.AddColorspace(ColorManager.Colorspace)">
+            <summary>
+            Adds a colorspace to the available routines
+            </summary>
+            <param name="colorspace">The colorspace</param>
+            <returns>True if successful, false if already available</returns>
+        </member>
+        <member name="M:ColorManager.ColorConverter.Convert(ColorManager.Color,ColorManager.Color)">
+            <summary>
+            Converts from one color to another with a conversion routine (slower)
+            </summary>
+            <param name="inColor">Input color</param>
+            <param name="outColor">Output color</param>
+        </member>
+        <member name="M:ColorManager.ColorConverter.Convert(ColorManager.Color,ColorManager.Color,ColorManager.ConversionRoutine)">
+            <summary>
+            Converts from one color to another with a conversion routine (faster)
+            </summary>
+            <param name="inColor">Input color</param>
+            <param name="outColor">Output color</param>
+            <param name="routine">The conversion routine</param>
+        </member>
+        <member name="P:ColorManager.ColorConverter.DefaultWhitepoint">
+            <summary>
+            Default whitepoint
+            </summary>
+        </member>
+        <member name="P:ColorManager.ColorConverter.DefaultRGBSpace">
+            <summary>
+            Default RGB colorspace
+            </summary>
+        </member>
+        <member name="P:ColorManager.ColorConverter.DefaultYCbCrSpace">
+            <summary>
+            Default YCbCr colorspace
+            </summary>
+        </member>
+        <member name="P:ColorManager.ColorConverter.DefaultGraySpace">
+            <summary>
+            Default gray colorspace
+            </summary>
+        </member>
+        <member name="P:ColorManager.ColorConverter.PreferredRenderingIntent">
+            <summary>
+            The rendering intent that will be used for ICC conversion if available
+            </summary>
+        </member>
+        <member name="T:ColorManager.WhitepointConverter">
+            <summary>
+            Whitepoint converter
+            </summary>
+        </member>
+        <member name="M:ColorManager.WhitepointConverter.Init">
+            <summary>
+            Initializes all whitepoints
+            </summary>
+        </member>
+        <member name="M:ColorManager.WhitepointConverter.FreeAll">
+            <summary>
+            Frees all allocated resources
+            </summary>
+        </member>
+        <member name="M:ColorManager.WhitepointConverter.Pin">
+            <summary>
+            Pins constant arrays
+            </summary>
+        </member>
+        <member name="M:ColorManager.WhitepointConverter.UnPin">
+            <summary>
+            Unpins constant arrays
+            </summary>
+        </member>
+        <member name="M:ColorManager.WhitepointConverter.MatrixPin">
+            <summary>
+            Pins down all matrices
+            </summary>
+        </member>
+        <member name="M:ColorManager.WhitepointConverter.MatrixFree">
+            <summary>
+            Frees all matrices
+            </summary>
+        </member>
+        <member name="M:ColorManager.WhitepointConverter.ClearWhitepoints">
+            <summary>
+            Clears the list of available whitepoints
+            </summary>
+        </member>
+        <member name="M:ColorManager.WhitepointConverter.AddWhitepoint(ColorManager.Whitepoint,System.Boolean)">
+            <summary>
+            Adds a whitepoint to the list
+            </summary>
+            <param name="whitepoint">The whitepoint</param>
+            <param name="refresh">If true, the matrices will get calculated immediately.
+            If you add more than one you might want to set this to false and call RefreshPrecalculation after all whitepoints have been added.</param>
+            <returns>True if added, false if whitepoint with this name already exists</returns>
+        </member>
+        <member name="M:ColorManager.WhitepointConverter.ReplaceWhitepoint(ColorManager.Whitepoint,ColorManager.Whitepoint,System.Boolean)">
+            <summary>
+            Replaces a whitespace with another. Note that the names have to match.
+            If the whitespace is not found, the replacement just gets added
+            </summary>
+            <param name="toReplace">The whitespace that will get replaced</param>
+            <param name="replacement">The replacement for the whitespace</param>
+            <param name="refresh">If true, the matrices will get calculated immediately.
+            If you replace more than one you might want to set this to false and call RefreshPrecalculation after all whitepoints have been replaced.</param>
+        </member>
+        <member name="M:ColorManager.WhitepointConverter.GetWhitepointList">
+            <summary>
+            Gets a list with all available whitepoints
+            </summary>
+            <returns>A list with available whitepoints</returns>
+        </member>
+        <member name="M:ColorManager.WhitepointConverter.GetWhitepoint(System.String)">
+            <summary>
+            Gets a whitepoint from a name
+            </summary>
+            <param name="name">The name of the whitepoint</param>
+            <returns>The whitepoint with the given name or null if not found</returns>
+        </member>
+        <member name="M:ColorManager.WhitepointConverter.RefreshPrecalculation">
+            <summary>
+            Call this if you have added new whitepoints
+            </summary>
+        </member>
+        <member name="M:ColorManager.WhitepointConverter.GetMatrix(System.UInt32,System.UInt32)">
+            <summary>
+            Get the matrix for a pair of whitepoints
+            </summary>
+            <param name="inWPID">Input whitepoint ID</param>
+            <param name="outWPID">Output whitepoint ID</param>
+            <returns>The matrix</returns>
+        </member>
+        <member name="M:ColorManager.WhitepointConverter.MatrixPrecalculation">
+            <summary>
+            Calculates the adaption matrices for all whitepoints with the specified adaption method
+            </summary>
+        </member>
+        <member name="P:ColorManager.WhitepointConverter.MA">
+            <summary>
+            Adaption matrix
+            </summary>
+        </member>
+        <member name="P:ColorManager.WhitepointConverter.MA1">
+            <summary>
+            Inverse adaption matrix
+            </summary>
+        </member>
+        <member name="P:ColorManager.WhitepointConverter.ChromaticAdaptionMethod">
+            <summary>
+            The chromatic adaption method that will be used for conversions
+            </summary>
+        </member>
+        <member name="T:ColorManager.Colorspace">
+            <summary>
+            Represents a colorspace
+            </summary>
+        </member>
+        <member name="P:ColorManager.Colorspace.Name">
+            <summary>
+            Name of the colorspace
+            </summary>
+        </member>
+        <member name="P:ColorManager.Colorspace.ReferenceWhite">
+            <summary>
+            Reference white for this colorspace
+            </summary>
+        </member>
+        <member name="P:ColorManager.Colorspace.ID">
+            <summary>
+            An ID for fast comparison
+            </summary>
+        </member>
+        <member name="T:ColorManager.RGBSpace">
+            <summary>
+            Represents an RGB colorspace
+            </summary>
+        </member>
+        <member name="M:ColorManager.RGBSpace.ToLinear(System.Double*,System.Double*)">
+            <summary>
+            Linearizes a color
+            </summary>
+            <param name="inVal">Pointer to non-Linear input values</param>
+            <param name="outVal">Pointer to linear output values</param>
+        </member>
+        <member name="M:ColorManager.RGBSpace.ToNonLinear(System.Double*,System.Double*)">
+            <summary>
+            Delinearizes a color
+            </summary>
+            <param name="inVal">Pointer to linear input values</param>
+            <param name="outVal">Pointer to non-Linear output values</param>
+        </member>
+        <member name="M:ColorManager.RGBSpace.ToLinear(System.Double[],System.Double[])">
+            <summary>
+            Linearizes a color
+            </summary>
+            <param name="inVal">Non-Linear input values</param>
+            <param name="outVal">Linear output values</param>
+        </member>
+        <member name="M:ColorManager.RGBSpace.ToNonLinear(System.Double[],System.Double[])">
+            <summary>
+            Delinearizes a color
+            </summary>
+            <param name="inVal">Linear input values</param>
+            <param name="outVal">Non-Linear output values</param>
+        </member>
+        <member name="M:ColorManager.RGBSpace.Pin">
+            <summary>
+            Pins down resources
+            </summary>
+        </member>
+        <member name="M:ColorManager.RGBSpace.UnPin">
+            <summary>
+            Frees pinned resources
+            </summary>
+        </member>
+        <member name="P:ColorManager.RGBSpace.Gamma">
+            <summary>
+            The gamma value
+            </summary>
+        </member>
+        <member name="P:ColorManager.RGBSpace.Cr">
+            <summary>
+            Red primary
+            </summary>
+        </member>
+        <member name="P:ColorManager.RGBSpace.Cg">
+            <summary>
+            Green primary
+            </summary>
+        </member>
+        <member name="P:ColorManager.RGBSpace.Cb">
+            <summary>
+            Blue primary
+            </summary>
+        </member>
+        <member name="P:ColorManager.RGBSpace.CM">
+            <summary>
+            The conversion matrix
+            </summary>
+        </member>
+        <member name="P:ColorManager.RGBSpace.ICM">
+            <summary>
+            The inverse conversion matrix
+            </summary>
+        </member>
+        <member name="P:ColorManager.RGBSpace.CM_P">
+            <summary>
+            Pointer to conversion matrix array
+            </summary>
+        </member>
+        <member name="P:ColorManager.RGBSpace.ICM_P">
+            <summary>
+            Pointer to inverse conversion matrix
+            </summary>
+        </member>
+        <member name="P:ColorManager.RGBSpace.CMHandle">
+            <summary>
+            GCHandle for the Conversion Matrix
+            </summary>
+        </member>
+        <member name="P:ColorManager.RGBSpace.ICMHandle">
+            <summary>
+            GCHandle for the Inverse Conversion Matrix
+            </summary>
+        </member>
+        <member name="T:ColorManager.YCbCrSpace">
+            <summary>
+            Represents a YCbCr colorspace
+            </summary>
+        </member>
+        <member name="P:ColorManager.YCbCrSpace.Cr">
+            <summary>
+            Red primary
+            </summary>
+        </member>
+        <member name="P:ColorManager.YCbCrSpace.Cg">
+            <summary>
+            Green primary
+            </summary>
+        </member>
+        <member name="P:ColorManager.YCbCrSpace.Cb">
+            <summary>
+            Blue primary
+            </summary>
+        </member>
+        <member name="P:ColorManager.YCbCrSpace.BaseSpace">
+            <summary>
+            Base RGB colorspace
+            </summary>
+        </member>
+        <member name="T:ColorManager.ColorspaceGeneral">
+            <summary>
+            A general colorspace with a whitepoint
+            </summary>
+        </member>
+        <member name="T:ColorManager.ColorspaceICC">
+            <summary>
+            A general colorspace with an ICC profile
+            </summary>
+        </member>
+        <member name="T:ColorManager.ColorspaceGray">
+            <summary>
+            A general colorspace for gray with a gamma value
+            </summary>
+        </member>
+        <member name="T:ColorManager.RGBColorspacesRGB">
+            <summary>
+            sRGB colorspace
+            </summary>
+        </member>
+        <member name="T:ColorManager.RGBColorspaceNTSCRGB">
+            <summary>
+            NTSC colorspace
+            </summary>
+        </member>
+        <member name="T:ColorManager.RGBColorspaceBruceRGB">
+            <summary>
+             colorspace
+            </summary>
+        </member>
+        <member name="T:ColorManager.RGBColorspaceCIERGB">
+            <summary>
+            CIE RGB colorspace
+            </summary>
+        </member>
+        <member name="T:ColorManager.RGBColorspaceAdobeRGB">
+            <summary>
+            Adobe RGB colorspace
+            </summary>
+        </member>
+        <member name="T:ColorManager.RGBColorspaceAppleRGB">
+            <summary>
+            Apple RGB colorspace
+            </summary>
+        </member>
+        <member name="T:ColorManager.RGBColorspaceProPhotoRGB">
+            <summary>
+            Pro Photo RGB colorspace
+            </summary>
+        </member>
+        <member name="T:ColorManager.RGBColorspaceWideGamutRGB">
+            <summary>
+            Wide Gamut RGB colorspace
+            </summary>
+        </member>
+        <member name="T:ColorManager.RGBColorspaceBestRGB">
+            <summary>
+            Best RGB colorspace
+            </summary>
+        </member>
+        <member name="T:ColorManager.RGBColorspaceBetaRGB">
+            <summary>
+            Beta RGB colorspace
+            </summary>
+        </member>
+        <member name="T:ColorManager.RGBColorspaceColorMatchRGB">
+            <summary>
+            Color Match RGB colorspace
+            </summary>
+        </member>
+        <member name="T:ColorManager.RGBColorspaceDonRGB4">
+            <summary>
+            Don RGB 4 colorspace
+            </summary>
+        </member>
+        <member name="T:ColorManager.RGBColorspaceEktaSpacePS5">
+            <summary>
+            Ekta Space PS5 RGB colorspace
+            </summary>
+        </member>
+        <member name="T:ColorManager.RGBColorspacePAL_SECAMRGB">
+            <summary>
+            SECAM RGB colorspace
+            </summary>
+        </member>
+        <member name="T:ColorManager.RGBColorspaceSMPTE_C_RGB">
+            <summary>
+            SMPTE C RGB colorspace
+            </summary>
+        </member>
+        <member name="T:ColorManager.YCbCrColorspaceITU_R_BT601_525">
+            <summary>
+            ITU-R BT.601 SD TV Rec. 525 digital YCbCr colorspace
+            </summary>
+        </member>
+        <member name="T:ColorManager.YCbCrColorspaceITU_R_BT601_625">
+            <summary>
+            ITU-R BT.601 SD TV Rec. 625 digital YCbCr colorspace
+            </summary>
+        </member>
+        <member name="T:ColorManager.YCbCrColorspaceITU_R_BT709_1125">
+            <summary>
+            ITU-R BT.709 HD TV Rec. 1125 digital YCbCr colorspace
+            </summary>
+        </member>
+        <member name="T:ColorManager.YCbCrColorspaceITU_R_BT709_1250">
+            <summary>
+            ITU-R BT.709 HD TV Rec. 1250 digital YCbCr colorspace
+            </summary>
+        </member>
+        <member name="T:ColorManager.AdaptionMethod">
+            <summary>
+            Chromatic adaption calculation method
+            </summary>
+        </member>
+        <member name="T:ColorManager.RenderingIntent">
+            <summary>
+            Rendering Intent for ICC colors
+            </summary>
+        </member>
+        <member name="T:ColorManager.ICCconversionMethod">
+            <summary>
+            Method of conversion for ICC colors
+            </summary>
+        </member>
+        <member name="T:ColorManager.ICCconversionType">
+            <summary>
+            Type of conversion for ICC colors
+            </summary>
+        </member>
+        <member name="T:ColorManager.CIE94DifferenceMethod">
+            <summary>
+            Method to calculate the CIE 94 color difference
+            </summary>
+        </member>
+        <member name="T:ColorManager.CMCDifferenceMethod">
+            <summary>
+            Method to calculate the CMC color difference
+            </summary>
+        </member>
+        <member name="F:ColorManager.CMCDifferenceMethod.Acceptability">
+            <summary>
+            l:c = 2:1
+            </summary>
+        </member>
+        <member name="F:ColorManager.CMCDifferenceMethod.Perceptibility">
+            <summary>
+            l:c = 1:1
+            </summary>
+        </member>
+        <member name="T:ColorManager.UnsafeMath">
+            <summary>
+            A collection of matrix calculations static and nonstatic
+            </summary>
+        </member>
+        <member name="M:ColorManager.UnsafeMath.InvertMatrix(System.Double*,System.Double*)">
+            <summary>
+            Inverts a 3x3 matrix
+            </summary>
+            <param name="M">Input matrix</param>
+            <param name="result">Inverse input matrix</param>
+        </member>
+        <member name="M:ColorManager.UnsafeMath.MultiplyMatrix_3x3_3x1(System.Double*,System.Double*,System.Double*)">
+            <summary>
+            Multiplies a 3x3 matrix with a 3x1 matrix
+            </summary>
+            <param name="a">A 3x3 matrix</param>
+            <param name="b">A 3x1 matrix</param>
+            <param name="result">The result as a 3x1 matrix</param>
+        </member>
+        <member name="M:ColorManager.UnsafeMath.MultiplyMatrix_3x3_3x3(System.Double*,System.Double*,System.Double*)">
+            <summary>
+            Multiplies a 3x3 matrix with another 3x3 matrix
+            </summary>
+            <param name="a">A 3x3 matrix</param>
+            <param name="b">A 3x3 matrix</param>
+            <param name="result">The result as a 3x3 matrix</param>
+        </member>
+    </members>
+</doc>

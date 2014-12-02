@@ -76,10 +76,11 @@ public partial class MainWindow: Gtk.Window
 	}
 
 	/// <summary>
-	/// Compares the orignal RT PP3 file with a newly written PP3 file
+    /// Compares the original RT PP3 file with a newly written PP3 file
 	/// </summary>
 	protected void OnCompareSameButtonClicked(object sender, EventArgs e)
 	{
+        //TODO: compare written and original PP3 file
 	}
 
 	/// <summary>

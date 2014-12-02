@@ -283,6 +283,7 @@ namespace Timelapse_UI
                 ((ProjectRT)ProjectManager.CurrentProject).KeepPP3 = LSSettings.KeepPP3;
                 ((ProjectRT)ProjectManager.CurrentProject).JpgQuality = LSSettings.JpgQuality;
                 ((ProjectRT)ProjectManager.CurrentProject).TiffCompression = LSSettings.TiffCompression != TiffCompressionFormat.None;
+                ((ProjectRT)ProjectManager.CurrentProject).BitDepth16 = LSSettings.BitDepth == ImageBitDepth.bit16;
             }
             MainGraph.Init();
             ProjectManager.Threadcount = LSSettings.Threadcount;

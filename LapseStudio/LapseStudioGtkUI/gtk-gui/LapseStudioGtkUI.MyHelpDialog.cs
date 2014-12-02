@@ -5,9 +5,11 @@ namespace LapseStudioGtkUI
 	public partial class MyHelpDialog
 	{
 		private global::Gtk.ScrolledWindow GtkScrolledWindow;
-		private global::Gtk.TextView textview2;
-		private global::Gtk.Button buttonOK;
 		
+		private global::Gtk.TextView textview2;
+		
+		private global::Gtk.Button buttonOK;
+
 		protected virtual void Build ()
 		{
 			global::Stetic.Gui.Initialize (this);

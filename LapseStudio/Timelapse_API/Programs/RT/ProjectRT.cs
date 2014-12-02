@@ -62,6 +62,10 @@ namespace Timelapse_API
         /// </summary>
 		public bool TiffCompression;
         /// <summary>
+        /// Bit depth of tiff or png 16bit or 8bit
+        /// </summary>
+        public bool BitDepth16;
+        /// <summary>
         /// Quality of jpg image
         /// </summary>
         public int JpgQuality;
@@ -237,15 +241,18 @@ namespace Timelapse_API
 
             string saveformat;
             string SaveFileType;
+            string bitDepth;
             switch (SaveFormat)
             {
                 case FileFormat.png:
                     saveformat = "-n";
                     SaveFileType = "png";
+                    bitDepth = BitDepth16 ? "-b16" : "-b8";
                     break;
                 case FileFormat.tiff:
-                    saveformat = TiffCompression ? "-t1" : "-t";
+                    saveformat = TiffCompression ? "-t[z]" : "-t";
                     SaveFileType = "tif";
+                    bitDepth = BitDepth16 ? "-b16" : "-b8";
                     break;
                 case FileFormat.jpg:
                 default:
@@ -254,7 +261,7 @@ namespace Timelapse_API
                     break;
             }
 
-            string basecmd = " -o \"" + ProjectManager.ImageSavePath + "\" -S " + saveformat + " -c";
+            string basecmd = (ProjectManager.RunningPlatform == Platform.Windows ? "-w" : "") + " -o \"" + ProjectManager.ImageSavePath + "\" -S " + saveformat + "" + " -c";
             string command = basecmd;
             bool startRT = false;
 

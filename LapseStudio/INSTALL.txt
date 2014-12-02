@@ -8,15 +8,15 @@ WINDOWS:
  -.Net Framework 4.0 or above
    -Windows XP SP3, Windows Vista SP1: http://www.microsoft.com/de-at/download/details.aspx?id=17718
    -Windows Vista SP2 and above: http://www.microsoft.com/de-at/download/details.aspx?id=30653
-   -Windos 7 and above: should be installed already. if not, see: "Windows Vista SP2 and above"
+   -Windows 7 and above: should be installed already. if not, see: "Windows Vista SP2 and above"
 
  Mac OSX:
   -exiftool (get Mac OSX Package from: http://www.sno.phy.queensu.ca/~phil/exiftool/)
   -Mono framework (get it here: http://www.go-mono.com/mono-downloads/download.html)
 
 LINUX:
-  -exiftool (libimage-exiftool-perl)
+  -exiftool (libimage-exiftool-perl) (and perl to run it, but that's usually installed already)
   -Mono framwork with Gtk#
   	-generally: http://www.go-mono.com/mono-downloads/download.html
-    -Gentoo: dev-lang/mono and dev-dotnet/gtk-sharp
+    	-Gentoo: dev-lang/mono and dev-dotnet/gtk-sharp
 	-Ubuntu: mono-runtime and gtk-sharp2

@@ -5,49 +5,91 @@ namespace LapseStudioGtkUI
 	public partial class MySettingsDialog
 	{
 		private global::Gtk.VBox vbox2;
-		private global::Gtk.HBox hbox1;
-		private global::Gtk.Label ThreadLabel;
-		private global::Gtk.Fixed fixed3;
-		private global::Gtk.SpinButton ThreadSpin;
-		private global::Gtk.CheckButton AutothreadChBox;
-		private global::Gtk.HBox hbox2;
-		private global::Gtk.Label LanguageLabel;
-		private global::Gtk.Fixed fixed4;
-		private global::Gtk.ComboBox LanguageCoBox;
-		private global::Gtk.HBox hbox3;
-		private global::Gtk.Label ProgramLabel;
-		private global::Gtk.Fixed fixed5;
-		private global::Gtk.ComboBox ProgramCoBox;
-		private global::Gtk.HBox hbox4;
-		private global::Gtk.Fixed fixed2;
-		private global::Gtk.VBox vbox3;
-		private global::Gtk.CheckButton RunRTChBox;
-		private global::Gtk.CheckButton KeepPP3ChBox;
-		private global::Gtk.HBox hbox5;
-		private global::Gtk.Label RTLabel;
-		private global::Gtk.Fixed fixed6;
-		private global::Gtk.Entry RTPathBox;
-		private global::Gtk.Button RTBrowseButton;
-		private global::Gtk.HBox hbox6;
-		private global::Gtk.Label FormatLabel;
-		private global::Gtk.Fixed fixed7;
-		private global::Gtk.ComboBox FormatCoBox;
-		private global::Gtk.HBox hbox7;
-		private global::Gtk.Label BitDepthLabel;
-		private global::Gtk.Fixed fixed8;
-		private global::Gtk.ComboBox BitdepthCoBox;
-		private global::Gtk.HBox hbox8;
-		private global::Gtk.Label JpgQualityLabel;
-		private global::Gtk.Fixed fixed9;
-		private global::Gtk.HScale JpgQualityScale;
-		private global::Gtk.HBox hbox9;
-		private global::Gtk.Label CompressionLabel;
-		private global::Gtk.Fixed fixed10;
-		private global::Gtk.ComboBox CompressionCoBox;
-		private global::Gtk.Fixed fixed1;
-		private global::Gtk.Button buttonCancel;
-		private global::Gtk.Button buttonOk;
 		
+		private global::Gtk.HBox hbox1;
+		
+		private global::Gtk.Label ThreadLabel;
+		
+		private global::Gtk.Fixed fixed3;
+		
+		private global::Gtk.SpinButton ThreadSpin;
+		
+		private global::Gtk.CheckButton AutothreadChBox;
+		
+		private global::Gtk.HBox hbox2;
+		
+		private global::Gtk.Label LanguageLabel;
+		
+		private global::Gtk.Fixed fixed4;
+		
+		private global::Gtk.ComboBox LanguageCoBox;
+		
+		private global::Gtk.HBox hbox3;
+		
+		private global::Gtk.Label ProgramLabel;
+		
+		private global::Gtk.Fixed fixed5;
+		
+		private global::Gtk.ComboBox ProgramCoBox;
+		
+		private global::Gtk.HBox hbox4;
+		
+		private global::Gtk.Fixed fixed2;
+		
+		private global::Gtk.VBox vbox3;
+		
+		private global::Gtk.CheckButton RunRTChBox;
+		
+		private global::Gtk.CheckButton KeepPP3ChBox;
+		
+		private global::Gtk.HBox hbox5;
+		
+		private global::Gtk.Label RTLabel;
+		
+		private global::Gtk.Fixed fixed6;
+		
+		private global::Gtk.Entry RTPathBox;
+		
+		private global::Gtk.Button RTBrowseButton;
+		
+		private global::Gtk.HBox hbox6;
+		
+		private global::Gtk.Label FormatLabel;
+		
+		private global::Gtk.Fixed fixed7;
+		
+		private global::Gtk.ComboBox FormatCoBox;
+		
+		private global::Gtk.HBox hbox7;
+		
+		private global::Gtk.Label BitDepthLabel;
+		
+		private global::Gtk.Fixed fixed8;
+		
+		private global::Gtk.ComboBox BitdepthCoBox;
+		
+		private global::Gtk.HBox hbox8;
+		
+		private global::Gtk.Label JpgQualityLabel;
+		
+		private global::Gtk.Fixed fixed9;
+		
+		private global::Gtk.HScale JpgQualityScale;
+		
+		private global::Gtk.HBox hbox9;
+		
+		private global::Gtk.Label CompressionLabel;
+		
+		private global::Gtk.Fixed fixed10;
+		
+		private global::Gtk.ComboBox CompressionCoBox;
+		
+		private global::Gtk.Fixed fixed1;
+		
+		private global::Gtk.Button buttonCancel;
+		
+		private global::Gtk.Button buttonOk;
+
 		protected virtual void Build ()
 		{
 			global::Stetic.Gui.Initialize (this);
@@ -88,13 +130,13 @@ namespace LapseStudioGtkUI
 			global::Gtk.Box.BoxChild w3 = ((global::Gtk.Box.BoxChild)(this.hbox1 [this.fixed3]));
 			w3.Position = 1;
 			// Container child hbox1.Gtk.Box+BoxChild
-			this.ThreadSpin = new global::Gtk.SpinButton (1, 100, 1);
+			this.ThreadSpin = new global::Gtk.SpinButton (1D, 100D, 1D);
 			this.ThreadSpin.CanFocus = true;
 			this.ThreadSpin.Name = "ThreadSpin";
-			this.ThreadSpin.Adjustment.PageIncrement = 1;
-			this.ThreadSpin.ClimbRate = 1;
+			this.ThreadSpin.Adjustment.PageIncrement = 1D;
+			this.ThreadSpin.ClimbRate = 1D;
 			this.ThreadSpin.Numeric = true;
-			this.ThreadSpin.Value = 1;
+			this.ThreadSpin.Value = 1D;
 			this.hbox1.Add (this.ThreadSpin);
 			global::Gtk.Box.BoxChild w4 = ((global::Gtk.Box.BoxChild)(this.hbox1 [this.ThreadSpin]));
 			w4.Position = 2;
@@ -370,11 +412,11 @@ namespace LapseStudioGtkUI
 			this.JpgQualityScale.WidthRequest = 100;
 			this.JpgQualityScale.CanFocus = true;
 			this.JpgQualityScale.Name = "JpgQualityScale";
-			this.JpgQualityScale.Adjustment.Lower = 1;
-			this.JpgQualityScale.Adjustment.Upper = 100;
-			this.JpgQualityScale.Adjustment.PageIncrement = 10;
-			this.JpgQualityScale.Adjustment.StepIncrement = 10;
-			this.JpgQualityScale.Adjustment.Value = 100;
+			this.JpgQualityScale.Adjustment.Lower = 1D;
+			this.JpgQualityScale.Adjustment.Upper = 100D;
+			this.JpgQualityScale.Adjustment.PageIncrement = 10D;
+			this.JpgQualityScale.Adjustment.StepIncrement = 10D;
+			this.JpgQualityScale.Adjustment.Value = 100D;
 			this.JpgQualityScale.DrawValue = true;
 			this.JpgQualityScale.Digits = 0;
 			this.JpgQualityScale.ValuePos = ((global::Gtk.PositionType)(0));
