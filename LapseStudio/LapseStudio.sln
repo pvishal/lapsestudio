@@ -22,8 +22,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Informations", "Information
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Lib", "Lib", "{46325D3D-712B-4F38-824E-50C0DAD29565}"
 	ProjectSection(SolutionItems) = preProject
-		Lib\ColorManagment.dll = Lib\ColorManagment.dll
-		Lib\ColorManagment.XML = Lib\ColorManagment.XML
+		Lib\ColorManager.dll = Lib\ColorManager.dll
+		Lib\ColorManager.XML = Lib\ColorManager.XML
 		Lib\MessageTranslation.dll = Lib\MessageTranslation.dll
 	EndProjectSection
 EndProject
