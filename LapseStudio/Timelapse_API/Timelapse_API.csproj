@@ -34,13 +34,14 @@
     <Reference Include="ColorManager">
       <HintPath>..\Lib\ColorManager.dll</HintPath>
     </Reference>
-    <Reference Include="PresentationCore" />
     <Reference Include="System" />
     <Reference Include="System.Drawing" />
     <Reference Include="System.Runtime.Serialization" />
-    <Reference Include="System.Xaml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="..\Solution Items\SharedAssemblyInfo.cs">
+      <Link>Properties\SharedAssemblyInfo.cs</Link>
+    </Compile>
     <Compile Include="General\BitmapEx.cs" />
     <Compile Include="General\Frame.cs" />
     <Compile Include="EventHandler.cs" />

@@ -20,3 +20,12 @@ LINUX:
   	-generally: http://www.go-mono.com/mono-downloads/download.html
     	-Gentoo: dev-lang/mono and dev-dotnet/gtk-sharp
 	-Ubuntu: mono-runtime and gtk-sharp2
+
+
+
+Some more help for Linux devs:
+If you don't want to install an IDE, you can compile LapseStudio with this command:
+xbuild LapseStudio.sln
+
+And to directly start LapseStudio from the console, put this in ~/.bashrc (replace the path of course)
+alias LapseStudio='pushd /path/to/LapseStudio/folder/ && mono LapseStudio.exe; popd'

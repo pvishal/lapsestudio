@@ -69,6 +69,9 @@
     </None>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="..\Solution Items\SharedAssemblyInfo.cs">
+      <Link>Properties\SharedAssemblyInfo.cs</Link>
+    </Compile>
     <Compile Include="GtkClasses\GtkGraphDrawer.cs" />
     <Compile Include="GtkClasses\GtkSettingsUI.cs" />
     <Compile Include="Program.cs" />
