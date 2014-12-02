@@ -565,10 +565,10 @@ namespace Timelapse_API
 			Values.Add("ShadowsAndHighlights.LocalContrast", new PP3entry("ShadowsAndHighlights.LocalContrast", Convert.ToInt32(GetValue(Llines[i])), 0, 100)); i++;
 			Values.Add("ShadowsAndHighlights.Radius", new PP3entry("ShadowsAndHighlights.Radius", Convert.ToInt32(GetValue(Llines[i])), 5, 100)); i++;
 			Values.Add("Crop.Enabled", new PP3entry("Crop.Enabled", Convert.ToBoolean(GetValue(Llines[i])), null, null)); i++;
-			Values.Add("Crop.X", new PP3entry("Crop.X", Convert.ToInt32(GetValue(Llines[i])), 0, 0)); i++;
-			Values.Add("Crop.Y", new PP3entry("Crop.Y", Convert.ToInt32(GetValue(Llines[i])), 0, 0)); i++;
-			Values.Add("Crop.W", new PP3entry("Crop.W", Convert.ToInt32(GetValue(Llines[i])), 0, 0)); i++;
-			Values.Add("Crop.H", new PP3entry("Crop.H", Convert.ToInt32(GetValue(Llines[i])), 0, 0)); i++;
+            Values.Add("Crop.X", new PP3entry("Crop.X", Convert.ToInt32(GetValue(Llines[i])), null, null)); i++;
+            Values.Add("Crop.Y", new PP3entry("Crop.Y", Convert.ToInt32(GetValue(Llines[i])), null, null)); i++;
+            Values.Add("Crop.W", new PP3entry("Crop.W", Convert.ToInt32(GetValue(Llines[i])), null, null)); i++;
+            Values.Add("Crop.H", new PP3entry("Crop.H", Convert.ToInt32(GetValue(Llines[i])), null, null)); i++;
 			Values.Add("Crop.FixedRatio", new PP3entry("Crop.FixedRatio", Convert.ToBoolean(GetValue(Llines[i])), null, null)); i++;
 			Values.Add("Crop.Ratio", new PP3entry("Crop.Ratio", GetValue(Llines[i]), null, null)); i++;
 			Values.Add("Crop.Orientation", new PP3entry("Crop.Orientation", GetValue(Llines[i]), null, null)); i++;

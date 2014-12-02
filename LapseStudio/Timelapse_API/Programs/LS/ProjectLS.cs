@@ -97,7 +97,7 @@ namespace Timelapse_API
             }
         }
 
-        private Bitmap Process8bit(ref Bitmap input, double exposure, IRGBSpace cspace)
+        private Bitmap Process8bit(ref Bitmap input, double exposure, RGBSpace cspace)
         {
             int index, factor;
             if (input.PixelFormat == PixelFormat.Format24bppRgb) { factor = 3; }
@@ -133,7 +133,7 @@ namespace Timelapse_API
             return output;
         }
 
-        private void Process16bit(string path, string savepath, double exposure, IRGBSpace cspace)
+        private void Process16bit(string path, string savepath, double exposure, RGBSpace cspace)
         {
             //TODO: make 16bit processing
         }
@@ -141,11 +141,11 @@ namespace Timelapse_API
         private unsafe void BaseProcess(ColorRGB c, double exposure)
         {
             //TODO: Make processing better (highlight and dark preserve)
-            fixed (double* pt = c.Values) { ((IRGBSpace)c.Space).ToLinear(pt, pt); }
+            fixed (double* pt = c.ValueArray) { ((RGBSpace)c.Space).ToLinear(pt, pt); }
             c.R = Math.Exp(exposure * ln2) * c.R;
             c.G = Math.Exp(exposure * ln2) * c.G;
             c.B = Math.Exp(exposure * ln2) * c.B;
-            fixed (double* pt = c.Values) { ((IRGBSpace)c.Space).ToNonLinear(pt, pt); }
+            fixed (double* pt = c.ValueArray) { ((RGBSpace)c.Space).ToNonLinear(pt, pt); }
         }
 
 

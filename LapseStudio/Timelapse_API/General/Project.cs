@@ -620,7 +620,7 @@ namespace Timelapse_API
                 n = bmp1.ChannelCount;
                 index = count = isdark = 0;
                 br1 = br2 = br3 = newBr = maxiBrDiff = 0;
-                IRGBSpace space = new RGBColorspacesRGB();
+                RGBSpace space = new RGBColorspacesRGB();
                 
                 #endregion
 
@@ -643,13 +643,13 @@ namespace Timelapse_API
                             index = y * rowstride + x;
 
                             c = new ColorRGB(pix1[index], pix1[index + 1], pix1[index + 2], space);
-                            fixed (double* pt = c.Values) { ((IRGBSpace)c.Space).ToLinear(pt, pt); }
+                            fixed (double* pt = c.ValueArray) { ((RGBSpace)c.Space).ToLinear(pt, pt); }
                             br1 = (c.R + c.G + c.B) * 255d / 3d;
                             c = new ColorRGB(pix2[index], pix2[index + 1], pix2[index + 2], space);
-                            fixed (double* pt = c.Values) { ((IRGBSpace)c.Space).ToLinear(pt, pt); }
+                            fixed (double* pt = c.ValueArray) { ((RGBSpace)c.Space).ToLinear(pt, pt); }
                             br2 = (c.R + c.G + c.B) * 255d / 3d;
                             c = new ColorRGB(pix3[index], pix3[index + 1], pix3[index + 2], space);
-                            fixed (double* pt = c.Values) { ((IRGBSpace)c.Space).ToLinear(pt, pt); }
+                            fixed (double* pt = c.ValueArray) { ((RGBSpace)c.Space).ToLinear(pt, pt); }
                             br3 = (c.R + c.G + c.B) * 255d / 3d;
 
                             if (br1 > min && br2 > min && br3 > min && br1 < max && br2 < max && br3 < max) { NonUseMask[x / n, y] = false; }
@@ -683,13 +683,13 @@ namespace Timelapse_API
                                                     index = (y + yS) * rowstride + x + xS;
 
                                                     c = new ColorRGB(pix1[index], pix1[index + 1], pix1[index + 2], space);
-                                                    fixed (double* pt = c.Values) { ((IRGBSpace)c.Space).ToLinear(pt, pt); }
+                                                    fixed (double* pt = c.ValueArray) { ((RGBSpace)c.Space).ToLinear(pt, pt); }
                                                     br1 = (c.R + c.G + c.B) * 255d / 3d;
                                                     c = new ColorRGB(pix2[index], pix2[index + 1], pix2[index + 2], space);
-                                                    fixed (double* pt = c.Values) { ((IRGBSpace)c.Space).ToLinear(pt, pt); }
+                                                    fixed (double* pt = c.ValueArray) { ((RGBSpace)c.Space).ToLinear(pt, pt); }
                                                     br2 = (c.R + c.G + c.B) * 255d / 3d;
                                                     c = new ColorRGB(pix3[index], pix3[index + 1], pix3[index + 2], space);
-                                                    fixed (double* pt = c.Values) { ((IRGBSpace)c.Space).ToLinear(pt, pt); }
+                                                    fixed (double* pt = c.ValueArray) { ((RGBSpace)c.Space).ToLinear(pt, pt); }
                                                     br3 = (c.R + c.G + c.B) * 255d / 3d;
 
                                                     brightnessDiff1.Add(Math.Abs(br1 - br2));
@@ -751,13 +751,13 @@ namespace Timelapse_API
                         {
                             index = y * rowstride + x;
                             c = new ColorRGB(pix1[index], pix1[index + 1], pix1[index + 2], space);
-                            fixed (double* pt = c.Values) { ((IRGBSpace)c.Space).ToLinear(pt, pt); }
+                            fixed (double* pt = c.ValueArray) { ((RGBSpace)c.Space).ToLinear(pt, pt); }
                             br1 = (c.R + c.G + c.B) * 255d / 3d;
                             c = new ColorRGB(pix2[index], pix2[index + 1], pix2[index + 2], space);
-                            fixed (double* pt = c.Values) { ((IRGBSpace)c.Space).ToLinear(pt, pt); }
+                            fixed (double* pt = c.ValueArray) { ((RGBSpace)c.Space).ToLinear(pt, pt); }
                             br2 = (c.R + c.G + c.B) * 255d / 3d;
                             c = new ColorRGB(pix3[index], pix3[index + 1], pix3[index + 2], space);
-                            fixed (double* pt = c.Values) { ((IRGBSpace)c.Space).ToLinear(pt, pt); }
+                            fixed (double* pt = c.ValueArray) { ((RGBSpace)c.Space).ToLinear(pt, pt); }
                             br3 = (c.R + c.G + c.B) * 255d / 3d;
 
                             double factor = BrightChangeMask[x / n, y] / 100;
@@ -850,7 +850,7 @@ namespace Timelapse_API
                 ColorLab[,] labimg2 = new ColorLab[ThumbWidth, ThumbHeight];
                 ColorLab[,] labimg3 = new ColorLab[ThumbWidth, ThumbHeight];
                 ColorRGB colrgb = new ColorRGB(new RGBColorspacesRGB());
-                IConversionRoutine rout = ColorConverter.FindRoutine(colrgb, labimg1[0, 0]);
+                ConversionRoutine rout = ColorConverter.FindRoutine(colrgb, labimg1[0, 0]);
 
                 for (int f = 1; f < Frames.Count; f += 2)
                 {
@@ -1005,8 +1005,8 @@ namespace Timelapse_API
             long index = 0;
             ColorRGB crgb = new ColorRGB(new RGBColorspacesRGB());
             ColorLab cl = new ColorLab();
-            IConversionRoutine routLab = ColorConverter.FindRoutine(crgb, cl);
-            IConversionRoutine routRGB = ColorConverter.FindRoutine(cl, crgb);
+            ConversionRoutine routLab = ColorConverter.FindRoutine(crgb, cl);
+            ConversionRoutine routRGB = ColorConverter.FindRoutine(cl, crgb);
             BitmapEx bmp, bmpE;
 
             using (ColorConverter Converter = new ColorConverter())

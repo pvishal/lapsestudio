@@ -87,7 +87,7 @@ namespace Timelapse_API
         /// </summary>
         public bool HasMetadata { get; internal set; }
 
-        internal IRGBSpace ColorSpace;
+        internal RGBSpace ColorSpace;
         
         /// <summary>
         /// Init a new frame
