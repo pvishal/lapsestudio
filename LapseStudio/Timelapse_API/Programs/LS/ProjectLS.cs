@@ -148,7 +148,6 @@ namespace Timelapse_API
             fixed (double* pt = c.ValueArray) { ((RGBSpace)c.Space).ToNonLinear(pt, pt); }
         }
 
-
         protected override void LoadThumbnails(string[] files)
         {
             BitmapEx bmpTmp = null;
@@ -156,11 +155,13 @@ namespace Timelapse_API
             {
                 if (MainWorker.CancellationPending) { return; }
 
-                bmpTmp = new BitmapEx(Frames[i].FilePath);
+                bmpTmp = new BitmapEx(Frames[i].FilePath).ScaleW(300);
+                ProjectManager.CurrentProject.AddThumb(bmpTmp);   //Normal Thumb
+                ProjectManager.CurrentProject.AddThumb(bmpTmp);   //Edit Thumb
                 SetThumb(i, bmpTmp);
                 Frames[i].Width = (int)bmpTmp.Width;
                 Frames[i].Height = (int)bmpTmp.Height;
-                ReportWorkProgress(i * 100 / Frames.Count, ProgressType.LoadThumbnails);
+                ProjectManager.CurrentProject.ReportWorkProgress(i, ProgressType.LoadThumbnails);
             }
             if (bmpTmp != null) bmpTmp.Dispose();
         }
