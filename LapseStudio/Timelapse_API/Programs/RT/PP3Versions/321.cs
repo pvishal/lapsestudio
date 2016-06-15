@@ -178,14 +178,10 @@ namespace Timelapse_API
 			writer.WriteLine("Enabled=" + Values["DirectionalPyramidDenoising.Enabled"].Value.ToString().ToLower());
 			writer.WriteLine("Enhance=" + Values["DirectionalPyramidDenoising.Enhance"].Value.ToString().ToLower());
 			writer.WriteLine("Median=" + Values["DirectionalPyramidDenoising.Median"].Value.ToString().ToLower());
-			writer.WriteLine("Auto=" + Values["DirectionalPyramidDenoising.Auto"].Value.ToString().ToLower());
 			writer.WriteLine("Luma=" + ((double)Values["DirectionalPyramidDenoising.Luma"].Value).ToString(digits, culture));
 			writer.WriteLine("Ldetail=" + ((double)Values["DirectionalPyramidDenoising.Ldetail"].Value).ToString(digits, culture));
 			writer.WriteLine("Chroma=" + ((double)Values["DirectionalPyramidDenoising.Chroma"].Value).ToString(digits, culture));
 			writer.WriteLine("Method=" + Values["DirectionalPyramidDenoising.Method"].Value.ToString());
-			writer.WriteLine("LMethod=" + Values["DirectionalPyramidDenoising.LMethod"].Value.ToString());
-			writer.WriteLine("CMethod=" + Values["DirectionalPyramidDenoising.CMethod"].Value.ToString());
-			writer.WriteLine("C2Method=" + Values["DirectionalPyramidDenoising.C2Method"].Value.ToString());
 			writer.WriteLine("SMethod=" + Values["DirectionalPyramidDenoising.SMethod"].Value.ToString());
 			writer.WriteLine("MedMethod=" + Values["DirectionalPyramidDenoising.MedMethod"].Value.ToString());
 			writer.WriteLine("RGBMethod=" + Values["DirectionalPyramidDenoising.RGBMethod"].Value.ToString());
@@ -195,7 +191,6 @@ namespace Timelapse_API
 			writer.WriteLine("Gamma=" + ((double)Values["DirectionalPyramidDenoising.Gamma"].Value).ToString(digits, culture));
 			writer.WriteLine("Passes=" + Values["DirectionalPyramidDenoising.Passes"].Value.ToString());
 			writer.WriteLine("LCurve=" + ((PP3Curve)Values["DirectionalPyramidDenoising.LCurve"].Value).ToString());
-			writer.WriteLine("CCCurve=" + ((PP3Curve)Values["DirectionalPyramidDenoising.CCCurve"].Value).ToString());
 			writer.WriteLine();
 			writer.WriteLine("[EPD]");
 			writer.WriteLine("Enabled=" + Values["EPD.Enabled"].Value.ToString().ToLower());
@@ -533,14 +528,10 @@ namespace Timelapse_API
 			Values.Add("DirectionalPyramidDenoising.Enabled", new PP3entry("DirectionalPyramidDenoising.Enabled", Convert.ToBoolean(GetValue(Llines[i])), null, null)); i++;
 			Values.Add("DirectionalPyramidDenoising.Enhance", new PP3entry("DirectionalPyramidDenoising.Enhance", Convert.ToBoolean(GetValue(Llines[i])), null, null)); i++;
 			Values.Add("DirectionalPyramidDenoising.Median", new PP3entry("DirectionalPyramidDenoising.Median", Convert.ToBoolean(GetValue(Llines[i])), null, null)); i++;
-			Values.Add("DirectionalPyramidDenoising.Auto", new PP3entry("DirectionalPyramidDenoising.Auto", Convert.ToBoolean(GetValue(Llines[i])), null, null)); i++;
 			Values.Add("DirectionalPyramidDenoising.Luma", new PP3entry("DirectionalPyramidDenoising.Luma", Convert.ToDouble(GetValue(Llines[i]), culture), 0d, 100d)); i++;
 			Values.Add("DirectionalPyramidDenoising.Ldetail", new PP3entry("DirectionalPyramidDenoising.Ldetail", Convert.ToDouble(GetValue(Llines[i]), culture), 0d, 100d)); i++;
 			Values.Add("DirectionalPyramidDenoising.Chroma", new PP3entry("DirectionalPyramidDenoising.Chroma", Convert.ToDouble(GetValue(Llines[i]), culture), 0d, 100d)); i++;
 			Values.Add("DirectionalPyramidDenoising.Method", new PP3entry("DirectionalPyramidDenoising.Method", GetValue(Llines[i]), null, null)); i++;
-			Values.Add("DirectionalPyramidDenoising.LMethod", new PP3entry("DirectionalPyramidDenoising.LMethod", GetValue(Llines[i]), null, null)); i++;
-			Values.Add("DirectionalPyramidDenoising.CMethod", new PP3entry("DirectionalPyramidDenoising.CMethod", GetValue(Llines[i]), null, null)); i++;
-			Values.Add("DirectionalPyramidDenoising.C2Method", new PP3entry("DirectionalPyramidDenoising.C2Method", GetValue(Llines[i]), null, null)); i++;
 			Values.Add("DirectionalPyramidDenoising.SMethod", new PP3entry("DirectionalPyramidDenoising.SMethod", GetValue(Llines[i]), null, null)); i++;
 			Values.Add("DirectionalPyramidDenoising.MedMethod", new PP3entry("DirectionalPyramidDenoising.MedMethod", GetValue(Llines[i]), null, null)); i++;
 			Values.Add("DirectionalPyramidDenoising.RGBMethod", new PP3entry("DirectionalPyramidDenoising.RGBMethod", GetValue(Llines[i]), null, null)); i++;
@@ -550,7 +541,6 @@ namespace Timelapse_API
 			Values.Add("DirectionalPyramidDenoising.Gamma", new PP3entry("DirectionalPyramidDenoising.Gamma", Convert.ToDouble(GetValue(Llines[i]), culture), 1d, 3d)); i++;
 			Values.Add("DirectionalPyramidDenoising.Passes", new PP3entry("DirectionalPyramidDenoising.Passes", Convert.ToInt32(GetValue(Llines[i])), 1, 3)); i++;
 			Values.Add("DirectionalPyramidDenoising.LCurve", new PP3entry("DirectionalPyramidDenoising.LCurve", PP3Curve.GetCurve(GetValue(Llines[i])), null, null)); i++;
-			Values.Add("DirectionalPyramidDenoising.CCCurve", new PP3entry("DirectionalPyramidDenoising.CCCurve", PP3Curve.GetCurve(GetValue(Llines[i])), null, null)); i++;
 			Values.Add("EPD.Enabled", new PP3entry("EPD.Enabled", Convert.ToBoolean(GetValue(Llines[i])), null, null)); i++;
 			Values.Add("EPD.Strength", new PP3entry("EPD.Strength", Convert.ToDouble(GetValue(Llines[i]), culture), -2d, 2d)); i++;
 			Values.Add("EPD.EdgeStopping", new PP3entry("EPD.EdgeStopping", Convert.ToDouble(GetValue(Llines[i]), culture), 0.1d, 4d)); i++;
