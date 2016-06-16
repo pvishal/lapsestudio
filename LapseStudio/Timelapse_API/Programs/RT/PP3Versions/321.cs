@@ -343,8 +343,10 @@ namespace Timelapse_API
 			writer.WriteLine("Strength=" + Values["ColorToning.Strength"].Value.ToString());
 			writer.WriteLine("HighlightsColorSaturation=" + ((PP3Curve)Values["ColorToning.HighlightsColorSaturation"].Value).ToString());
 			writer.WriteLine("ShadowsColorSaturation=" + ((PP3Curve)Values["ColorToning.ShadowsColorSaturation"].Value).ToString());
-			writer.WriteLine("ClCurve=" + ((PP3Curve)Values["ColorToning.ClCurve"].Value).ToString());
-			writer.WriteLine("Cl2Curve=" + ((PP3Curve)Values["ColorToning.Cl2Curve"].Value).ToString());
+			//writer.WriteLine("ClCurve=" + ((PP3Curve)Values["ColorToning.ClCurve"].Value).ToString());
+			//writer.WriteLine("Cl2Curve=" + ((PP3Curve)Values["ColorToning.Cl2Curve"].Value).ToString());
+            writer.WriteLine("ClCurve=" + Values["ColorToning.ClCurve"].Value.ToString());
+            writer.WriteLine("Cl2Curve="+ Values["ColorToning.Cl2Curve"].Value.ToString());
 			writer.WriteLine();
 			writer.WriteLine("[RAW]");
 			writer.WriteLine("DarkFrame=" + Values["RAW.DarkFrame"].Value.ToString());
@@ -653,8 +655,11 @@ namespace Timelapse_API
 			Values.Add("ColorToning.Strength", new PP3entry("ColorToning.Strength", Convert.ToInt32(GetValue(Llines[i])), 0, 100)); i++;
 			Values.Add("ColorToning.HighlightsColorSaturation", new PP3entry("ColorToning.HighlightsColorSaturation", PP3Curve.GetCurve(GetValue(Llines[i])), null, null)); i++;
 			Values.Add("ColorToning.ShadowsColorSaturation", new PP3entry("ColorToning.ShadowsColorSaturation", PP3Curve.GetCurve(GetValue(Llines[i])), null, null)); i++;
-			Values.Add("ColorToning.ClCurve", new PP3entry("ColorToning.ClCurve", PP3Curve.GetCurve(GetValue(Llines[i])), null, null)); i++;
-			Values.Add("ColorToning.Cl2Curve", new PP3entry("ColorToning.Cl2Curve", PP3Curve.GetCurve(GetValue(Llines[i])), null, null)); i++;
+			//TODO: Correct the GetCurve function 
+            //Values.Add("ColorToning.ClCurve", new PP3entry("ColorToning.ClCurve", PP3Curve.GetCurve(GetValue(Llines[i])), null, null)); i++;
+			//Values.Add("ColorToning.Cl2Curve", new PP3entry("ColorToning.Cl2Curve", PP3Curve.GetCurve(GetValue(Llines[i])), null, null)); i++;
+            Values.Add("ColorToning.ClCurve", new PP3entry("ColorToning.ClCurve", GetValue(Llines[i]), null, null)); i++;
+            Values.Add("ColorToning.Cl2Curve", new PP3entry("ColorToning.Cl2Curve", GetValue(Llines[i]), null, null)); i++;
 			Values.Add("RAW.DarkFrame", new PP3entry("RAW.DarkFrame", GetValue(Llines[i]), null, null)); i++;
 			Values.Add("RAW.DarkFrameAuto", new PP3entry("RAW.DarkFrameAuto", Convert.ToBoolean(GetValue(Llines[i])), null, null)); i++;
 			Values.Add("RAW.FlatFieldFile", new PP3entry("RAW.FlatFieldFile", GetValue(Llines[i]), null, null)); i++;
