@@ -382,8 +382,7 @@ namespace LapseStudioWinFormsUI
             MainTable.Columns[(int)TableLocation.ISO].Resizable = DataGridViewTriState.True;
             MainTable.Columns[(int)TableLocation.ISO].AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill;
 
-            if (ProjectManager.CurrentProject.Type == ProjectType.LapseStudio) MainTable.Columns[(int)TableLocation.Keyframe].Visible = false;
-            else MainTable.Columns[(int)TableLocation.Keyframe].Visible = true;
+            MainTable.Columns[(int)TableLocation.Keyframe].Visible = true;
         }
         
         #endregion
