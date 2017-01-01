@@ -25,7 +25,7 @@ namespace Timelapse_API
         /// <returns>a string array with all values</returns>
         public static string[] GetExifMetadata(string directory)
         {
-            SetProcess("-s -ApertureValue -ShutterSpeedValue -ISO -WB_RGGBLevelsAsShot -ColorSpace -ImageSize " + directory, ExifArgument.Metadata);
+            SetProcess("-s -ApertureValue -ShutterSpeedValue -ISO -WB_RGGBLevelsAsShot -ColorSpace -ImageSize \"" + directory + "\"", ExifArgument.Metadata);
             exiftool.Start();
             string CameraData = exiftool.StandardOutput.ReadToEnd();
             exiftool.StandardOutput.Close();
